@@ -2,8 +2,11 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Wedding of Camelia & Fikri 💕</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>Camelia 💕 Fikri </title>
     <link rel="icon" type="image/x-icon" href="https://archive.org/download/mempelai/fikri-lia.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Firebase SDK -->
@@ -76,21 +79,30 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .playfair { font-family: 'Playfair Display', serif; }
         .poppins { font-family: 'Poppins', sans-serif; }
+        .amiri-font { font-family: 'Amiri', serif; }
         
         body {
             background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            /* iOS Safari fix */
+            -webkit-background-size: cover;
+            min-height: 100vh;
+            /* Prevent horizontal scroll on mobile */
+            overflow-x: hidden;
         }
         
         .hero-bg {
             background: transparent;
+            /* iOS Safari viewport fix */
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
         }
         
         .fade-in {
@@ -154,7 +166,41 @@
             }
             
             body {
-                padding-bottom: 80px;
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
+                /* iOS Safari background fix */
+                background-attachment: scroll;
+            }
+        }
+        
+        /* iOS Safari specific fixes */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                background-attachment: scroll;
+            }
+            
+            .hero-bg {
+                min-height: 100vh;
+                min-height: -webkit-fill-available;
+            }
+        }
+        
+        /* Additional mobile optimizations */
+        @media screen and (max-width: 480px) {
+            .glass-effect {
+                margin: 10px;
+                padding: 20px !important;
+            }
+            
+            .playfair {
+                font-size: 2.5rem !important;
+            }
+            
+            .text-4xl {
+                font-size: 2rem !important;
+            }
+            
+            .text-5xl {
+                font-size: 2.5rem !important;
             }
         }
         
@@ -168,6 +214,10 @@
             z-index: 1000;
             border-top: 2px solid #f59e0b;
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            /* iPhone safe area support */
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
         
         .nav-item {
@@ -185,6 +235,25 @@
         
         .nav-item:active {
             transform: scale(0.95);
+        }
+        
+        /* Touch-friendly button sizes */
+        button, .nav-item, input[type="radio"], input[type="submit"] {
+            min-height: 44px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Prevent zoom on input focus (iOS) */
+        input, textarea, select {
+            font-size: 16px;
+            -webkit-appearance: none;
+            border-radius: 0;
+        }
+        
+        /* Smooth scrolling for all browsers */
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Custom SweetAlert styling */
@@ -246,6 +315,12 @@
             color: #3b82f6 !important;
         }
 
+        /* Wide modal for desktop message sharing */
+        .swal-wide {
+            width: 90% !important;
+            max-width: 600px !important;
+        }
+
         /* Admin Popup Modal */
         .admin-modal {
             position: fixed;
@@ -304,6 +379,32 @@
             color: white;
             background: rgba(75, 85, 99, 0.5);
         }
+
+        .input-mode-btn {
+            transition: all 0.3s ease;
+        }
+
+        .input-mode-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .input-mode-btn:not(.active) {
+            color: #9ca3af;
+        }
+
+        .input-mode-btn:not(.active):hover {
+            color: white;
+            background: rgba(75, 85, 99, 0.5);
+        }
+
+        .name-item {
+            transition: all 0.3s ease;
+        }
+
+        .name-item:hover {
+            transform: translateX(5px);
+        }
     </style>
 </head>
 <body class="poppins bg-cream-50">
@@ -317,7 +418,7 @@
                 <div class="relative mb-6">
                     <div class="relative inline-block">
                       <!-- Foto couple dalam bentuk hati - tampilkan apa adanya -->
-                      <img src="https://archive.org/download/mempelai/lia-fikri.png" 
+                      <img src="https://archive.org/download/mempelai/couple%20%281%29.png" 
                            alt="Camelia & Fikri" 
                            class="w-[210px] h-auto shadow-2xl"
                            onerror="this.style.display='none';">
@@ -363,8 +464,7 @@
                 
                 <!-- Invitation Text -->
                 <p class="text-lg md:text-xl text-gray-200 leading-relaxed mb-8">
-                    Dengan penuh sukacita, kami mengundang Anda untuk berbagi kebahagiaan 
-                    di hari istimewa kami
+                    Tanpa Mengurangi Rasa Hormat, Kami Mengundang Bapak/Ibu/Saudara/i untuk Hadir di Acara Kami
                 </p>
                 
                 <!-- Scroll Indicator -->
@@ -677,6 +777,43 @@
                         <i class="fas fa-copy mr-2"></i>Salin Nomor E-Wallet
                     </button>
                 </div>
+                
+                <!-- Physical Gift Address -->
+                <div class="glass-effect rounded-3xl p-8 mt-8 card-shadow slide-up">
+                    <div class="text-center mb-8">
+                        <div class="text-6xl text-gray-300 mb-6">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3 class="playfair text-2xl font-bold text-white mb-4">Alamat Pengiriman Kado Fisik</h3>
+                        <p class="text-gray-200">Untuk pengiriman hadiah berupa barang</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-gradient-to-r from-gray-800 to-gray-900 p-4 rounded-xl border border-gray-600">
+                            <p class="text-sm text-gray-300 mb-1">Alamat Lengkap</p>
+                            <p class="text-lg font-bold text-white text-left leading-relaxed">
+                                Jl. Marhaban, RT55/RW 09<br>
+                                Kelurahan Sedau<br>
+                                Kec. Singkawang Selatan<br>
+                                Kota Singkawang, 79163<br>
+                                Kalimantan Barat<br>
+                                <span class="text-sm text-gray-300">(Belakang MIN Singkawang)</span>
+                            </p>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-gray-800 to-gray-900 p-4 rounded-xl border border-gray-600">
+                            <p class="text-sm text-gray-300 mb-1">Penerima</p>
+                            <p class="text-lg font-bold text-white">Camelia Inas Annisa</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-6">
+                        <button onclick="copyToClipboard('Jl. Marhaban, RT55/RW 09, Kelurahan Sedau, Kec. Singkawang Selatan, Kota Singkawang, 79163, Kalimantan Barat (Belakang MIN Singkawang)', 'Alamat pengiriman')" 
+                                class="bg-gradient-to-r from-gold-500 to-gold-600 text-white px-8 py-3 rounded-full hover:from-gold-600 hover:to-gold-700 transition-all duration-300 font-semibold card-shadow">
+                            <i class="fas fa-copy mr-2"></i>Salin Alamat
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -687,9 +824,9 @@
             <div class="glass-effect rounded-3xl p-8 md:p-12 max-w-5xl mx-auto card-shadow slide-up">
                 <div class="text-center mb-16">
                     <h2 class="playfair text-4xl md:text-5xl font-bold text-white mb-4 ornament">
-                        RSVP & Ucapan
+                        RSVP & Doa Terbaik
                     </h2>
-                    <p class="text-lg text-gray-200">Konfirmasi kehadiran dan kirimkan ucapan terbaik Anda</p>
+                    <p class="text-lg text-gray-200">Konfirmasi kehadiran dan kirimkan doa terbaik Anda</p>
                 </div>
                 
                 <div class="max-w-4xl mx-auto">
@@ -712,26 +849,59 @@
                             
                             <div>
                                 <label class="block text-gray-200 font-semibold mb-2">
-                                    <i class="fas fa-users mr-2 text-gray-300"></i>Jumlah Tamu
+                                    <i class="fas fa-check-circle mr-2 text-gray-300"></i>Konfirmasi Kehadiran
                                 </label>
-                                <select id="guest-count" 
-                                        class="w-full px-4 py-3 border-2 border-gray-600 rounded-xl focus:border-gray-400 focus:outline-none transition-colors bg-gray-700 text-white">
-                                    <option value="1">1 orang</option>
-                                    <option value="2">2 orang</option>
-                                    <option value="3">3 orang</option>
-                                    <option value="4">4 orang</option>
-                                    <option value="5+">5+ orang</option>
-                                </select>
+                                <div class="space-y-3">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="attendance" value="hadir" onchange="toggleGuestCountSection()" 
+                                               class="w-4 h-4 text-green-500 bg-gray-700 border-gray-600 focus:ring-green-500 focus:ring-2">
+                                        <span class="ml-3 text-white font-medium">✅ Insya Allah hadir</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="attendance" value="tidak-hadir" onchange="toggleGuestCountSection()" 
+                                               class="w-4 h-4 text-red-500 bg-gray-700 border-gray-600 focus:ring-red-500 focus:ring-2">
+                                        <span class="ml-3 text-white font-medium">❌ Maaf, Tidak bisa hadir</span>
+                                    </label>
+                                </div>
                             </div>
+                        </div>
+                        
+                        <div id="guest-count-section" class="hidden transition-all duration-300">
+                            <label class="block text-gray-200 font-semibold mb-2">
+                                <i class="fas fa-users mr-2 text-gray-300"></i>Jumlah Tamu
+                            </label>
+                            <select id="guest-count" 
+                                    class="w-full px-4 py-3 border-2 border-gray-600 rounded-xl focus:border-gray-400 focus:outline-none transition-colors bg-gray-700 text-white">
+                                <option value="1">1 orang</option>
+                                <option value="2">2 orang</option>
+                                <option value="3">3 orang</option>
+                                <option value="4">4 orang</option>
+                                <option value="5+">5+ orang</option>
+                            </select>
                         </div>
                         
                         <div>
                             <label class="block text-gray-200 font-semibold mb-2">
-                                <i class="fas fa-comment-heart mr-2 text-gray-300"></i>Ucapan & Doa
+                                <i class="fas fa-comment-heart mr-2 text-gray-300"></i>Doa Terbaik untuk Kedua Mempelai <span id="message-required" class="text-red-400 hidden">*</span>
                             </label>
+                            
+                            <!-- Fixed Arabic Prayer Template -->
+                            <div class="bg-gradient-to-r from-gray-800 to-gray-900 p-4 rounded-xl border border-gray-600 mb-3">
+                                <div class="amiri-font text-white text-lg leading-relaxed text-center" style="direction: rtl;">
+                                    بَارَكَ اللهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِيْ خَيْرٍ
+                                </div>
+                                <div class="text-xs text-gray-400 mt-2 text-center italic">
+                                    "Semoga Allah memberkahi kalian dan memberikan berkah atas kalian, serta menyatukan kalian dalam kebaikan"
+                                </div>
+                            </div>
+                            
+                            <!-- User's Additional Message -->
                             <textarea id="guest-message" rows="4" 
-                                      placeholder="Tuliskan ucapan dan doa terbaik untuk kami..."
+                                      placeholder="Tambahkan ucapan pribadi Anda di sini..."
                                       class="w-full px-4 py-3 border-2 border-gray-600 rounded-xl focus:border-gray-400 focus:outline-none transition-colors resize-none bg-gray-700 text-white placeholder-gray-400"></textarea>
+                            <div id="message-help" class="text-xs text-gray-400 mt-2 hidden">
+                                <i class="fas fa-info-circle mr-1"></i>Wajib diisi untuk yang tidak hadir
+                            </div>
                         </div>
                         
                         <div class="text-center">
@@ -746,7 +916,7 @@
                 <!-- Ucapan List -->
                 <div class="glass-effect rounded-3xl p-8 border border-gray-600">
                     <h3 class="playfair text-2xl font-bold text-white mb-6 text-center">
-                        Ucapan dari Tamu
+                        Doa Terbaik atau Best Wishes
                     </h3>
                     
                     <div id="messages-container" class="space-y-6 max-h-96 overflow-y-auto">
@@ -838,25 +1008,78 @@
             <!-- Share Tab -->
             <div id="admin-share-tab" class="admin-tab-content">
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-gray-200 font-semibold mb-2">
-                            <i class="fas fa-user mr-2 text-gray-300"></i>Nama Tamu:
-                        </label>
-                        <input type="text" id="guest-name-input" placeholder="Masukkan nama tamu undangan..."
-                               class="w-full px-4 py-3 border-2 border-gray-600 rounded-xl focus:border-gold-400 focus:outline-none transition-colors bg-gray-700 text-white placeholder-gray-400">
+                    <!-- Input Mode Toggle -->
+                    <div class="flex bg-gray-800 rounded-xl p-1 mb-4">
+                        <button onclick="switchInputMode('single')" id="mode-single" 
+                                class="input-mode-btn flex-1 py-2 px-4 rounded-lg text-center font-semibold active">
+                            <i class="fas fa-user mr-2"></i>Satu Nama
+                        </button>
+                        <button onclick="switchInputMode('multi')" id="mode-multi" 
+                                class="input-mode-btn flex-1 py-2 px-4 rounded-lg text-center font-semibold">
+                            <i class="fas fa-users mr-2"></i>Multi Nama
+                        </button>
                     </div>
                     
-                    <button onclick="sharePersonalInvitation()" 
-                            class="w-full bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 card-shadow">
-                        <i class="fab fa-whatsapp mr-2"></i>Bagikan Undangan Personal
-                    </button>
+                    <!-- Single Name Input -->
+                    <div id="single-input-section">
+                        <div>
+                            <label class="block text-gray-200 font-semibold mb-2">
+                                <i class="fas fa-user mr-2 text-gray-300"></i>Nama Tamu:
+                            </label>
+                            <input type="text" id="guest-name-input" placeholder="Masukkan nama tamu undangan..."
+                                   class="w-full px-4 py-3 border-2 border-gray-600 rounded-xl focus:border-gold-400 focus:outline-none transition-colors bg-gray-700 text-white placeholder-gray-400">
+                        </div>
+                        
+                        <button onclick="sharePersonalInvitation()" 
+                                class="w-full bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 card-shadow mt-4">
+                            <i class="fab fa-whatsapp mr-2"></i>Bagikan Undangan Personal
+                        </button>
+                        
+                        <div class="bg-gray-800 rounded-xl p-4 border border-gray-600 mt-4">
+                            <h4 class="text-white font-semibold mb-2">
+                                <i class="fas fa-eye mr-2 text-gray-300"></i>Preview Pesan:
+                            </h4>
+                            <div id="message-preview" class="text-gray-300 text-sm whitespace-pre-line bg-gray-900 p-3 rounded-lg border border-gray-700">
+                                <!-- Preview will be generated here -->
+                            </div>
+                        </div>
+                    </div>
                     
-                    <div class="bg-gray-800 rounded-xl p-4 border border-gray-600">
-                        <h4 class="text-white font-semibold mb-2">
-                            <i class="fas fa-eye mr-2 text-gray-300"></i>Preview Pesan:
-                        </h4>
-                        <div id="message-preview" class="text-gray-300 text-sm whitespace-pre-line bg-gray-900 p-3 rounded-lg border border-gray-700">
-                            <!-- Preview will be generated here -->
+                    <!-- Multi Name Input -->
+                    <div id="multi-input-section" class="hidden">
+                        <div>
+                            <label class="block text-gray-200 font-semibold mb-2">
+                                <i class="fas fa-users mr-2 text-gray-300"></i>Daftar Nama Tamu:
+                            </label>
+                            <textarea id="multi-guest-names" rows="6" 
+                                      placeholder="Masukkan nama tamu, satu nama per baris:&#10;&#10;John Doe&#10;Jane Smith&#10;Ahmad Rahman&#10;Siti Nurhaliza"
+                                      class="w-full px-4 py-3 border-2 border-gray-600 rounded-xl focus:border-gold-400 focus:outline-none transition-colors resize-none bg-gray-700 text-white placeholder-gray-400"></textarea>
+                            <div class="text-xs text-gray-400 mt-2">
+                                <i class="fas fa-info-circle mr-1"></i>Tulis satu nama per baris. Nama kosong akan diabaikan.
+                            </div>
+                        </div>
+                        
+                        <button onclick="processMultiNames()" 
+                                class="w-full bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 card-shadow mt-4">
+                            <i class="fas fa-list mr-2"></i>Proses Daftar Nama
+                        </button>
+                        
+                        <!-- Multi Names List -->
+                        <div id="multi-names-list" class="mt-4 hidden">
+                            <div class="bg-gray-800 rounded-xl p-4 border border-gray-600">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h4 class="text-white font-semibold">
+                                        <i class="fas fa-list-check mr-2 text-green-400"></i>Daftar Undangan (<span id="names-count">0</span> nama)
+                                    </h4>
+                                    <button onclick="shareAllInvitations()" 
+                                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300">
+                                        <i class="fab fa-whatsapp mr-1"></i>Share Semua
+                                    </button>
+                                </div>
+                                <div id="names-container" class="space-y-2 max-h-64 overflow-y-auto">
+                                    <!-- Names will be listed here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -927,6 +1150,84 @@ Klik link berikut untuk melihat undangan:
 {link}
 
 Terima kasih 🙏`;
+
+        // Smart WhatsApp sharing function
+        function shareWhatsAppMessage(message, guestName = null) {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // Mobile: Use WhatsApp app directly
+                let whatsappUrl;
+                if (isIOS) {
+                    // iOS specific WhatsApp URL scheme
+                    whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+                } else {
+                    // Android and other mobile platforms
+                    whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+                }
+                
+                // Try to open WhatsApp app
+                const link = document.createElement('a');
+                link.href = whatsappUrl;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Show success toast for mobile
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Undangan Dibagikan!',
+                    text: `Undangan${guestName ? ' untuk ' + guestName : ''} telah dibuka di WhatsApp`,
+                    timer: 2000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
+            } else {
+                // Desktop: Show message in modal for copy-paste
+                Swal.fire({
+                    title: `📱 Pesan untuk ${guestName || 'Tamu'}`,
+                    html: `
+                        <div class="text-left">
+                            <p class="text-gray-300 mb-4">Salin pesan di bawah ini dan kirim melalui WhatsApp:</p>
+                            <textarea id="message-to-copy" class="w-full h-64 p-4 bg-gray-800 text-white rounded-lg border border-gray-600 font-mono text-sm resize-none" readonly>${message}</textarea>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-copy mr-2"></i>Salin Pesan',
+                    cancelButtonText: '<i class="fab fa-whatsapp mr-2"></i>Buka WhatsApp Web',
+                    reverseButtons: true,
+                    customClass: {
+                        popup: 'swal-wide'
+                    },
+                    preConfirm: () => {
+                        const textarea = document.getElementById('message-to-copy');
+                        textarea.select();
+                        document.execCommand('copy');
+                        return true;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pesan Disalin!',
+                            text: 'Pesan telah disalin ke clipboard. Buka WhatsApp dan paste pesan tersebut.',
+                            timer: 3000,
+                            showConfirmButton: false,
+                            toast: true,
+                            position: 'top-end'
+                        });
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // Open WhatsApp Web
+                        const whatsappWebUrl = `https://web.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+                        window.open(whatsappWebUrl, '_blank');
+                    }
+                });
+            }
+        }
 
         // Load saved template from localStorage
         function loadTemplate() {
@@ -1026,6 +1327,148 @@ Terima kasih 🙏`;
             }
         }
 
+        // Switch input mode (single/multi)
+        function switchInputMode(mode) {
+            // Update mode buttons
+            document.querySelectorAll('.input-mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`mode-${mode}`).classList.add('active');
+            
+            // Update input sections
+            if (mode === 'single') {
+                document.getElementById('single-input-section').classList.remove('hidden');
+                document.getElementById('multi-input-section').classList.add('hidden');
+                updatePreview();
+            } else {
+                document.getElementById('single-input-section').classList.add('hidden');
+                document.getElementById('multi-input-section').classList.remove('hidden');
+                document.getElementById('multi-names-list').classList.add('hidden');
+            }
+        }
+
+        // Process multiple names
+        function processMultiNames() {
+            const textarea = document.getElementById('multi-guest-names');
+            const namesText = textarea.value.trim();
+            
+            if (!namesText) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Daftar Nama Kosong',
+                    text: 'Mohon masukkan daftar nama tamu terlebih dahulu',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            
+            // Split by lines and filter empty names
+            const names = namesText.split('\n')
+                .map(name => name.trim())
+                .filter(name => name.length > 0);
+            
+            if (names.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak Ada Nama Valid',
+                    text: 'Mohon pastikan ada nama yang valid dalam daftar',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            
+            // Update count
+            document.getElementById('names-count').textContent = names.length;
+            
+            // Generate names list
+            const container = document.getElementById('names-container');
+            container.innerHTML = names.map((name, index) => `
+                <div class="name-item bg-gray-900 p-3 rounded-lg border border-gray-700 flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
+                            ${index + 1}
+                        </div>
+                        <span class="text-white font-medium">${name}</span>
+                    </div>
+                    <button onclick="shareIndividualInvitation('${name.replace(/'/g, "\\'")}')" 
+                            class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm font-semibold transition-all duration-300">
+                        <i class="fab fa-whatsapp mr-1"></i>Share
+                    </button>
+                </div>
+            `).join('');
+            
+            // Show the list
+            document.getElementById('multi-names-list').classList.remove('hidden');
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Daftar Nama Diproses!',
+                text: `${names.length} nama berhasil diproses dan siap untuk dibagikan`,
+                confirmButtonText: 'OK'
+            });
+        }
+
+        // Share individual invitation from multi-name list
+        function shareIndividualInvitation(guestName) {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const personalUrl = `${baseUrl}?to=${encodeURIComponent(guestName)}`;
+            
+            const message = messageTemplate
+                .replace(/{nama}/g, guestName)
+                .replace(/{link}/g, personalUrl)
+                .replace(/{mempelai}/g, 'Camelia & Fikri')
+                .replace(/{tanggal}/g, 'Sabtu, 18 Oktober 2025');
+            
+            shareWhatsAppMessage(message, guestName);
+        }
+
+        // Share all invitations
+        function shareAllInvitations() {
+            const namesContainer = document.getElementById('names-container');
+            const nameItems = namesContainer.querySelectorAll('.name-item');
+            
+            if (nameItems.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak Ada Nama',
+                    text: 'Tidak ada nama dalam daftar untuk dibagikan',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            
+            Swal.fire({
+                title: 'Bagikan Semua Undangan?',
+                text: `Apakah Anda yakin ingin membagikan ${nameItems.length} undangan sekaligus? Ini akan membuka banyak tab WhatsApp.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Bagikan Semua',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#10b981'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let delay = 0;
+                    nameItems.forEach((item, index) => {
+                        const nameSpan = item.querySelector('span');
+                        const guestName = nameSpan.textContent;
+                        
+                        setTimeout(() => {
+                            shareIndividualInvitation(guestName);
+                        }, delay);
+                        
+                        delay += 500; // 500ms delay between each share
+                    });
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Semua Undangan Dibagikan!',
+                        text: `${nameItems.length} undangan telah dibuka di WhatsApp dengan jeda waktu`,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
+
         // Update message preview
         function updatePreview() {
             const guestName = document.getElementById('guest-name-input').value.trim() || '[Nama Tamu]';
@@ -1101,19 +1544,11 @@ Terima kasih 🙏`;
                 .replace(/{mempelai}/g, 'Camelia & Fikri')
                 .replace(/{tanggal}/g, 'Sabtu, 18 Oktober 2025');
             
-            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+            shareWhatsAppMessage(message, guestName);
             
             // Clear input
             document.getElementById('guest-name-input').value = '';
             updatePreview();
-            
-            Swal.fire({
-                icon: 'success',
-                title: 'Undangan Dibagikan!',
-                text: 'Link undangan personal telah dibuka di WhatsApp',
-                confirmButtonText: 'OK'
-            });
         }
         
         // Countdown timer
@@ -1145,34 +1580,61 @@ Terima kasih 🙏`;
         
         // Copy to clipboard function with SweetAlert
         function copyToClipboard(text, type) {
-            navigator.clipboard.writeText(text).then(() => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil Disalin!',
-                    text: `${type} berhasil disalin ke clipboard`,
-                    timer: 2000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
+            // Modern clipboard API with fallback for iOS
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopySuccess(type);
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(text, type);
                 });
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil Disalin!',
-                    text: `${type} berhasil disalin ke clipboard`,
-                    timer: 2000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
+            } else {
+                fallbackCopyTextToClipboard(text, type);
+            }
+        }
+        
+        function fallbackCopyTextToClipboard(text, type) {
+            // iOS Safari compatible fallback
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopySuccess(type);
+                } else {
+                    showCopyError(type);
+                }
+            } catch (err) {
+                showCopyError(type);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        
+        function showCopySuccess(type) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil Disalin!',
+                text: `${type} berhasil disalin ke clipboard`,
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        }
+        
+        function showCopyError(type) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Salin Manual',
+                text: `Silakan salin ${type} secara manual`,
+                confirmButtonText: 'OK'
             });
         }
         
@@ -1188,14 +1650,36 @@ Terima kasih 🙏`;
             e.preventDefault();
             
             const name = document.getElementById('guest-name').value;
+            const attendanceRadio = document.querySelector('input[name="attendance"]:checked');
+            const attendanceStatus = attendanceRadio ? attendanceRadio.value : null;
             const count = document.getElementById('guest-count').value;
-            const message = document.getElementById('guest-message').value;
+            const userMessage = document.getElementById('guest-message').value;
             
             if (name.trim() === '') {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Nama Diperlukan',
                     text: 'Mohon isi nama lengkap Anda',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            
+            if (!attendanceStatus) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Status Kehadiran Diperlukan',
+                    text: 'Mohon pilih apakah Anda akan hadir atau tidak',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            
+            if (attendanceStatus === 'tidak-hadir' && userMessage.trim() === '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Ucapan Pribadi Diperlukan',
+                    text: 'Mohon tambahkan ucapan pribadi Anda untuk yang tidak dapat hadir',
                     confirmButtonText: 'OK'
                 });
                 return;
@@ -1212,11 +1696,19 @@ Terima kasih 🙏`;
             });
             
             try {
+                // Combine Arabic prayer with translation and user's message
+                const arabicPrayer = "بَارَكَ اللهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِيْ خَيْرٍ";
+                const translation = "Semoga Allah memberkahi kalian dan memberikan berkah atas kalian, serta menyatukan kalian dalam kebaikan";
+                const fullMessage = userMessage.trim() ? 
+                    `${arabicPrayer}\n${translation}\n\n${userMessage.trim()}` : 
+                    `${arabicPrayer}\n${translation}`;
+                
                 // Save to Firebase
                 const rsvpData = {
                     name: name.trim(),
-                    count: count,
-                    message: message.trim(),
+                    attendance: attendanceStatus,
+                    count: attendanceStatus === 'hadir' ? count : null,
+                    message: fullMessage,
                     timestamp: window.firestore.serverTimestamp(),
                     createdAt: new Date().toISOString()
                 };
@@ -1234,9 +1726,12 @@ Terima kasih 🙏`;
                 // Reset form (but keep name if it's a personal invitation)
                 if (!currentGuest) {
                     this.reset();
+                    toggleGuestCountSection(); // Reset UI state
                 } else {
+                    document.querySelectorAll('input[name="attendance"]').forEach(radio => radio.checked = false);
                     document.getElementById('guest-count').value = '1';
                     document.getElementById('guest-message').value = '';
+                    toggleGuestCountSection(); // Reset UI state
                 }
                 
             } catch (error) {
@@ -1281,6 +1776,14 @@ Terima kasih 🙏`;
                         const date = msg.createdAt ? new Date(msg.createdAt) : new Date();
                         const timeAgo = getTimeAgo(date);
                         
+                        // Determine attendance status display
+                        const attendanceDisplay = msg.attendance === 'hadir' ? 
+                            `<span class="text-green-400">✅ Hadir</span>` : 
+                            `<span class="text-red-400">❌ Tidak Hadir</span>`;
+                        
+                        const guestInfo = msg.attendance === 'hadir' && msg.count ? 
+                            ` • ${msg.count} tamu` : '';
+                        
                         return `
                             <div class="bg-gradient-to-r from-gray-800 to-gray-900 p-6 rounded-2xl border border-gray-600">
                                 <div class="flex items-center mb-3">
@@ -1289,10 +1792,14 @@ Terima kasih 🙏`;
                                     </div>
                                     <div class="ml-3">
                                         <h4 class="font-semibold text-white">${msg.name}</h4>
-                                        <p class="text-sm text-gray-300">${timeAgo} • ${msg.count} tamu</p>
+                                        <p class="text-sm text-gray-300">${timeAgo} • ${attendanceDisplay}${guestInfo}</p>
                                     </div>
                                 </div>
-                                ${msg.message ? `<p class="text-gray-200 italic">"${msg.message}"</p>` : ''}
+                                ${msg.message ? `<div class="text-gray-200 italic" style="line-height: 1.8;">
+                                    <div class="amiri-font text-center mb-2" style="direction: rtl;">${msg.message.split('\n')[0]}</div>
+                                    <div class="text-sm text-gray-300 text-center mb-2">${msg.message.split('\n')[1] || ''}</div>
+                                    ${msg.message.split('\n').slice(2).join('\n').trim() ? `<div class="mt-3 pt-3 border-t border-gray-600">"${msg.message.split('\n').slice(2).join('\n').trim()}"</div>` : ''}
+                                </div>` : ''}
                             </div>
                         `;
                     }).join('');
@@ -1375,6 +1882,36 @@ Terima kasih 🙏`;
             observer.observe(section);
         });
         
+        // Toggle guest count section based on attendance
+        function toggleGuestCountSection() {
+            const attendanceRadio = document.querySelector('input[name="attendance"]:checked');
+            const attendanceStatus = attendanceRadio ? attendanceRadio.value : null;
+            const guestCountSection = document.getElementById('guest-count-section');
+            const messageRequired = document.getElementById('message-required');
+            const messageHelp = document.getElementById('message-help');
+            const messageTextarea = document.getElementById('guest-message');
+            
+            if (attendanceStatus === 'hadir') {
+                guestCountSection.classList.remove('hidden');
+                messageRequired.classList.add('hidden');
+                messageHelp.classList.add('hidden');
+                messageTextarea.placeholder = "Tambahkan ucapan pribadi Anda di sini...";
+                messageTextarea.value = "";
+            } else if (attendanceStatus === 'tidak-hadir') {
+                guestCountSection.classList.add('hidden');
+                messageRequired.classList.remove('hidden');
+                messageHelp.classList.remove('hidden');
+                messageTextarea.placeholder = "Wajib diisi - Tambahkan ucapan pribadi Anda di sini...";
+                messageTextarea.value = "";
+            } else {
+                guestCountSection.classList.add('hidden');
+                messageRequired.classList.add('hidden');
+                messageHelp.classList.add('hidden');
+                messageTextarea.placeholder = "Tambahkan ucapan pribadi Anda di sini...";
+                messageTextarea.value = "";
+            }
+        }
+
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             // Check for guest parameter in URL
@@ -1393,6 +1930,7 @@ Terima kasih 🙏`;
             // Add event listeners for template editing
             const guestNameInput = document.getElementById('guest-name-input');
             const templateTextarea = document.getElementById('message-template');
+            const attendanceSelect = document.getElementById('attendance-status');
             
             if (guestNameInput) {
                 guestNameInput.addEventListener('input', updatePreview);
@@ -1404,7 +1942,12 @@ Terima kasih 🙏`;
                     updatePreview();
                 });
             }
+            
+            // Add event listeners for radio buttons
+            document.querySelectorAll('input[name="attendance"]').forEach(radio => {
+                radio.addEventListener('change', toggleGuestCountSection);
+            });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979caecd43626b9f',t:'MTc1Njk4MDQ3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979d6155158fa11e',t:'MTc1Njk4Nzc5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
