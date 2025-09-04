@@ -3,26 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Bacaan Surah Al-Quraisy</title>
+    <title>Belajar Mengaji</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         .arabic-text {
             font-family: 'Amiri', serif;
             direction: rtl;
             text-align: center;
+            font-size: 2.5rem;
+            line-height: 1.4;
         }
         .arabic-title {
             font-family: 'Amiri', serif;
             font-weight: 700;
+            font-size: 2.5rem;
+        }
+        .child-friendly {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
         }
         .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #059669 0%, #16a34a 50%, #22c55e 100%);
+            min-height: 100vh;
+        }
+        .islamic-pattern {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 2px, transparent 2px);
+            background-size: 50px 50px;
         }
         .card-shadow {
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
         }
         .pulse-animation {
             animation: pulse 2s infinite;
@@ -38,178 +53,181 @@
             0%, 100% { background-color: #ef4444; }
             50% { background-color: #dc2626; }
         }
+        .bounce-in {
+            animation: bounceIn 0.8s ease-out;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .star-twinkle {
+            animation: twinkle 2s ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
     </style>
 </head>
-<body class="min-h-screen gradient-bg">
+<body class="gradient-bg islamic-pattern">
     <!-- Header -->
-    <div class="bg-white/90 backdrop-blur-sm shadow-lg">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-center space-x-3">
-                <i class="fas fa-mosque text-3xl text-purple-600"></i>
-                <h1 class="text-2xl font-bold text-gray-800">Belajar Surah Al-Quraisy</h1>
-                <i class="fas fa-star text-3xl text-yellow-500"></i>
+    <div class="bg-white/95 backdrop-blur-sm shadow-xl border-b-4 border-green-500">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-center space-x-4">
+                <div class="float-animation">
+                    <i class="fas fa-mosque text-4xl text-green-600"></i>
+                </div>
+                <div class="text-center">
+                    <h1 class="text-3xl font-bold text-gray-800 child-friendly">🌟 Belajar Mengaji 🌟</h1>
+                    <p class="text-green-600 font-semibold child-friendly">Mari Belajar Al-Quran dengan Gembira!</p>
+                </div>
+                <div class="star-twinkle">
+                    <i class="fas fa-star text-4xl text-yellow-500"></i>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="container mx-auto px-4 py-8">
+        <!-- TEMPLATE CONFIGURATION - EDIT BAGIAN INI SAJA! -->
+        <script>
+            // 🎯 KONFIGURASI SURAH - EDIT BAGIAN INI UNTUK GANTI SURAH
+            const SURAH_CONFIG = {
+                name: "Quraisy",
+                arabicName: "سُورَةُ قُرَيْشٍ",
+                number: 106,
+                totalAyat: 4,
+                type: "Makkiyah",
+                verses: [
+                    {
+                        arabic: "لِإِيلَافِ قُرَيْشٍ",
+                        latin: "Li ilaafi quraisy",
+                        audio: "https://archive.org/download/106-4/106-1.mp3"
+                    },
+                    {
+                        arabic: "إِيلَافِهِمْ رِحْلَةَ الشِّتَاءِ وَالصَّيْفِ",
+                        latin: "Ilaafihim rihlata asy-syitaa'i wa ash-shaif",
+                        audio: "https://archive.org/download/106-4/106-2.mp3"
+                    },
+                    {
+                        arabic: "فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ",
+                        latin: "Fal ya'buduu rabba haadzal bait",
+                        audio: "https://archive.org/download/106-4/106-3.mp3"
+                    },
+                    {
+                        arabic: "الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّنْ خَوْفٍ",
+                        latin: "Alladzii ath'amahum min juu'in wa aamanahum min khauf",
+                        audio: "https://archive.org/download/106-4/106-4.mp3"
+                    }
+                ]
+            };
+        </script>
+
         <!-- Info Card -->
-        <div class="bg-white rounded-2xl card-shadow p-6 mb-8">
+        <div class="bg-white/95 rounded-3xl card-shadow p-8 mb-8 bounce-in">
             <div class="text-center">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2 arabic-title">سُورَةُ قُرَيْشٍ</h2>
-                <p class="text-lg text-gray-600 mb-4">Surah Al-Quraisy (106)</p>
-                <div class="flex justify-center items-center space-x-4 text-sm text-gray-500">
-                    <span><i class="fas fa-book-open mr-1"></i>4 Ayat</span>
-                    <span><i class="fas fa-map-marker-alt mr-1"></i>Makkiyah</span>
+                <div class="mb-4">
+                    <span class="text-6xl">🕌</span>
+                </div>
+                <h2 id="surahTitle" class="text-3xl font-bold text-gray-800 mb-3 arabic-title">سُورَةُ قُرَيْشٍ</h2>
+                <p id="surahInfo" class="text-xl text-green-600 mb-4 child-friendly font-bold">Surah Quraisy (106)</p>
+                <div class="flex justify-center items-center space-x-6 text-lg text-gray-600 child-friendly">
+                    <span class="bg-green-100 px-4 py-2 rounded-full">
+                        <i class="fas fa-book-open mr-2 text-green-600"></i>4 Ayat
+                    </span>
+                    <span class="bg-blue-100 px-4 py-2 rounded-full">
+                        <i class="fas fa-map-marker-alt mr-2 text-blue-600"></i>Makkiyah
+                    </span>
                 </div>
             </div>
         </div>
 
         <!-- Instructions -->
-        <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl card-shadow p-6 mb-8 border-l-4 border-purple-500">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                <i class="fas fa-info-circle mr-2 text-purple-500"></i>
-                Petunjuk Penggunaan
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-3xl card-shadow p-8 mb-8 border-l-8 border-green-500">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center child-friendly">
+                <span class="text-3xl mr-3">📚</span>
+                Cara Belajar yang Benar
             </h3>
-            <div class="space-y-3 text-gray-700">
-                <div class="flex items-start space-x-3">
-                    <span class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">1</span>
-                    <p><strong>Dengarkan</strong> bacaan yang benar dengan menekan tombol "Dengar"</p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-4 bg-white p-4 rounded-2xl shadow-md">
+                        <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold flex-shrink-0 mt-1">1</span>
+                        <div>
+                            <h4 class="font-bold text-green-700 child-friendly text-lg">Dengarkan Dulu</h4>
+                            <p class="text-gray-600 child-friendly">Tekan tombol "🎵 Dengar" untuk mendengar bacaan yang benar</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4 bg-white p-4 rounded-2xl shadow-md">
+                        <span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold flex-shrink-0 mt-1">2</span>
+                        <div>
+                            <h4 class="font-bold text-blue-700 child-friendly text-lg">Latihan Berulang</h4>
+                            <p class="text-gray-600 child-friendly">Baca berulang-ulang sampai lancar dan benar</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-start space-x-3">
-                    <span class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">2</span>
-                    <p><strong>Berlatih</strong> membaca berulang-ulang sampai lancar dan benar</p>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <span class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">3</span>
-                    <p><strong>Rekam</strong> bacaan Anda hanya setelah yakin sudah lancar</p>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <span class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">4</span>
-                    <p><strong>Ulangi</strong> jika nilai kurang memuaskan</p>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-4 bg-white p-4 rounded-2xl shadow-md">
+                        <span class="bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold flex-shrink-0 mt-1">3</span>
+                        <div>
+                            <h4 class="font-bold text-red-700 child-friendly text-lg">Rekam Bacaan</h4>
+                            <p class="text-gray-600 child-friendly">Tekan "🎤 Rekam" hanya setelah yakin sudah lancar</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4 bg-white p-4 rounded-2xl shadow-md">
+                        <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold flex-shrink-0 mt-1">4</span>
+                        <div>
+                            <h4 class="font-bold text-purple-700 child-friendly text-lg">Cek Nilai</h4>
+                            <p class="text-gray-600 child-friendly">Lihat nilai dan ulangi jika perlu</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="mt-4 p-3 bg-yellow-100 rounded-lg border border-yellow-300">
-                <p class="text-yellow-800 text-sm flex items-center">
-                    <i class="fas fa-lightbulb mr-2"></i>
-                    <strong>Tips:</strong> Bacalah dengan tartil, jelas, dan tenang. Pastikan makharijul huruf benar!
+            <div class="mt-6 p-4 bg-yellow-100 rounded-2xl border-2 border-yellow-300">
+                <p class="text-yellow-800 text-lg flex items-center child-friendly font-bold">
+                    <span class="text-2xl mr-3">💡</span>
+                    <strong>Tips Sukses:</strong> Bacalah dengan tartil, jelas, dan tenang. Pastikan makharijul huruf benar!
                 </p>
             </div>
         </div>
 
         <!-- Student Info -->
-        <div class="bg-white rounded-2xl card-shadow p-6 mb-8">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                <i class="fas fa-user-graduate mr-2 text-blue-500"></i>
+        <div class="bg-white/95 rounded-3xl card-shadow p-8 mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center child-friendly">
+                <span class="text-3xl mr-3">👨‍🎓</span>
                 Data Siswa
             </h3>
-            <div class="grid md:grid-cols-2 gap-4">
-                <input type="text" id="studentName" placeholder="Nama Siswa" 
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                <input type="text" id="studentClass" placeholder="Kelas" 
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="relative">
+                    <input type="text" id="studentName" placeholder="Nama Siswa" 
+                           class="w-full px-6 py-4 border-2 border-green-300 rounded-2xl focus:ring-4 focus:ring-green-200 focus:border-green-500 text-lg child-friendly font-semibold">
+                    <i class="fas fa-user absolute right-4 top-5 text-green-500"></i>
+                </div>
+                <div class="relative">
+                    <input type="text" id="studentClass" placeholder="Kelas" 
+                           class="w-full px-6 py-4 border-2 border-green-300 rounded-2xl focus:ring-4 focus:ring-green-200 focus:border-green-500 text-lg child-friendly font-semibold">
+                    <i class="fas fa-school absolute right-4 top-5 text-green-500"></i>
+                </div>
             </div>
         </div>
 
-        <!-- Verses -->
-        <div class="space-y-6">
-            <!-- Verse 1 -->
-            <div class="bg-white rounded-2xl card-shadow p-6 verse-card" data-verse="1">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800">Ayat 1</h3>
-                    <div class="flex space-x-2">
-                        <button class="play-btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-play mr-1"></i>Dengar
-                        </button>
-                        <button class="record-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-microphone mr-1"></i>Rekam
-                        </button>
-                    </div>
-                </div>
-                <div class="arabic-text text-3xl text-gray-800 mb-4 p-4 bg-gray-50 rounded-lg">
-                    لِإِيلَافِ قُرَيْشٍ
-                </div>
-                <p class="text-gray-600 text-center mb-4">Li ilaafi quraisy</p>
-                <div class="score-display hidden bg-blue-50 p-4 rounded-lg text-center">
-                    <span class="text-lg font-semibold text-blue-600">Nilai: <span class="score-value">0</span>/100</span>
-                </div>
-                <audio class="verse-audio hidden" src="https://archive.org/download/106-4/106-1.mp3"></audio>
-            </div>
-
-            <!-- Verse 2 -->
-            <div class="bg-white rounded-2xl card-shadow p-6 verse-card" data-verse="2">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800">Ayat 2</h3>
-                    <div class="flex space-x-2">
-                        <button class="play-btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-play mr-1"></i>Dengar
-                        </button>
-                        <button class="record-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-microphone mr-1"></i>Rekam
-                        </button>
-                    </div>
-                </div>
-                <div class="arabic-text text-3xl text-gray-800 mb-4 p-4 bg-gray-50 rounded-lg">
-                    إِيلَافِهِمْ رِحْلَةَ الشِّتَاءِ وَالصَّيْفِ
-                </div>
-                <p class="text-gray-600 text-center mb-4">Ilaafihim rihlata asy-syitaa'i wa ash-shaif</p>
-                <div class="score-display hidden bg-blue-50 p-4 rounded-lg text-center">
-                    <span class="text-lg font-semibold text-blue-600">Nilai: <span class="score-value">0</span>/100</span>
-                </div>
-                <audio class="verse-audio hidden" src="https://archive.org/download/106-4/106-2.mp3"></audio>
-            </div>
-
-            <!-- Verse 3 -->
-            <div class="bg-white rounded-2xl card-shadow p-6 verse-card" data-verse="3">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800">Ayat 3</h3>
-                    <div class="flex space-x-2">
-                        <button class="play-btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-play mr-1"></i>Dengar
-                        </button>
-                        <button class="record-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-microphone mr-1"></i>Rekam
-                        </button>
-                    </div>
-                </div>
-                <div class="arabic-text text-3xl text-gray-800 mb-4 p-4 bg-gray-50 rounded-lg">
-                    فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ
-                </div>
-                <p class="text-gray-600 text-center mb-4">Fal ya'buduu rabba haadzal bait</p>
-                <div class="score-display hidden bg-blue-50 p-4 rounded-lg text-center">
-                    <span class="text-lg font-semibold text-blue-600">Nilai: <span class="score-value">0</span>/100</span>
-                </div>
-                <audio class="verse-audio hidden" src="https://archive.org/download/106-4/106-3.mp3"></audio>
-            </div>
-
-            <!-- Verse 4 -->
-            <div class="bg-white rounded-2xl card-shadow p-6 verse-card" data-verse="4">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800">Ayat 4</h3>
-                    <div class="flex space-x-2">
-                        <button class="play-btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-play mr-1"></i>Dengar
-                        </button>
-                        <button class="record-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-microphone mr-1"></i>Rekam
-                        </button>
-                    </div>
-                </div>
-                <div class="arabic-text text-3xl text-gray-800 mb-4 p-4 bg-gray-50 rounded-lg">
-                    الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّنْ خَوْفٍ
-                </div>
-                <p class="text-gray-600 text-center mb-4">Alladzii ath'amahum min juu'in wa aamanahum min khauf</p>
-                <div class="score-display hidden bg-blue-50 p-4 rounded-lg text-center">
-                    <span class="text-lg font-semibold text-blue-600">Nilai: <span class="score-value">0</span>/100</span>
-                </div>
-                <audio class="verse-audio hidden" src="https://archive.org/download/106-4/106-4.mp3"></audio>
-            </div>
+        <!-- Verses Container -->
+        <div id="versesContainer" class="space-y-8">
+            <!-- Verses will be generated dynamically -->
         </div>
 
         <!-- Submit Button -->
-        <div class="mt-8 text-center">
-            <button id="submitBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-2xl text-lg font-semibold transition-colors card-shadow">
-                <i class="fas fa-paper-plane mr-2"></i>
+        <div class="mt-12 text-center">
+            <button id="submitBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-12 py-6 rounded-3xl text-xl font-bold transition-all duration-300 card-shadow transform hover:scale-105 child-friendly">
+                <span class="text-2xl mr-3">🚀</span>
                 Kirim Hasil Penilaian
             </button>
         </div>
@@ -223,37 +241,100 @@
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
+            generateSurahContent();
             initializeEventListeners();
             showWelcomeMessage();
         });
 
+        function generateSurahContent() {
+            // Update surah info
+            document.getElementById('surahTitle').textContent = SURAH_CONFIG.arabicName;
+            document.getElementById('surahInfo').textContent = `Surah ${SURAH_CONFIG.name} (${SURAH_CONFIG.number})`;
+            
+            // Update ayat count
+            document.querySelector('.bg-green-100 span').innerHTML = `<i class="fas fa-book-open mr-2 text-green-600"></i>${SURAH_CONFIG.totalAyat} Ayat`;
+            
+            // Generate verses
+            const container = document.getElementById('versesContainer');
+            container.innerHTML = '';
+            
+            SURAH_CONFIG.verses.forEach((verse, index) => {
+                const verseNumber = index + 1;
+                const verseCard = createVerseCard(verseNumber, verse);
+                container.appendChild(verseCard);
+            });
+        }
+
+        function createVerseCard(verseNumber, verse) {
+            const card = document.createElement('div');
+            card.className = 'bg-white/95 rounded-3xl card-shadow p-8 verse-card bounce-in';
+            card.dataset.verse = verseNumber;
+            
+            card.innerHTML = `
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800 child-friendly flex items-center">
+                        <span class="bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-full w-10 h-10 flex items-center justify-center mr-3 text-lg">${verseNumber}</span>
+                        Ayat ${verseNumber}
+                    </h3>
+                    <div class="flex space-x-3">
+                        <button class="play-btn bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-3 rounded-2xl transition-all duration-300 transform hover:scale-105 child-friendly font-bold">
+                            <i class="fas fa-play mr-2"></i>🎵 Dengar
+                        </button>
+                        <button class="record-btn bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-6 py-3 rounded-2xl transition-all duration-300 transform hover:scale-105 child-friendly font-bold">
+                            <i class="fas fa-microphone mr-2"></i>🎤 Rekam
+                        </button>
+                    </div>
+                </div>
+                <div class="arabic-text text-gray-800 mb-6 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border-2 border-green-200">
+                    ${verse.arabic}
+                </div>
+                <p class="text-gray-600 text-center mb-6 text-xl child-friendly font-semibold italic">${verse.latin}</p>
+                <div class="score-display hidden bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-2xl text-center border-2 border-blue-200">
+                    <span class="text-2xl font-bold text-blue-600 child-friendly">🏆 Nilai: <span class="score-value">0</span>/100</span>
+                </div>
+                <audio class="verse-audio hidden" src="${verse.audio}"></audio>
+            `;
+            
+            return card;
+        }
+
         function showWelcomeMessage() {
             Swal.fire({
-                title: 'Selamat Datang! 🕌',
-                text: 'Mari belajar membaca Surah Al-Quraisy dengan baik dan benar!',
+                title: '🌟 Selamat Datang! 🌟',
+                html: `
+                    <div class="text-center">
+                        <div class="text-6xl mb-4">🕌</div>
+                        <p class="text-lg child-friendly">Mari belajar membaca <strong>Surah ${SURAH_CONFIG.name}</strong> dengan baik dan benar!</p>
+                        <p class="text-green-600 mt-2 child-friendly">Semangat belajar mengaji! 💪</p>
+                    </div>
+                `,
                 icon: 'success',
-                confirmButtonText: 'Mulai Belajar',
-                confirmButtonColor: '#7c3aed'
+                confirmButtonText: '🚀 Mulai Belajar',
+                confirmButtonColor: '#059669',
+                background: '#f0fdf4',
+                customClass: {
+                    title: 'child-friendly',
+                    content: 'child-friendly'
+                }
             });
         }
 
         function initializeEventListeners() {
             // Play buttons
-            document.querySelectorAll('.play-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const verseCard = this.closest('.verse-card');
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.play-btn')) {
+                    const button = e.target.closest('.play-btn');
+                    const verseCard = button.closest('.verse-card');
                     const audio = verseCard.querySelector('.verse-audio');
-                    playAudio(audio, this);
-                });
-            });
-
-            // Record buttons
-            document.querySelectorAll('.record-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const verseCard = this.closest('.verse-card');
+                    playAudio(audio, button);
+                }
+                
+                if (e.target.closest('.record-btn')) {
+                    const button = e.target.closest('.record-btn');
+                    const verseCard = button.closest('.verse-card');
                     const verseNumber = verseCard.dataset.verse;
-                    toggleRecording(verseNumber, this);
-                });
+                    toggleRecording(verseNumber, button);
+                }
             });
 
             // Submit button
@@ -266,16 +347,16 @@
             
             if (audio.paused) {
                 audio.play();
-                button.innerHTML = '<i class="fas fa-pause mr-1"></i>Berhenti';
+                button.innerHTML = '<i class="fas fa-pause mr-2"></i>⏸️ Berhenti';
                 button.classList.add('pulse-animation');
                 
                 audio.onended = () => {
-                    button.innerHTML = '<i class="fas fa-play mr-1"></i>Dengar';
+                    button.innerHTML = '<i class="fas fa-play mr-2"></i>🎵 Dengar';
                     button.classList.remove('pulse-animation');
                 };
             } else {
                 audio.pause();
-                button.innerHTML = '<i class="fas fa-play mr-1"></i>Dengar';
+                button.innerHTML = '<i class="fas fa-play mr-2"></i>🎵 Dengar';
                 button.classList.remove('pulse-animation');
             }
         }
@@ -307,23 +388,32 @@
 
                 mediaRecorder.start();
                 
-                button.innerHTML = '<i class="fas fa-stop mr-1"></i>Berhenti';
+                button.innerHTML = '<i class="fas fa-stop mr-2"></i>⏹️ Berhenti';
                 button.classList.add('recording-pulse');
 
                 Swal.fire({
-                    title: 'Merekam...',
-                    text: 'Silakan baca ayat dengan jelas!',
+                    title: '🎤 Sedang Merekam...',
+                    html: '<div class="text-center"><div class="text-4xl mb-2">🎙️</div><p class="child-friendly text-lg">Silakan baca ayat dengan jelas dan tenang!</p></div>',
                     icon: 'info',
-                    timer: 1500,
-                    showConfirmButton: false
+                    timer: 2000,
+                    showConfirmButton: false,
+                    background: '#f0fdf4',
+                    customClass: {
+                        title: 'child-friendly',
+                        content: 'child-friendly'
+                    }
                 });
 
             } catch (error) {
                 Swal.fire({
-                    title: 'Error!',
-                    text: 'Tidak dapat mengakses mikrofon. Pastikan izin mikrofon telah diberikan.',
+                    title: '❌ Oops!',
+                    text: 'Tidak dapat mengakses mikrofon. Pastikan izin mikrofon telah diberikan ya!',
                     icon: 'error',
-                    confirmButtonColor: '#ef4444'
+                    confirmButtonColor: '#ef4444',
+                    customClass: {
+                        title: 'child-friendly',
+                        content: 'child-friendly'
+                    }
                 });
             }
         }
@@ -333,7 +423,7 @@
                 mediaRecorder.stop();
                 mediaRecorder.stream.getTracks().forEach(track => track.stop());
                 
-                button.innerHTML = '<i class="fas fa-microphone mr-1"></i>Rekam';
+                button.innerHTML = '<i class="fas fa-microphone mr-2"></i>🎤 Rekam';
                 button.classList.remove('recording-pulse');
             }
         }
@@ -343,9 +433,14 @@
             
             // Show processing message
             Swal.fire({
-                title: 'Memproses...',
-                text: 'Sedang menilai bacaan Anda dengan AI',
+                title: '🤖 AI Sedang Menilai...',
+                html: '<div class="text-center"><div class="text-4xl mb-2">🧠</div><p class="child-friendly text-lg">Tunggu sebentar ya, AI sedang mendengarkan bacaan kamu!</p></div>',
                 allowOutsideClick: false,
+                background: '#f0fdf4',
+                customClass: {
+                    title: 'child-friendly',
+                    content: 'child-friendly'
+                },
                 didOpen: () => {
                     Swal.showLoading();
                 }
@@ -381,24 +476,11 @@
                     const transcript = result.results[0].alternatives[0].transcript;
                     const confidence = result.results[0].alternatives[0].confidence;
                     
-                    // Calculate score based on confidence and text matching
                     const score = calculateScore(transcript, confidence, currentVerse);
                     scores[currentVerse] = score;
                     
                     displayScore(currentVerse, score);
-                    
-                    Swal.fire({
-                        title: getScoreMessage(score),
-                        html: `
-                            <div class="text-left">
-                                <p><strong>Nilai:</strong> ${score}/100</p>
-                                <p><strong>Confidence:</strong> ${Math.round(confidence * 100)}%</p>
-                                <p class="text-sm text-gray-600 mt-2"><strong>Terdeteksi:</strong> ${transcript}</p>
-                            </div>
-                        `,
-                        icon: getScoreIcon(score),
-                        confirmButtonColor: '#7c3aed'
-                    });
+                    showScoreResult(score, transcript, confidence);
                 } else {
                     throw new Error('Tidak dapat mengenali suara');
                 }
@@ -412,12 +494,47 @@
                 displayScore(currentVerse, score);
                 
                 Swal.fire({
-                    title: 'Penilaian Selesai',
-                    text: `Nilai Anda: ${score}/100 (Mode Offline)`,
+                    title: getScoreEmoji(score) + ' Penilaian Selesai!',
+                    html: `
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">${getScoreEmoji(score)}</div>
+                            <p class="text-2xl font-bold child-friendly mb-2">Nilai Kamu: ${score}/100</p>
+                            <p class="text-gray-600 child-friendly">(Mode Offline)</p>
+                        </div>
+                    `,
                     icon: getScoreIcon(score),
-                    confirmButtonColor: '#7c3aed'
+                    confirmButtonColor: '#059669',
+                    background: '#f0fdf4',
+                    customClass: {
+                        title: 'child-friendly',
+                        content: 'child-friendly'
+                    }
                 });
             }
+        }
+
+        function showScoreResult(score, transcript, confidence) {
+            Swal.fire({
+                title: getScoreMessage(score),
+                html: `
+                    <div class="text-center">
+                        <div class="text-6xl mb-4">${getScoreEmoji(score)}</div>
+                        <div class="bg-white p-4 rounded-2xl shadow-md">
+                            <p class="text-2xl font-bold child-friendly mb-2 text-${getScoreColor(score)}-600">Nilai: ${score}/100</p>
+                            <p class="text-lg child-friendly mb-2">Tingkat Kepercayaan: ${Math.round(confidence * 100)}%</p>
+                            <p class="text-sm text-gray-600 child-friendly">Yang Terdeteksi: ${transcript}</p>
+                        </div>
+                        <p class="mt-4 child-friendly text-lg">${getEncouragementMessage(score)}</p>
+                    </div>
+                `,
+                icon: getScoreIcon(score),
+                confirmButtonColor: '#059669',
+                background: '#f0fdf4',
+                customClass: {
+                    title: 'child-friendly',
+                    content: 'child-friendly'
+                }
+            });
         }
 
         function blobToBase64(blob) {
@@ -433,20 +550,16 @@
         }
 
         function calculateScore(transcript, confidence, verseNumber) {
-            // Expected texts for each verse (simplified)
-            const expectedTexts = {
-                '1': ['إيلاف', 'قريش', 'لإيلاف'],
-                '2': ['إيلافهم', 'رحلة', 'الشتاء', 'الصيف'],
-                '3': ['فليعبدوا', 'رب', 'البيت'],
-                '4': ['أطعمهم', 'جوع', 'آمنهم', 'خوف']
-            };
+            // Get expected words for current verse
+            const currentVerse = SURAH_CONFIG.verses[verseNumber - 1];
+            const arabicWords = currentVerse.arabic.split(' ').filter(word => word.length > 2);
             
-            const expected = expectedTexts[verseNumber] || [];
             let matchScore = 0;
+            const maxMatches = Math.min(4, arabicWords.length);
             
             // Check how many expected words are found
-            expected.forEach(word => {
-                if (transcript.includes(word)) {
+            arabicWords.slice(0, maxMatches).forEach(word => {
+                if (transcript.includes(word.replace(/[ًٌٍَُِْ]/g, ''))) {
                     matchScore += 25; // Each word worth 25 points
                 }
             });
@@ -467,27 +580,37 @@
             scoreDisplay.classList.remove('hidden');
             
             // Add color based on score
-            scoreDisplay.className = scoreDisplay.className.replace(/bg-\w+-50/, '');
-            if (score >= 90) {
-                scoreDisplay.classList.add('bg-green-50');
-                scoreValue.className = 'text-lg font-semibold text-green-600';
-            } else if (score >= 80) {
-                scoreDisplay.classList.add('bg-blue-50');
-                scoreValue.className = 'text-lg font-semibold text-blue-600';
-            } else if (score >= 70) {
-                scoreDisplay.classList.add('bg-yellow-50');
-                scoreValue.className = 'text-lg font-semibold text-yellow-600';
-            } else {
-                scoreDisplay.classList.add('bg-red-50');
-                scoreValue.className = 'text-lg font-semibold text-red-600';
-            }
+            const colorClass = getScoreColor(score);
+            scoreDisplay.className = `score-display bg-gradient-to-r from-${colorClass}-50 to-${colorClass}-100 p-6 rounded-2xl text-center border-2 border-${colorClass}-200`;
+            scoreValue.className = `text-2xl font-bold text-${colorClass}-600 child-friendly`;
+        }
+
+        function getScoreColor(score) {
+            if (score >= 90) return 'green';
+            if (score >= 80) return 'blue';
+            if (score >= 70) return 'yellow';
+            return 'red';
+        }
+
+        function getScoreEmoji(score) {
+            if (score >= 90) return '🌟';
+            if (score >= 80) return '👏';
+            if (score >= 70) return '👍';
+            return '💪';
         }
 
         function getScoreMessage(score) {
-            if (score >= 90) return 'Excellent! 🌟';
-            if (score >= 80) return 'Very Good! 👏';
-            if (score >= 70) return 'Good! 👍';
-            return 'Keep Practicing! 💪';
+            if (score >= 90) return '🌟 Luar Biasa! 🌟';
+            if (score >= 80) return '👏 Sangat Bagus! 👏';
+            if (score >= 70) return '👍 Bagus! 👍';
+            return '💪 Terus Berlatih! 💪';
+        }
+
+        function getEncouragementMessage(score) {
+            if (score >= 90) return 'Masya Allah! Bacaan kamu sangat bagus! 🎉';
+            if (score >= 80) return 'Alhamdulillah! Kamu sudah pintar mengaji! 😊';
+            if (score >= 70) return 'Bagus! Terus berlatih ya! 📚';
+            return 'Jangan menyerah! Ulangi lagi sampai lancar! 🔄';
         }
 
         function getScoreIcon(score) {
@@ -502,50 +625,66 @@
 
             if (!studentName || !studentClass) {
                 Swal.fire({
-                    title: 'Data Tidak Lengkap!',
-                    text: 'Mohon isi nama dan kelas terlebih dahulu.',
+                    title: '📝 Data Belum Lengkap!',
+                    text: 'Mohon isi nama dan kelas terlebih dahulu ya!',
                     icon: 'warning',
-                    confirmButtonColor: '#f59e0b'
+                    confirmButtonColor: '#f59e0b',
+                    background: '#fffbeb',
+                    customClass: {
+                        title: 'child-friendly',
+                        content: 'child-friendly'
+                    }
                 });
                 return;
             }
 
             if (Object.keys(scores).length === 0) {
                 Swal.fire({
-                    title: 'Belum Ada Rekaman!',
-                    text: 'Silakan rekam bacaan Anda terlebih dahulu.',
+                    title: '🎤 Belum Ada Rekaman!',
+                    text: 'Silakan rekam bacaan kamu terlebih dahulu ya!',
                     icon: 'info',
-                    confirmButtonColor: '#3b82f6'
+                    confirmButtonColor: '#3b82f6',
+                    background: '#eff6ff',
+                    customClass: {
+                        title: 'child-friendly',
+                        content: 'child-friendly'
+                    }
                 });
                 return;
             }
 
             // Show loading
             Swal.fire({
-                title: 'Mengirim Data...',
-                text: 'Sedang mengirim hasil ke Google Sheet',
+                title: '🚀 Mengirim Data...',
+                html: '<div class="text-center"><div class="text-4xl mb-2">📊</div><p class="child-friendly text-lg">Sedang mengirim hasil ke Google Sheet</p></div>',
                 allowOutsideClick: false,
+                background: '#f0fdf4',
+                customClass: {
+                    title: 'child-friendly',
+                    content: 'child-friendly'
+                },
                 didOpen: () => {
                     Swal.showLoading();
                 }
             });
 
-            // Send to Google Sheets via Apps Script
             try {
                 const averageScore = Object.values(scores).reduce((a, b) => a + b, 0) / Object.values(scores).length;
                 const timestamp = new Date().toLocaleString('id-ID');
                 
                 // Replace with your Google Apps Script Web App URL
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycby3i0-BaApp54vugmj8asmM2MrpeS5vINRhN8aKRWtNTyOYalyU9bVl88drtfbMYRfI/exec';
+                const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
                 
                 const formData = new FormData();
                 formData.append('timestamp', timestamp);
+                formData.append('surah', SURAH_CONFIG.name);
                 formData.append('nama', studentName);
                 formData.append('kelas', studentClass);
-                formData.append('ayat1', scores['1'] || 0);
-                formData.append('ayat2', scores['2'] || 0);
-                formData.append('ayat3', scores['3'] || 0);
-                formData.append('ayat4', scores['4'] || 0);
+                
+                // Add all verse scores
+                for (let i = 1; i <= SURAH_CONFIG.totalAyat; i++) {
+                    formData.append(`ayat${i}`, scores[i] || 0);
+                }
                 formData.append('ratarata', Math.round(averageScore));
                 
                 const response = await fetch(scriptUrl, {
@@ -555,17 +694,26 @@
                 
                 if (response.ok) {
                     Swal.fire({
-                        title: 'Berhasil Dikirim! ✅',
+                        title: '✅ Berhasil Dikirim!',
                         html: `
-                            <div class="text-left">
-                                <p><strong>Nama:</strong> ${studentName}</p>
-                                <p><strong>Kelas:</strong> ${studentClass}</p>
-                                <p><strong>Rata-rata Nilai:</strong> ${Math.round(averageScore)}/100</p>
-                                <p class="text-sm text-gray-600 mt-2">Data telah tersimpan di Google Sheet</p>
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">🎉</div>
+                                <div class="bg-white p-4 rounded-2xl shadow-md">
+                                    <p class="child-friendly font-bold text-lg mb-2">📝 <strong>Nama:</strong> ${studentName}</p>
+                                    <p class="child-friendly font-bold text-lg mb-2">🏫 <strong>Kelas:</strong> ${studentClass}</p>
+                                    <p class="child-friendly font-bold text-lg mb-2">📖 <strong>Surah:</strong> ${SURAH_CONFIG.name}</p>
+                                    <p class="child-friendly font-bold text-xl text-green-600">🏆 <strong>Rata-rata:</strong> ${Math.round(averageScore)}/100</p>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-4 child-friendly">✅ Data sudah tersimpan di Google Sheet</p>
                             </div>
                         `,
                         icon: 'success',
-                        confirmButtonColor: '#10b981'
+                        confirmButtonColor: '#10b981',
+                        background: '#f0fdf4',
+                        customClass: {
+                            title: 'child-friendly',
+                            content: 'child-friendly'
+                        }
                     });
                 } else {
                     throw new Error('Gagal mengirim data');
@@ -574,24 +722,31 @@
             } catch (error) {
                 console.error('Error sending to Google Sheets:', error);
                 
-                // Fallback: show data locally
                 const averageScore = Object.values(scores).reduce((a, b) => a + b, 0) / Object.values(scores).length;
                 
                 Swal.fire({
-                    title: 'Data Tersimpan Lokal',
+                    title: '💾 Data Tersimpan Lokal',
                     html: `
-                        <div class="text-left">
-                            <p><strong>Nama:</strong> ${studentName}</p>
-                            <p><strong>Kelas:</strong> ${studentClass}</p>
-                            <p><strong>Rata-rata Nilai:</strong> ${Math.round(averageScore)}/100</p>
-                            <p class="text-sm text-red-600 mt-2">⚠️ Tidak dapat terhubung ke Google Sheet</p>
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">⚠️</div>
+                            <div class="bg-white p-4 rounded-2xl shadow-md">
+                                <p class="child-friendly font-bold text-lg mb-2">📝 <strong>Nama:</strong> ${studentName}</p>
+                                <p class="child-friendly font-bold text-lg mb-2">🏫 <strong>Kelas:</strong> ${studentClass}</p>
+                                <p class="child-friendly font-bold text-xl text-green-600">🏆 <strong>Rata-rata:</strong> ${Math.round(averageScore)}/100</p>
+                            </div>
+                            <p class="text-sm text-red-600 mt-4 child-friendly">⚠️ Tidak dapat terhubung ke Google Sheet</p>
                         </div>
                     `,
                     icon: 'warning',
-                    confirmButtonColor: '#f59e0b'
+                    confirmButtonColor: '#f59e0b',
+                    background: '#fffbeb',
+                    customClass: {
+                        title: 'child-friendly',
+                        content: 'child-friendly'
+                    }
                 });
             }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979de9d247c6fd07',t:'MTc1Njk5MzM4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979e15ba23183fb0',t:'MTc1Njk5NTE3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
