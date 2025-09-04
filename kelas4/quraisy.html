@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belajar Mengaji</title>
+    <title>Belajar Mengaji - Template Multi Surah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -252,8 +252,12 @@
             document.getElementById('surahInfo').textContent = `Surah ${SURAH_CONFIG.name} (${SURAH_CONFIG.number})`;
             
             // Update ayat count
-            document.querySelector('.bg-green-100 span').innerHTML = `<i class="fas fa-book-open mr-2 text-green-600"></i>${SURAH_CONFIG.totalAyat} Ayat`;
-            
+			const ayatBadge = document.querySelector('.bg-green-100');
+			if (ayatBadge) {
+			  ayatBadge.innerHTML =
+				`<i class="fas fa-book-open mr-2 text-green-600"></i>${SURAH_CONFIG.totalAyat} Ayat`;
+			}
+
             // Generate verses
             const container = document.getElementById('versesContainer');
             container.innerHTML = '';
