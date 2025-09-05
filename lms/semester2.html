@@ -6,6 +6,8 @@
     <title>EmesClass - Learning Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://archive.org/download/logoms-1/logowarna.png">
+
 </head>
 <body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen">
     <!-- Navigation -->
@@ -13,7 +15,7 @@
         <div class="px-4">
             <div class="flex justify-between items-center py-3">
                 <div class="flex items-center space-x-3">
-                    <img src="hhttps://archive.org/download/logoms-1/logoputih.png" 
+                    <img src="https://archive.org/download/logoms-1/logoputih.png" 
      alt="Logo" 
      class="w-10 h-10" 
      onerror="this.src=''; this.style.display='none';">
@@ -34,10 +36,14 @@
     <div id="loginScreen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-green-600 px-4">
         <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm">
             <div class="text-center mb-6">
-                <img src="https://archive.org/download/logoms-1/logowarna.png" alt="Logo" class="w-16 h-16" onerror="this.src=''; this.innerHTML='<i class=\'fas fa-graduation-cap text-4xl text-blue-600\'></i>';">
+                <img src="https://archive.org/download/logoms-1/logowarna.png" 
+                     alt="Logo" 
+                     class="mx-auto w-16 h-16"
+                     onerror="this.src=''; this.insertAdjacentHTML('afterend', '<i class=\'fas fa-graduation-cap text-4xl text-blue-600\'></i>');">
                 <h2 class="text-xl font-bold text-gray-800">EmesClass Login</h2>
                 <p class="text-gray-600 mt-1 text-sm">Masuk ke sistem pembelajaran</p>
             </div>
+
             
             <div class="space-y-3">
                 <div>
