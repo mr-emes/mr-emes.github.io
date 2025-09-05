@@ -481,7 +481,28 @@
         // ===== KONFIGURASI GOOGLE APPS SCRIPT =====
         // GANTI URL INI DENGAN WEB APP URL ANDA DARI GOOGLE APPS SCRIPT
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxv_9hC7_6stw7luclcAx7cN-B2CUROT4hVFqz2pDEmb6_Ti8s3H9qMlOLVY9iJRf6Ktg/exec';
-        
+ 
+// ====== API FETCH FUNCTIONS ======
+async function getStudents() {
+    const res = await fetch(APPS_SCRIPT_URL + '?endpoint=students');
+    return res.json();
+}
+
+async function getTeachers() {
+    const res = await fetch(APPS_SCRIPT_URL + '?endpoint=teachers');
+    return res.json();
+}
+
+async function getAssignments() {
+    const res = await fetch(APPS_SCRIPT_URL + '?endpoint=assignments');
+    return res.json();
+}
+
+async function getAnnouncements() {
+    const res = await fetch(APPS_SCRIPT_URL + '?endpoint=announcements');
+    return res.json();
+}
+ 
         // ===== GLOBAL VARIABLES =====
         let currentUser = null;
         let currentStudent = null;
@@ -490,32 +511,6 @@
         let currentClass = null;
         let currentAssignmentId = null;
 
-        // ===== SAMPLE DATA =====
-        const sampleData = {
-            teachers: [
-                { username: 'guru1', password: 'password123', name: 'Ustadz Ahmad Fauzi', subjects: ['Al-Quran Hadits', 'Fikih'] },
-                { username: 'guru2', password: 'password123', name: 'Ustadzah Siti Aminah', subjects: ['Akidah Akhlak'] }
-            ],
-            students: [
-                { nis: '2024001', nama: 'Ahmad Rizki', kelas: '7A', email: 'ahmad@email.com', tanggalLahir: '2010-05-15', alamat: 'Jl. Merdeka No. 123', namaWali: 'Bapak Ahmad', teleponWali: '081234567890', photoUrl: '' },
-                { nis: '2024002', nama: 'Fatimah Zahra', kelas: '7A', email: 'fatimah@email.com', tanggalLahir: '2010-08-20', alamat: 'Jl. Sudirman No. 456', namaWali: 'Ibu Siti', teleponWali: '081234567891', photoUrl: '' },
-                { nis: '2024003', nama: 'Muhammad Yusuf', kelas: '7B', email: 'yusuf@email.com', tanggalLahir: '2010-03-10', alamat: 'Jl. Diponegoro No. 789', namaWali: 'Bapak Yusuf', teleponWali: '081234567892', photoUrl: '' }
-            ],
-            classes: [
-                { id: 'class_001', name: 'Al-Quran Hadits 7A', subject: 'Al-Quran Hadits', grade: '7A', teacher: 'Ustadz Ahmad Fauzi', code: 'QH7A2024', students: ['2024001', '2024002'] },
-                { id: 'class_002', name: 'Fikih 7A', subject: 'Fikih', grade: '7A', teacher: 'Ustadz Ahmad Fauzi', code: 'FQ7A2024', students: ['2024001', '2024002'] },
-                { id: 'class_003', name: 'Al-Quran Hadits 7B', subject: 'Al-Quran Hadits', grade: '7B', teacher: 'Ustadz Ahmad Fauzi', code: 'QH7B2024', students: ['2024003'] },
-                { id: 'class_004', name: 'Akidah Akhlak 7A', subject: 'Akidah Akhlak', grade: '7A', teacher: 'Ustadzah Siti Aminah', code: 'AA7A2024', students: ['2024001', '2024002'] }
-            ],
-            assignments: [
-                { id: 'assign_001', title: 'Hafalan Surah Al-Fatihah', description: 'Hafalkan Surah Al-Fatihah dengan tajwid yang benar', dueDate: '2024-12-31T23:59', points: 100, subject: 'Al-Quran Hadits', classes: ['class_001', 'class_003'], teacher: 'Ustadz Ahmad Fauzi', createdDate: '2024-12-15' },
-                { id: 'assign_002', title: 'Tata Cara Wudhu', description: 'Buat video praktik wudhu yang benar sesuai sunnah', dueDate: '2024-12-30T23:59', points: 100, subject: 'Fikih', classes: ['class_002'], teacher: 'Ustadz Ahmad Fauzi', createdDate: '2024-12-15' }
-            ],
-            submissions: [],
-            materials: [
-                { id: 'mat_001', title: 'Panduan Tajwid Dasar', description: 'Materi pembelajaran tajwid untuk pemula', fileUrl: '#', subject: 'Al-Quran Hadits', fileName: 'tajwid_dasar.pdf', uploadDate: '2024-12-15', teacher: 'Ustadz Ahmad Fauzi' }
-            ]
-        };
 
         // ===== GOOGLE DRIVE INTEGRATION FUNCTIONS =====
         
@@ -673,43 +668,45 @@
 
         // ===== AUTHENTICATION =====
         
-        function login() {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-            
-            if (!username) {
-                showNotification('Masukkan username atau NIS!', 'warning');
-                return;
-            }
-            
-            // Check if it's a teacher login
-            if (password) {
-                const teacher = sampleData.teachers.find(t => t.username === username && t.password === password);
-                if (teacher) {
-                    currentUser = teacher;
-                    currentTeacher = teacher;
-                    isLoggedIn = true;
-                    showTeacherDashboard();
-                    showNotification(`Selamat datang, ${teacher.name}!`, 'success');
-                    return;
-                }
-                showNotification('Username atau password guru salah!', 'error');
-                return;
-            }
-            
-            // Check if it's a student login (NIS only)
-            const student = sampleData.students.find(s => s.nis === username);
-            if (student) {
-                currentUser = student;
-                currentStudent = student;
+ async function login() {
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+
+    if (!username) {
+        showNotification('Masukkan username atau NIS!', 'warning');
+        return;
+    }
+
+    try {
+        const response = await fetch(APPS_SCRIPT_URL + '?action=login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            if (result.data.userType === 'teacher') {
+                currentUser = result.data.user;
+                currentTeacher = result.data.user;
+                isLoggedIn = true;
+                showTeacherDashboard();
+            } else {
+                currentUser = result.data.user;
+                currentStudent = result.data.user;
                 isLoggedIn = true;
                 showStudentDashboard();
-                showNotification(`Selamat datang, ${student.nama}!`, 'success');
-                return;
             }
-            
-            showNotification('NIS tidak ditemukan!', 'error');
+            showNotification(`Selamat datang, ${result.data.user.nama}!`, 'success');
+        } else {
+            showNotification(result.message, 'error');
         }
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal menghubungi server!', 'error');
+    }
+}
 
         function logout() {
             currentUser = null;
@@ -740,7 +737,13 @@
             
             document.getElementById('userInfo').textContent = currentTeacher.name;
             
-            loadTeacherSubjects();
+            getAssignments().then(data => {
+    if (data.success) {
+        console.log("Tugas dari backend:", data.data);
+        // TODO: render ke UI
+    }
+});
+
         }
 
         function showStudentDashboard() {
