@@ -484,9 +484,35 @@
  
 // ====== API FETCH FUNCTIONS ======
 async function getStudents() {
-    const res = await fetch(APPS_SCRIPT_URL + '?endpoint=students');
-    return res.json();
+    try {
+        const res = await fetch(APPS_SCRIPT_URL + '?endpoint=students');
+        const data = await res.json();
+        if (data.success) {
+            const list = document.getElementById('studentsList');
+            if (list) {
+                list.innerHTML = '';
+                data.data.forEach(s => {
+                    const row = document.createElement('div');
+                    row.className = 'flex items-center space-x-3 p-2 bg-gray-50 rounded';
+                    row.innerHTML = `
+                        <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                            ${s.Nama ? s.Nama.charAt(0) : '?'}
+                        </div>
+                        <div>
+                            <p class="font-medium text-sm">${s.Nama || s.nama}</p>
+                            <p class="text-xs text-gray-500">NIS: ${s.NIS || s.nis} | Kelas: ${s.Kelas || s.kelas}</p>
+                        </div>
+                    `;
+                    list.appendChild(row);
+                });
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal mengambil data siswa', 'error');
+    }
 }
+
 
 async function getTeachers() {
     const res = await fetch(APPS_SCRIPT_URL + '?endpoint=teachers');
@@ -494,15 +520,147 @@ async function getTeachers() {
 }
 
 async function getAssignments() {
-    const res = await fetch(APPS_SCRIPT_URL + '?endpoint=assignments');
-    return res.json();
+    try {
+        const res = await fetch(APPS_SCRIPT_URL + '?endpoint=assignments');
+        const data = await res.json();
+        if (data.success) {
+            const list = document.getElementById('assignmentsList') || document.getElementById('subjectGrid');
+            if (list) {
+                list.innerHTML = '';
+                data.data.forEach(a => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg shadow-md p-4';
+                    card.innerHTML = `
+                        <h3 class="font-semibold text-gray-800">${a.Judul || a.title}</h3>
+                        <p class="text-sm text-gray-600">${a.Deskripsi || a.description}</p>
+                        <p class="text-xs text-gray-500">Deadline: ${a.Tenggat_Waktu || a.dueDate}</p>
+                    `;
+                    list.appendChild(card);
+                });
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal mengambil data tugas', 'error');
+    }
 }
 
+
 async function getAnnouncements() {
-    const res = await fetch(APPS_SCRIPT_URL + '?endpoint=announcements');
-    return res.json();
+    try {
+        const res = await fetch(APPS_SCRIPT_URL + '?endpoint=announcements');
+        const data = await res.json();
+        if (data.success) {
+            const list = document.getElementById('postsFeed');
+            if (list) {
+                list.innerHTML = '';
+                data.data.forEach(a => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg shadow-md p-4';
+                    card.innerHTML = `
+                        <h3 class="font-semibold text-gray-800 mb-1">${a.Judul || a.title}</h3>
+                        <p class="text-sm text-gray-600 mb-2">${a.Konten || a.content}</p>
+                        <p class="text-xs text-gray-500">Dibuat: ${a.Tanggal_Dibuat || a.date}</p>
+                    `;
+                    list.appendChild(card);
+                });
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal mengambil pengumuman', 'error');
+    }
 }
- 
+ async function getGrades() {
+    try {
+        const res = await fetch(APPS_SCRIPT_URL + '?endpoint=grades');
+        const data = await res.json();
+        if (data.success) {
+            const tbody = document.getElementById('gradesTableBody');
+            if (tbody) {
+                tbody.innerHTML = '';
+                data.data.forEach(g => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="px-2 py-2 text-sm">${g.Nama_Siswa || g.nama}</td>
+                        <td class="px-2 py-2 text-center text-sm">${g.Nilai || '-'}</td>
+                        <td class="px-2 py-2 text-center text-sm">${g.Nilai_Huruf || '-'}</td>
+                        <td class="px-2 py-2 text-center text-sm">${g.Rata_rata || g.Nilai || '-'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal mengambil nilai siswa', 'error');
+    }
+}
+async function getClasses() {
+    try {
+        const res = await fetch(APPS_SCRIPT_URL + '?endpoint=classes');
+        const data = await res.json();
+        if (data.success) {
+            const grid = document.getElementById('subjectGrid');
+            if (grid) {
+                grid.innerHTML = '';
+                data.data.forEach(c => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow';
+                    card.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+                                ${c.Nama_Kelas ? c.Nama_Kelas.charAt(0) : '?'}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-semibold text-gray-800 truncate">${c.Nama_Kelas || c.name}</h3>
+                                <p class="text-sm text-gray-600">Wali: ${c.Wali_Kelas || '-'}</p>
+                                <p class="text-xs text-gray-500">Tahun: ${c.Tahun_Ajaran || '-'}</p>
+                            </div>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal mengambil data kelas', 'error');
+    }
+}
+async function getMaterials() {
+    try {
+        const res = await fetch(APPS_SCRIPT_URL + '?endpoint=materials');
+        const data = await res.json();
+        if (data.success) {
+            const list = document.getElementById('materialsList');
+            if (list) {
+                list.innerHTML = '';
+                data.data.forEach(m => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg shadow-md p-4 flex items-center justify-between';
+                    card.innerHTML = `
+                        <div>
+                            <h3 class="font-semibold text-gray-800">${m.Judul || m.title}</h3>
+                            <p class="text-sm text-gray-600">${m.Deskripsi || m.description}</p>
+                            <p class="text-xs text-gray-500">Upload: ${m.Tanggal_Diupload || m.uploadDate}</p>
+                        </div>
+                        <a href="${m.File_Url || m.fileUrl}" target="_blank" 
+                           class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition">
+                           Unduh
+                        </a>
+                    `;
+                    list.appendChild(card);
+                });
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal mengambil materi', 'error');
+    }
+}
+
         // ===== GLOBAL VARIABLES =====
         let currentUser = null;
         let currentStudent = null;
@@ -728,37 +886,42 @@ async function getAnnouncements() {
 
         // ===== DASHBOARD FUNCTIONS =====
         
-        function showTeacherDashboard() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-            document.getElementById('teacherDashboard').classList.remove('hidden');
-            document.getElementById('studentDashboard').classList.add('hidden');
-            document.getElementById('classDetail').classList.add('hidden');
-            
-            document.getElementById('userInfo').textContent = currentTeacher.name;
-            
-            getAssignments().then(data => {
-    if (data.success) {
-        console.log("Tugas dari backend:", data.data);
-        // TODO: render ke UI
-    }
-});
+function showTeacherDashboard() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('mainContent').classList.remove('hidden');
+    document.getElementById('teacherDashboard').classList.remove('hidden');
+    document.getElementById('studentDashboard').classList.add('hidden');
+    document.getElementById('classDetail').classList.add('hidden');
 
-        }
+    document.getElementById('userInfo').textContent = currentTeacher.nama;
 
-        function showStudentDashboard() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-            document.getElementById('teacherDashboard').classList.add('hidden');
-            document.getElementById('studentDashboard').classList.remove('hidden');
-            document.getElementById('classDetail').classList.add('hidden');
-            
-            document.getElementById('userInfo').textContent = currentStudent.nama;
-            
-            loadStudentInfo();
-            loadStudentSubjects();
-            updateStudentStats();
-        }
+    // Load data dari backend
+    getClasses();        // daftar kelas
+    getAssignments();    // daftar tugas
+    getAnnouncements();  // pengumuman
+    getGrades();         // nilai siswa
+    getMaterials();      // materi pembelajaran
+}
+
+
+function showStudentDashboard() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('mainContent').classList.remove('hidden');
+    document.getElementById('teacherDashboard').classList.add('hidden');
+    document.getElementById('studentDashboard').classList.remove('hidden');
+    document.getElementById('classDetail').classList.add('hidden');
+
+    document.getElementById('userInfo').textContent = currentStudent.nama;
+
+    // Load data dari backend
+    getStudents();       // daftar siswa
+    getAssignments();    // daftar tugas
+    getAnnouncements();  // pengumuman
+    getGrades();         // nilai siswa
+    getMaterials();      // materi pembelajaran
+}
+
+
 
         function loadTeacherSubjects() {
             const subjectGrid = document.getElementById('subjectGrid');
