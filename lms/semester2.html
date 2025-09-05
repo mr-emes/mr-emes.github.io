@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmesClass - Learning Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="px-4">
+            <div class="flex justify-between items-center py-3">
+                <div class="flex items-center space-x-3">
+                    <img src="https://archive.org/download/logoms-1/MS%20LOGO.png" 
+     alt="Logo" 
+     class="w-10 h-10" 
+     onerror="this.src=''; this.style.display='none';">
+
+                    <h1 class="text-lg font-bold">EmesClass</h1>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span id="userInfo" class="px-2 py-1 bg-blue-700 rounded-full text-xs max-w-32 truncate"></span>
+                    <button id="logoutBtn" class="p-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors">
+                        <i class="fas fa-sign-out-alt text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-green-600 px-4">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm">
+            <div class="text-center mb-6">
+                <img src="https://archive.org/download/logoms-1/logoms%20%281%29.png" alt="Logo" class="w-16 h-16 mx-auto mb-4 rounded-full" onerror="this.src=''; this.innerHTML='<i class=\'fas fa-graduation-cap text-4xl text-blue-600\'></i>';">
+                <h2 class="text-xl font-bold text-gray-800">EmesClass Login</h2>
+                <p class="text-gray-600 mt-1 text-sm">Masuk ke sistem pembelajaran</p>
+            </div>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Username / NIS</label>
+                    <input type="text" id="loginUsername" placeholder="Username guru atau NIS siswa" 
+                           class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Password (kosongkan untuk siswa)" 
+                           class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base">
+                    <p class="text-xs text-gray-500 mt-1">Siswa: masukkan NIS, kosongkan password</p>
+                </div>
+                <button id="loginBtn" class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors mt-4">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="px-4 py-4 hidden">
+        <!-- Teacher Dashboard -->
+        <div id="teacherDashboard" class="space-y-4">
+            <div class="flex flex-col space-y-3">
+                <h2 class="text-2xl font-bold text-gray-800">Dashboard Guru</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button id="createAssignmentBtn" class="px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Buat Tugas Baru
+                    </button>
+                    <button id="createClassBtn" class="px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors">
+                        <i class="fas fa-chalkboard mr-2"></i>Buat Kelas Baru
+                    </button>
+                </div>
+            </div>
+
+            <!-- Subject Cards -->
+            <div id="subjectGrid" class="grid grid-cols-1 gap-4">
+                <!-- Subjects will be populated here -->
+            </div>
+        </div>
+
+        <!-- Student Dashboard -->
+        <div id="studentDashboard" class="space-y-4 hidden">
+            <h2 class="text-2xl font-bold text-gray-800">Dashboard Siswa</h2>
+            
+            <!-- Student Info -->
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <div id="studentAvatar" class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold overflow-hidden">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <button id="changeAvatarBtn" class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center transition-colors">
+                            <i class="fas fa-camera text-xs"></i>
+                        </button>
+                        <input type="file" id="avatarInput" accept="image/*" class="hidden">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 id="studentName" class="text-lg font-semibold truncate"></h3>
+                        <p id="studentClass" class="text-gray-600 text-sm"></p>
+                        <p id="studentNIS" class="text-xs text-gray-500"></p>
+                    </div>
+                    <button id="editProfileBtn" class="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                        <i class="fas fa-edit text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-600" id="totalAssignments">0</div>
+                    <div class="text-sm text-gray-600">Total Tugas</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <div class="text-2xl font-bold text-green-600" id="completedAssignments">0</div>
+                    <div class="text-sm text-gray-600">Selesai</div>
+                </div>
+            </div>
+
+            <!-- Subject Cards -->
+            <div id="studentSubjects" class="grid grid-cols-1 gap-4">
+                <!-- Student subjects will be populated here -->
+            </div>
+        </div>
+
+        <!-- Class Detail View -->
+        <div id="classDetail" class="hidden space-y-4">
+            <div class="flex items-center space-x-3">
+                <button id="backToMain" class="p-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2 id="classTitle" class="text-xl font-bold text-gray-800 truncate flex-1"></h2>
+                <button id="classSettingsBtn" class="p-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+
+            <!-- Class Tabs -->
+            <div id="desktopTabs" class="border-b border-gray-200">
+                <nav class="flex space-x-1 overflow-x-auto">
+                    <button class="tab-btn active py-2 px-3 border-b-2 border-blue-500 text-blue-600 font-medium text-sm whitespace-nowrap" data-tab="stream">
+                        Stream
+                    </button>
+                    <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 text-sm whitespace-nowrap" data-tab="assignments">
+                        Tugas
+                    </button>
+                    <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 text-sm whitespace-nowrap" data-tab="people">
+                        Anggota
+                    </button>
+                    <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 text-sm whitespace-nowrap" data-tab="grades">
+                        Nilai
+                    </button>
+                    <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 text-sm whitespace-nowrap" data-tab="materials">
+                        Materi
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tabContent" class="pb-20">
+                <!-- Stream Tab -->
+                <div id="streamTab" class="tab-content space-y-4">
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                G
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-semibold text-sm">Guru Kelas</h3>
+                                <p class="text-xs text-gray-600">Kode: <span id="displayClassCode" class="font-mono bg-gray-100 px-1 py-0.5 rounded text-xs"></span></p>
+                            </div>
+                        </div>
+                        <div id="teacherActions" class="space-y-2">
+                            <button id="createAnnouncementBtn" class="w-full px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition-colors text-sm">
+                                <i class="fas fa-bullhorn mr-2"></i>Buat Pengumuman
+                            </button>
+                            <button id="createAssignmentBtn2" class="w-full px-3 py-2 bg-green-50 hover:bg-green-100 text-green-700 rounded-lg border border-green-200 transition-colors text-sm">
+                                <i class="fas fa-tasks mr-2"></i>Buat Tugas
+                            </button>
+                            <button id="uploadMaterialBtn" class="w-full px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg border border-purple-200 transition-colors text-sm">
+                                <i class="fas fa-file-upload mr-2"></i>Upload Materi
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Posts Feed -->
+                    <div id="postsFeed" class="space-y-3">
+                        <!-- Posts will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Assignments Tab -->
+                <div id="assignmentsTab" class="tab-content hidden space-y-3">
+                    <div id="assignmentsList">
+                        <!-- Assignments will be populated here -->
+                    </div>
+                </div>
+
+                <!-- People Tab -->
+                <div id="peopleTab" class="tab-content hidden">
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <h3 class="text-lg font-semibold mb-3">Anggota Kelas</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    G
+                                </div>
+                                <div>
+                                    <p class="font-medium text-sm">Guru Kelas</p>
+                                    <p class="text-xs text-gray-600">Pengajar</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="studentsList" class="space-y-2">
+                                <!-- Students will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grades Tab -->
+                <div id="gradesTab" class="tab-content hidden">
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <h3 class="text-lg font-semibold mb-3">Nilai Siswa</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full table-auto text-sm">
+                                <thead>
+                                    <tr class="bg-gray-50">
+                                        <th class="px-2 py-2 text-left text-xs">Nama Siswa</th>
+                                        <th class="px-2 py-2 text-center text-xs">Tugas 1</th>
+                                        <th class="px-2 py-2 text-center text-xs">Tugas 2</th>
+                                        <th class="px-2 py-2 text-center text-xs">Rata-rata</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gradesTableBody">
+                                    <!-- Grades will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Materials Tab -->
+                <div id="materialsTab" class="tab-content hidden space-y-3">
+                    <div id="materialsList">
+                        <!-- Materials will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation for Students -->
+    <div id="mobileBottomNav" class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 hidden">
+        <nav class="flex justify-around py-2">
+            <button class="mobile-tab-btn flex flex-col items-center py-2 px-3 text-blue-600" data-tab="stream">
+                <i class="fas fa-stream text-lg mb-1"></i>
+                <span class="text-xs">Stream</span>
+            </button>
+            <button class="mobile-tab-btn flex flex-col items-center py-2 px-3 text-gray-500" data-tab="assignments">
+                <i class="fas fa-tasks text-lg mb-1"></i>
+                <span class="text-xs">Tugas</span>
+            </button>
+            <button class="mobile-tab-btn flex flex-col items-center py-2 px-3 text-gray-500" data-tab="people">
+                <i class="fas fa-users text-lg mb-1"></i>
+                <span class="text-xs">Anggota</span>
+            </button>
+            <button class="mobile-tab-btn flex flex-col items-center py-2 px-3 text-gray-500" data-tab="grades">
+                <i class="fas fa-chart-bar text-lg mb-1"></i>
+                <span class="text-xs">Nilai</span>
+            </button>
+            <button class="mobile-tab-btn flex flex-col items-center py-2 px-3 text-gray-500" data-tab="materials">
+                <i class="fas fa-book text-lg mb-1"></i>
+                <span class="text-xs">Materi</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Modals -->
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg p-4 w-full max-w-sm max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-semibold mb-3">Edit Profil</h3>
+            <div class="space-y-3">
+                <!-- Profile Photo Section -->
+                <div class="text-center">
+                    <div id="editProfilePhoto" class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-2 overflow-hidden">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <input type="file" id="profilePhotoInput" accept="image/*" class="hidden">
+                    <button id="changePhotoBtn" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs transition-colors">
+                        <i class="fas fa-camera mr-1"></i>Ubah Foto
+                    </button>
+                    <div id="photoUploadProgress" class="hidden mt-2">
+                        <div class="bg-gray-200 rounded-full h-2">
+                            <div id="photoProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <p id="photoUploadStatus" class="text-xs text-gray-600 mt-1">Mengupload foto...</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">NIS</label>
+                    <input type="text" id="editNIS" readonly class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                    <input type="text" id="editNama" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                    <input type="text" id="editKelas" readonly class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="editEmail" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
+                    <input type="date" id="editTanggalLahir" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
+                    <textarea id="editAlamat" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Wali</label>
+                    <input type="text" id="editNamaWali" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Telepon Wali</label>
+                    <input type="tel" id="editTeleponWali" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                </div>
+                <div class="flex space-x-2 pt-2">
+                    <button id="cancelEditProfile" class="flex-1 px-3 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg transition-colors text-sm">
+                        Batal
+                    </button>
+                    <button id="saveProfile" class="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm">
+                        Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Assignment Modal -->
+    <div id="submitAssignmentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg p-4 w-full max-w-sm max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-semibold mb-3">Kumpulkan Tugas</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Judul Tugas</label>
+                    <input type="text" id="submitAssignmentTitle" readonly class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload File</label>
+                    <input type="file" id="assignmentFile" accept=".pdf,.doc,.docx,.jpg,.png,.mp3,.mp4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                    <p class="text-xs text-gray-500 mt-1">Format: PDF, DOC, DOCX, JPG, PNG, MP3, MP4 (Max: 25MB)</p>
+                    <div id="uploadProgress" class="hidden mt-2">
+                        <div class="bg-gray-200 rounded-full h-2">
+                            <div id="progressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <p id="uploadStatus" class="text-xs text-gray-600 mt-1">Mengupload...</p>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Catatan (Opsional)</label>
+                    <textarea id="submissionNote" rows="3" placeholder="Tambahkan catatan untuk guru..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"></textarea>
+                </div>
+                <div class="flex space-x-2 pt-2">
+                    <button id="cancelSubmitAssignment" class="flex-1 px-3 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg transition-colors text-sm">
+                        Batal
+                    </button>
+                    <button id="confirmSubmitAssignment" class="flex-1 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm">
+                        <i class="fas fa-cloud-upload-alt mr-1"></i>Kumpulkan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Assignment Modal -->
+    <div id="createAssignmentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg p-4 w-full max-w-sm max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-semibold mb-3">Buat Tugas Baru</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Judul Tugas</label>
+                    <input type="text" id="assignmentTitle" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                    <textarea id="assignmentDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tenggat Waktu</label>
+                    <input type="datetime-local" id="assignmentDueDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Poin</label>
+                    <input type="number" id="assignmentPoints" value="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mata Pelajaran</label>
+                    <select id="assignmentSubject" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                        <option value="">Pilih Mata Pelajaran</option>
+                        <option value="Al-Quran Hadits">Al-Quran Hadits</option>
+                        <option value="Fikih">Fikih</option>
+                        <option value="Akidah Akhlak">Akidah Akhlak</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                    <select id="assignmentClass" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                        <option value="">Pilih Kelas</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" id="applyParallel" class="rounded">
+                        <span class="text-xs">Terapkan ke kelas paralel (A & B)</span>
+                    </label>
+                </div>
+                <div class="flex space-x-2 pt-2">
+                    <button id="cancelCreateAssignment" class="flex-1 px-3 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg transition-colors text-sm">
+                        Batal
+                    </button>
+                    <button id="confirmCreateAssignment" class="flex-1 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm">
+                        Buat Tugas
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Material Modal -->
+    <div id="uploadMaterialModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg p-4 w-full max-w-sm max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-semibold mb-3">Upload Materi</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Judul Materi</label>
+                    <input type="text" id="materialTitle" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                    <textarea id="materialDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload File</label>
+                    <input type="file" id="materialFile" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.png,.mp4,.mp3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                    <p class="text-xs text-gray-500 mt-1">Format: PDF, DOC, DOCX, PPT, PPTX, JPG, PNG, MP4, MP3 (Max: 50MB)</p>
+                    <div id="materialUploadProgress" class="hidden mt-2">
+                        <div class="bg-gray-200 rounded-full h-2">
+                            <div id="materialProgressBar" class="bg-purple-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <p id="materialUploadStatus" class="text-xs text-gray-600 mt-1">Mengupload materi...</p>
+                    </div>
+                </div>
+                <div class="flex space-x-2 pt-2">
+                    <button id="cancelUploadMaterial" class="flex-1 px-3 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg transition-colors text-sm">
+                        Batal
+                    </button>
+                    <button id="confirmUploadMaterial" class="flex-1 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm">
+                        <i class="fas fa-upload mr-1"></i>Upload
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== KONFIGURASI GOOGLE APPS SCRIPT =====
+        // GANTI URL INI DENGAN WEB APP URL ANDA DARI GOOGLE APPS SCRIPT
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFqEARjp2uHrfOhLCI7nlN-q78KHD-HwLgpTZ5jVMcGBTAbLBn0k9rAwUhUpeaDa8GkA/exec';
+        
+        // ===== GLOBAL VARIABLES =====
+        let currentUser = null;
+        let currentStudent = null;
+        let currentTeacher = null;
+        let isLoggedIn = false;
+        let currentClass = null;
+        let currentAssignmentId = null;
+
+        // ===== SAMPLE DATA =====
+        const sampleData = {
+            teachers: [
+                { username: 'guru1', password: 'password123', name: 'Ustadz Ahmad Fauzi', subjects: ['Al-Quran Hadits', 'Fikih'] },
+                { username: 'guru2', password: 'password123', name: 'Ustadzah Siti Aminah', subjects: ['Akidah Akhlak'] }
+            ],
+            students: [
+                { nis: '2024001', nama: 'Ahmad Rizki', kelas: '7A', email: 'ahmad@email.com', tanggalLahir: '2010-05-15', alamat: 'Jl. Merdeka No. 123', namaWali: 'Bapak Ahmad', teleponWali: '081234567890', photoUrl: '' },
+                { nis: '2024002', nama: 'Fatimah Zahra', kelas: '7A', email: 'fatimah@email.com', tanggalLahir: '2010-08-20', alamat: 'Jl. Sudirman No. 456', namaWali: 'Ibu Siti', teleponWali: '081234567891', photoUrl: '' },
+                { nis: '2024003', nama: 'Muhammad Yusuf', kelas: '7B', email: 'yusuf@email.com', tanggalLahir: '2010-03-10', alamat: 'Jl. Diponegoro No. 789', namaWali: 'Bapak Yusuf', teleponWali: '081234567892', photoUrl: '' }
+            ],
+            classes: [
+                { id: 'class_001', name: 'Al-Quran Hadits 7A', subject: 'Al-Quran Hadits', grade: '7A', teacher: 'Ustadz Ahmad Fauzi', code: 'QH7A2024', students: ['2024001', '2024002'] },
+                { id: 'class_002', name: 'Fikih 7A', subject: 'Fikih', grade: '7A', teacher: 'Ustadz Ahmad Fauzi', code: 'FQ7A2024', students: ['2024001', '2024002'] },
+                { id: 'class_003', name: 'Al-Quran Hadits 7B', subject: 'Al-Quran Hadits', grade: '7B', teacher: 'Ustadz Ahmad Fauzi', code: 'QH7B2024', students: ['2024003'] },
+                { id: 'class_004', name: 'Akidah Akhlak 7A', subject: 'Akidah Akhlak', grade: '7A', teacher: 'Ustadzah Siti Aminah', code: 'AA7A2024', students: ['2024001', '2024002'] }
+            ],
+            assignments: [
+                { id: 'assign_001', title: 'Hafalan Surah Al-Fatihah', description: 'Hafalkan Surah Al-Fatihah dengan tajwid yang benar', dueDate: '2024-12-31T23:59', points: 100, subject: 'Al-Quran Hadits', classes: ['class_001', 'class_003'], teacher: 'Ustadz Ahmad Fauzi', createdDate: '2024-12-15' },
+                { id: 'assign_002', title: 'Tata Cara Wudhu', description: 'Buat video praktik wudhu yang benar sesuai sunnah', dueDate: '2024-12-30T23:59', points: 100, subject: 'Fikih', classes: ['class_002'], teacher: 'Ustadz Ahmad Fauzi', createdDate: '2024-12-15' }
+            ],
+            submissions: [],
+            materials: [
+                { id: 'mat_001', title: 'Panduan Tajwid Dasar', description: 'Materi pembelajaran tajwid untuk pemula', fileUrl: '#', subject: 'Al-Quran Hadits', fileName: 'tajwid_dasar.pdf', uploadDate: '2024-12-15', teacher: 'Ustadz Ahmad Fauzi' }
+            ]
+        };
+
+        // ===== GOOGLE DRIVE INTEGRATION FUNCTIONS =====
+        
+        // Convert file to base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Upload to Google Drive via Apps Script
+        async function uploadToGoogleDrive(file, action, metadata = {}) {
+            try {
+                showNotification('Mengupload file...', 'info');
+                
+                const base64Data = await fileToBase64(file);
+                
+                const formData = new FormData();
+                formData.append('action', action);
+                formData.append('file', base64Data);
+                formData.append('fileName', file.name);
+                
+                // Add metadata
+                Object.keys(metadata).forEach(key => {
+                    formData.append(key, metadata[key]);
+                });
+                
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('File berhasil diupload!', 'success');
+                    return result.data;
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                showNotification('Gagal upload file: ' + error.message, 'error');
+                throw error;
+            }
+        }
+
+        // Upload profile photo
+        async function uploadProfilePhoto(file) {
+            try {
+                const result = await uploadToGoogleDrive(file, 'uploadProfilePhoto', {
+                    nis: currentStudent.nis
+                });
+                
+                // Update current student data
+                currentStudent.photoUrl = result.fileUrl;
+                
+                // Update UI
+                updateProfilePhoto(result.fileUrl);
+                
+                showNotification('Foto profil berhasil diupdate!', 'success');
+                return result;
+            } catch (error) {
+                throw new Error('Gagal upload foto: ' + error.message);
+            }
+        }
+
+        // Upload assignment file
+        async function uploadAssignmentFile(file, assignmentId, note) {
+            try {
+                const result = await uploadToGoogleDrive(file, 'uploadAssignmentFile', {
+                    nis: currentStudent.nis,
+                    assignmentId: assignmentId,
+                    note: note
+                });
+                
+                return result;
+            } catch (error) {
+                throw new Error('Gagal upload tugas: ' + error.message);
+            }
+        }
+
+        // Upload material
+        async function uploadMaterial(file, title, description, subject) {
+            try {
+                const result = await uploadToGoogleDrive(file, 'uploadMaterial', {
+                    title: title,
+                    description: description,
+                    subject: subject
+                });
+                
+                return result;
+            } catch (error) {
+                throw new Error('Gagal upload materi: ' + error.message);
+            }
+        }
+
+        // ===== UTILITY FUNCTIONS =====
+        
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm max-w-sm ${
+                type === 'success' ? 'bg-green-600' : 
+                type === 'error' ? 'bg-red-600' : 
+                type === 'warning' ? 'bg-yellow-600' : 'bg-blue-600'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function updateProfilePhoto(photoUrl) {
+            const avatarElements = document.querySelectorAll('#studentAvatar, #editProfilePhoto');
+            avatarElements.forEach(element => {
+                if (photoUrl) {
+                    element.innerHTML = `<img src="${photoUrl}" alt="Profile" class="w-full h-full object-cover rounded-full">`;
+                } else {
+                    element.innerHTML = '<i class="fas fa-user-graduate"></i>';
+                }
+            });
+        }
+
+        // ===== AUTHENTICATION =====
+        
+        function login() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            
+            if (!username) {
+                showNotification('Masukkan username atau NIS!', 'warning');
+                return;
+            }
+            
+            // Check if it's a teacher login
+            if (password) {
+                const teacher = sampleData.teachers.find(t => t.username === username && t.password === password);
+                if (teacher) {
+                    currentUser = teacher;
+                    currentTeacher = teacher;
+                    isLoggedIn = true;
+                    showTeacherDashboard();
+                    showNotification(`Selamat datang, ${teacher.name}!`, 'success');
+                    return;
+                }
+                showNotification('Username atau password guru salah!', 'error');
+                return;
+            }
+            
+            // Check if it's a student login (NIS only)
+            const student = sampleData.students.find(s => s.nis === username);
+            if (student) {
+                currentUser = student;
+                currentStudent = student;
+                isLoggedIn = true;
+                showStudentDashboard();
+                showNotification(`Selamat datang, ${student.nama}!`, 'success');
+                return;
+            }
+            
+            showNotification('NIS tidak ditemukan!', 'error');
+        }
+
+        function logout() {
+            currentUser = null;
+            currentStudent = null;
+            currentTeacher = null;
+            isLoggedIn = false;
+            currentClass = null;
+            
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('mobileBottomNav').classList.add('hidden');
+            
+            // Clear form
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            
+            showNotification('Berhasil logout', 'success');
+        }
+
+        // ===== DASHBOARD FUNCTIONS =====
+        
+        function showTeacherDashboard() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+            document.getElementById('teacherDashboard').classList.remove('hidden');
+            document.getElementById('studentDashboard').classList.add('hidden');
+            document.getElementById('classDetail').classList.add('hidden');
+            
+            document.getElementById('userInfo').textContent = currentTeacher.name;
+            
+            loadTeacherSubjects();
+        }
+
+        function showStudentDashboard() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+            document.getElementById('teacherDashboard').classList.add('hidden');
+            document.getElementById('studentDashboard').classList.remove('hidden');
+            document.getElementById('classDetail').classList.add('hidden');
+            
+            document.getElementById('userInfo').textContent = currentStudent.nama;
+            
+            loadStudentInfo();
+            loadStudentSubjects();
+            updateStudentStats();
+        }
+
+        function loadTeacherSubjects() {
+            const subjectGrid = document.getElementById('subjectGrid');
+            const teacherClasses = sampleData.classes.filter(c => c.teacher === currentTeacher.name);
+            
+            subjectGrid.innerHTML = '';
+            
+            teacherClasses.forEach(classData => {
+                const classCard = document.createElement('div');
+                classCard.className = 'bg-white rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow';
+                classCard.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+                            ${classData.subject.charAt(0)}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-gray-800 truncate">${classData.name}</h3>
+                            <p class="text-sm text-gray-600">${classData.students.length} siswa</p>
+                            <p class="text-xs text-gray-500">Kode: ${classData.code}</p>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                `;
+                
+                classCard.addEventListener('click', () => openClass(classData));
+                subjectGrid.appendChild(classCard);
+            });
+        }
+
+        function loadStudentInfo() {
+            document.getElementById('studentName').textContent = currentStudent.nama;
+            document.getElementById('studentClass').textContent = `Kelas ${currentStudent.kelas}`;
+            document.getElementById('studentNIS').textContent = `NIS: ${currentStudent.nis}`;
+            
+            if (currentStudent.photoUrl) {
+                updateProfilePhoto(currentStudent.photoUrl);
+            }
+        }
+
+        function loadStudentSubjects() {
+            const studentSubjects = document.getElementById('studentSubjects');
+            const studentClasses = sampleData.classes.filter(c => c.students.includes(currentStudent.nis));
+            
+            studentSubjects.innerHTML = '';
+            
+            studentClasses.forEach(classData => {
+                const classCard = document.createElement('div');
+                classCard.className = 'bg-white rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow';
+                classCard.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">
+                            ${classData.subject.charAt(0)}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-gray-800 truncate">${classData.name}</h3>
+                            <p class="text-sm text-gray-600">${classData.teacher}</p>
+                            <p class="text-xs text-gray-500">Kode: ${classData.code}</p>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                `;
+                
+                classCard.addEventListener('click', () => openClass(classData));
+                studentSubjects.appendChild(classCard);
+            });
+        }
+
+        function updateStudentStats() {
+            const studentAssignments = sampleData.assignments.filter(a => 
+                a.classes.some(classId => {
+                    const classData = sampleData.classes.find(c => c.id === classId);
+                    return classData && classData.students.includes(currentStudent.nis);
+                })
+            );
+            
+            const completedAssignments = sampleData.submissions.filter(s => s.nis === currentStudent.nis);
+            
+            document.getElementById('totalAssignments').textContent = studentAssignments.length;
+            document.getElementById('completedAssignments').textContent = completedAssignments.length;
+        }
+
+        // ===== CLASS FUNCTIONS =====
+        
+        function openClass(classData) {
+            currentClass = classData;
+            
+            document.getElementById('teacherDashboard').classList.add('hidden');
+            document.getElementById('studentDashboard').classList.add('hidden');
+            document.getElementById('classDetail').classList.remove('hidden');
+            
+            document.getElementById('classTitle').textContent = classData.name;
+            document.getElementById('displayClassCode').textContent = classData.code;
+            
+            // Show/hide teacher actions based on user type
+            const teacherActions = document.getElementById('teacherActions');
+            if (currentTeacher) {
+                teacherActions.classList.remove('hidden');
+            } else {
+                teacherActions.classList.add('hidden');
+            }
+            
+            // Show mobile navigation for students
+            if (currentStudent) {
+                document.getElementById('mobileBottomNav').classList.remove('hidden');
+            }
+            
+            // Load default tab (stream)
+            switchTab('stream');
+        }
+
+        function switchTab(tabName) {
+            // Update desktop tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active', 'border-blue-500', 'text-blue-600');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.remove('border-transparent', 'text-gray-500');
+            
+            // Update mobile tabs
+            document.querySelectorAll('.mobile-tab-btn').forEach(btn => {
+                btn.classList.remove('text-blue-600');
+                btn.classList.add('text-gray-500');
+            });
+            
+            document.querySelector(`.mobile-tab-btn[data-tab="${tabName}"]`).classList.add('text-blue-600');
+            document.querySelector(`.mobile-tab-btn[data-tab="${tabName}"]`).classList.remove('text-gray-500');
+            
+            // Show/hide tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            document.getElementById(`${tabName}Tab`).classList.remove('hidden');
+            
+            // Load tab content
+            switch(tabName) {
+                case 'stream':
+                    loadStreamContent();
+                    break;
+                case 'assignments':
+                    loadAssignments();
+                    break;
+                case 'people':
+                    loadPeople();
+                    break;
+                case 'grades':
+                    loadGrades();
+                    break;
+                case 'materials':
+                    loadMaterials();
+                    break;
+            }
+        }
+
+        function loadStreamContent() {
+            const postsFeed = document.getElementById('postsFeed');
+            postsFeed.innerHTML = '';
+            
+            // Load assignments for this class
+            const classAssignments = sampleData.assignments.filter(a => a.classes.includes(currentClass.id));
+            
+            classAssignments.forEach(assignment => {
+                const postCard = document.createElement('div');
+                postCard.className = 'bg-white rounded-lg shadow-md p-4';
+                postCard.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                            T
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="font-medium text-sm">${assignment.teacher}</span>
+                                <span class="text-xs text-gray-500">${formatDate(assignment.createdDate)}</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">${assignment.title}</h4>
+                            <p class="text-sm text-gray-600 mb-3">${assignment.description}</p>
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <span>Tenggat: ${formatDate(assignment.dueDate)}</span>
+                                <span>${assignment.points} poin</span>
+                            </div>
+                            ${currentStudent ? `
+                                <button onclick="openSubmitAssignment('${assignment.id}')" class="mt-3 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors">
+                                    <i class="fas fa-upload mr-1"></i>Kumpulkan Tugas
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                postsFeed.appendChild(postCard);
+            });
+            
+            // Load materials for this class
+            const classMaterials = sampleData.materials.filter(m => m.subject === currentClass.subject);
+            
+            classMaterials.forEach(material => {
+                const postCard = document.createElement('div');
+                postCard.className = 'bg-white rounded-lg shadow-md p-4';
+                postCard.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                            M
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="font-medium text-sm">${material.teacher}</span>
+                                <span class="text-xs text-gray-500">${formatDate(material.uploadDate)}</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">${material.title}</h4>
+                            <p class="text-sm text-gray-600 mb-3">${material.description}</p>
+                            <button onclick="downloadMaterial('${material.fileUrl}')" class="px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm transition-colors">
+                                <i class="fas fa-download mr-1"></i>Download Materi
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                postsFeed.appendChild(postCard);
+            });
+            
+            if (postsFeed.children.length === 0) {
+                postsFeed.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-stream text-4xl mb-3"></i>
+                        <p>Belum ada postingan di kelas ini</p>
+                    </div>
+                `;
+            }
+        }
+
+        function loadAssignments() {
+            const assignmentsList = document.getElementById('assignmentsList');
+            const classAssignments = sampleData.assignments.filter(a => a.classes.includes(currentClass.id));
+            
+            assignmentsList.innerHTML = '';
+            
+            classAssignments.forEach(assignment => {
+                const isSubmitted = sampleData.submissions.some(s => 
+                    s.assignmentId === assignment.id && 
+                    s.nis === (currentStudent ? currentStudent.nis : null)
+                );
+                
+                const assignmentCard = document.createElement('div');
+                assignmentCard.className = 'bg-white rounded-lg shadow-md p-4';
+                assignmentCard.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-semibold text-gray-800 mb-2">${assignment.title}</h4>
+                            <p class="text-sm text-gray-600 mb-3">${assignment.description}</p>
+                            <div class="flex items-center space-x-4 text-xs text-gray-500 mb-3">
+                                <span><i class="fas fa-calendar mr-1"></i>Tenggat: ${formatDate(assignment.dueDate)}</span>
+                                <span><i class="fas fa-star mr-1"></i>${assignment.points} poin</span>
+                            </div>
+                            ${currentStudent ? `
+                                <div class="flex items-center space-x-2">
+                                    ${isSubmitted ? 
+                                        '<span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs"><i class="fas fa-check mr-1"></i>Sudah Dikumpulkan</span>' :
+                                        `<button onclick="openSubmitAssignment('${assignment.id}')" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors">
+                                            <i class="fas fa-upload mr-1"></i>Kumpulkan Tugas
+                                        </button>`
+                                    }
+                                </div>
+                            ` : `
+                                <div class="text-xs text-gray-500">
+                                    ${sampleData.submissions.filter(s => s.assignmentId === assignment.id).length} submission
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+                
+                assignmentsList.appendChild(assignmentCard);
+            });
+            
+            if (classAssignments.length === 0) {
+                assignmentsList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-tasks text-4xl mb-3"></i>
+                        <p>Belum ada tugas di kelas ini</p>
+                    </div>
+                `;
+            }
+        }
+
+        function loadPeople() {
+            const studentsList = document.getElementById('studentsList');
+            const classStudents = sampleData.students.filter(s => currentClass.students.includes(s.nis));
+            
+            studentsList.innerHTML = '';
+            
+            classStudents.forEach(student => {
+                const studentCard = document.createElement('div');
+                studentCard.className = 'flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg';
+                studentCard.innerHTML = `
+                    <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold text-sm overflow-hidden">
+                        ${student.photoUrl ? 
+                            `<img src="${student.photoUrl}" alt="${student.nama}" class="w-full h-full object-cover rounded-full">` :
+                            student.nama.charAt(0)
+                        }
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-medium text-sm truncate">${student.nama}</p>
+                        <p class="text-xs text-gray-600">NIS: ${student.nis}</p>
+                    </div>
+                `;
+                
+                studentsList.appendChild(studentCard);
+            });
+        }
+
+        function loadGrades() {
+            const gradesTableBody = document.getElementById('gradesTableBody');
+            const classStudents = sampleData.students.filter(s => currentClass.students.includes(s.nis));
+            
+            gradesTableBody.innerHTML = '';
+            
+            classStudents.forEach(student => {
+                const studentSubmissions = sampleData.submissions.filter(s => s.nis === student.nis);
+                const grades = studentSubmissions.map(s => s.grade || '-');
+                const average = grades.filter(g => g !== '-').length > 0 ? 
+                    (grades.filter(g => g !== '-').reduce((a, b) => a + parseInt(b), 0) / grades.filter(g => g !== '-').length).toFixed(1) : '-';
+                
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-100';
+                row.innerHTML = `
+                    <td class="px-2 py-2 text-sm">${student.nama}</td>
+                    <td class="px-2 py-2 text-center text-sm">${grades[0] || '-'}</td>
+                    <td class="px-2 py-2 text-center text-sm">${grades[1] || '-'}</td>
+                    <td class="px-2 py-2 text-center text-sm font-medium">${average}</td>
+                `;
+                
+                gradesTableBody.appendChild(row);
+            });
+        }
+
+        function loadMaterials() {
+            const materialsList = document.getElementById('materialsList');
+            const classMaterials = sampleData.materials.filter(m => m.subject === currentClass.subject);
+            
+            materialsList.innerHTML = '';
+            
+            classMaterials.forEach(material => {
+                const materialCard = document.createElement('div');
+                materialCard.className = 'bg-white rounded-lg shadow-md p-4';
+                materialCard.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-semibold text-gray-800 mb-1">${material.title}</h4>
+                            <p class="text-sm text-gray-600 mb-2">${material.description}</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-gray-500">${formatDate(material.uploadDate)}</span>
+                                <button onclick="downloadMaterial('${material.fileUrl}')" class="px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded text-xs transition-colors">
+                                    <i class="fas fa-download mr-1"></i>Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                materialsList.appendChild(materialCard);
+            });
+            
+            if (classMaterials.length === 0) {
+                materialsList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-book text-4xl mb-3"></i>
+                        <p>Belum ada materi di kelas ini</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ===== ASSIGNMENT FUNCTIONS =====
+        
+        function openSubmitAssignment(assignmentId) {
+            currentAssignmentId = assignmentId;
+            const assignment = sampleData.assignments.find(a => a.id === assignmentId);
+            
+            document.getElementById('submitAssignmentTitle').value = assignment.title;
+            document.getElementById('assignmentFile').value = '';
+            document.getElementById('submissionNote').value = '';
+            
+            document.getElementById('submitAssignmentModal').classList.remove('hidden');
+            document.getElementById('submitAssignmentModal').classList.add('flex');
+        }
+
+        async function submitAssignment() {
+            const fileInput = document.getElementById('assignmentFile');
+            const note = document.getElementById('submissionNote').value.trim();
+            
+            if (!fileInput.files[0]) {
+                showNotification('Pilih file untuk dikumpulkan!', 'warning');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            
+            // Validate file size (25MB max)
+            if (file.size > 25 * 1024 * 1024) {
+                showNotification('Ukuran file maksimal 25MB!', 'error');
+                return;
+            }
+            
+            try {
+                // Show progress
+                document.getElementById('uploadProgress').classList.remove('hidden');
+                document.getElementById('confirmSubmitAssignment').disabled = true;
+                
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 10;
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    document.getElementById('uploadStatus').textContent = `Mengupload... ${progress}%`;
+                    
+                    if (progress >= 90) {
+                        clearInterval(progressInterval);
+                    }
+                }, 200);
+                
+                // Upload file
+                const uploadResult = await uploadAssignmentFile(file, currentAssignmentId, note);
+                
+                // Complete progress
+                clearInterval(progressInterval);
+                document.getElementById('progressBar').style.width = '100%';
+                document.getElementById('uploadStatus').textContent = 'Upload selesai!';
+                
+                // Save submission data
+                const submission = {
+                    id: 'sub_' + Date.now(),
+                    assignmentId: currentAssignmentId,
+                    nis: currentStudent.nis,
+                    nama: currentStudent.nama,
+                    fileName: uploadResult.fileName,
+                    fileUrl: uploadResult.fileUrl,
+                    fileSize: formatFileSize(uploadResult.fileSize || file.size),
+                    note: note,
+                    submittedDate: new Date().toISOString(),
+                    grade: '',
+                    gradedDate: ''
+                };
+                
+                sampleData.submissions.push(submission);
+                
+                // Close modal
+                closeSubmitAssignmentModal();
+                
+                // Refresh content
+                loadStreamContent();
+                loadAssignments();
+                updateStudentStats();
+                
+                showNotification('Tugas berhasil dikumpulkan!', 'success');
+                
+            } catch (error) {
+                document.getElementById('uploadProgress').classList.add('hidden');
+                document.getElementById('confirmSubmitAssignment').disabled = false;
+                showNotification(error.message, 'error');
+            }
+        }
+
+        function closeSubmitAssignmentModal() {
+            document.getElementById('submitAssignmentModal').classList.add('hidden');
+            document.getElementById('submitAssignmentModal').classList.remove('flex');
+            document.getElementById('uploadProgress').classList.add('hidden');
+            document.getElementById('confirmSubmitAssignment').disabled = false;
+            document.getElementById('progressBar').style.width = '0%';
+        }
+
+        // ===== PROFILE FUNCTIONS =====
+        
+        function openEditProfile() {
+            // Populate form with current data
+            document.getElementById('editNIS').value = currentStudent.nis;
+            document.getElementById('editNama').value = currentStudent.nama;
+            document.getElementById('editKelas').value = currentStudent.kelas;
+            document.getElementById('editEmail').value = currentStudent.email || '';
+            document.getElementById('editTanggalLahir').value = currentStudent.tanggalLahir || '';
+            document.getElementById('editAlamat').value = currentStudent.alamat || '';
+            document.getElementById('editNamaWali').value = currentStudent.namaWali || '';
+            document.getElementById('editTeleponWali').value = currentStudent.teleponWali || '';
+            
+            if (currentStudent.photoUrl) {
+                updateProfilePhoto(currentStudent.photoUrl);
+            }
+            
+            document.getElementById('editProfileModal').classList.remove('hidden');
+            document.getElementById('editProfileModal').classList.add('flex');
+        }
+
+        async function changeProfilePhoto() {
+            const fileInput = document.getElementById('profilePhotoInput');
+            
+            if (!fileInput.files[0]) {
+                showNotification('Pilih foto terlebih dahulu!', 'warning');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showNotification('File harus berupa gambar!', 'error');
+                return;
+            }
+            
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('Ukuran foto maksimal 5MB!', 'error');
+                return;
+            }
+            
+            try {
+                // Show progress
+                document.getElementById('photoUploadProgress').classList.remove('hidden');
+                
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 15;
+                    document.getElementById('photoProgressBar').style.width = progress + '%';
+                    document.getElementById('photoUploadStatus').textContent = `Mengupload foto... ${progress}%`;
+                    
+                    if (progress >= 90) {
+                        clearInterval(progressInterval);
+                    }
+                }, 150);
+                
+                // Upload photo
+                await uploadProfilePhoto(file);
+                
+                // Complete progress
+                clearInterval(progressInterval);
+                document.getElementById('photoProgressBar').style.width = '100%';
+                document.getElementById('photoUploadStatus').textContent = 'Upload selesai!';
+                
+                setTimeout(() => {
+                    document.getElementById('photoUploadProgress').classList.add('hidden');
+                    document.getElementById('photoProgressBar').style.width = '0%';
+                }, 1000);
+                
+            } catch (error) {
+                document.getElementById('photoUploadProgress').classList.add('hidden');
+                showNotification(error.message, 'error');
+            }
+        }
+
+        function saveProfile() {
+            // Update student data
+            currentStudent.nama = document.getElementById('editNama').value.trim();
+            currentStudent.email = document.getElementById('editEmail').value.trim();
+            currentStudent.tanggalLahir = document.getElementById('editTanggalLahir').value;
+            currentStudent.alamat = document.getElementById('editAlamat').value.trim();
+            currentStudent.namaWali = document.getElementById('editNamaWali').value.trim();
+            currentStudent.teleponWali = document.getElementById('editTeleponWali').value.trim();
+            
+            // Update in sample data
+            const studentIndex = sampleData.students.findIndex(s => s.nis === currentStudent.nis);
+            if (studentIndex !== -1) {
+                sampleData.students[studentIndex] = { ...currentStudent };
+            }
+            
+            // Update UI
+            loadStudentInfo();
+            
+            // Close modal
+            closeEditProfileModal();
+            
+            showNotification('Profil berhasil diperbarui!', 'success');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').classList.add('hidden');
+            document.getElementById('editProfileModal').classList.remove('flex');
+            document.getElementById('photoUploadProgress').classList.add('hidden');
+            document.getElementById('photoProgressBar').style.width = '0%';
+        }
+
+        // ===== MATERIAL FUNCTIONS =====
+        
+        function openUploadMaterial() {
+            document.getElementById('materialTitle').value = '';
+            document.getElementById('materialDescription').value = '';
+            document.getElementById('materialFile').value = '';
+            
+            document.getElementById('uploadMaterialModal').classList.remove('hidden');
+            document.getElementById('uploadMaterialModal').classList.add('flex');
+        }
+
+        async function confirmUploadMaterial() {
+            const title = document.getElementById('materialTitle').value.trim();
+            const description = document.getElementById('materialDescription').value.trim();
+            const fileInput = document.getElementById('materialFile');
+            
+            if (!title || !description || !fileInput.files[0]) {
+                showNotification('Lengkapi semua field!', 'warning');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            
+            // Validate file size (50MB max)
+            if (file.size > 50 * 1024 * 1024) {
+                showNotification('Ukuran file maksimal 50MB!', 'error');
+                return;
+            }
+            
+            try {
+                // Show progress
+                document.getElementById('materialUploadProgress').classList.remove('hidden');
+                document.getElementById('confirmUploadMaterial').disabled = true;
+                
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 8;
+                    document.getElementById('materialProgressBar').style.width = progress + '%';
+                    document.getElementById('materialUploadStatus').textContent = `Mengupload materi... ${progress}%`;
+                    
+                    if (progress >= 90) {
+                        clearInterval(progressInterval);
+                    }
+                }, 250);
+                
+                // Upload material
+                const uploadResult = await uploadMaterial(file, title, description, currentClass.subject);
+                
+                // Complete progress
+                clearInterval(progressInterval);
+                document.getElementById('materialProgressBar').style.width = '100%';
+                document.getElementById('materialUploadStatus').textContent = 'Upload selesai!';
+                
+                // Save material data
+                const material = {
+                    id: 'mat_' + Date.now(),
+                    title: title,
+                    description: description,
+                    fileUrl: uploadResult.fileUrl,
+                    subject: currentClass.subject,
+                    fileName: uploadResult.fileName,
+                    uploadDate: new Date().toISOString(),
+                    teacher: currentTeacher.name
+                };
+                
+                sampleData.materials.push(material);
+                
+                // Close modal
+                closeUploadMaterialModal();
+                
+                // Refresh content
+                loadStreamContent();
+                loadMaterials();
+                
+                showNotification('Materi berhasil diupload!', 'success');
+                
+            } catch (error) {
+                document.getElementById('materialUploadProgress').classList.add('hidden');
+                document.getElementById('confirmUploadMaterial').disabled = false;
+                showNotification(error.message, 'error');
+            }
+        }
+
+        function closeUploadMaterialModal() {
+            document.getElementById('uploadMaterialModal').classList.add('hidden');
+            document.getElementById('uploadMaterialModal').classList.remove('flex');
+            document.getElementById('materialUploadProgress').classList.add('hidden');
+            document.getElementById('confirmUploadMaterial').disabled = false;
+            document.getElementById('materialProgressBar').style.width = '0%';
+        }
+
+        function downloadMaterial(fileUrl) {
+            if (fileUrl === '#') {
+                showNotification('File tidak tersedia (Demo)', 'info');
+                return;
+            }
+            
+            // Open file in new tab
+            window.open(fileUrl, '_blank');
+        }
+
+        // ===== EVENT LISTENERS =====
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Login
+            document.getElementById('loginBtn').addEventListener('click', login);
+            document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') login();
+            });
+            
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            
+            // Navigation
+            document.getElementById('backToMain').addEventListener('click', function() {
+                document.getElementById('classDetail').classList.add('hidden');
+                document.getElementById('mobileBottomNav').classList.add('hidden');
+                
+                if (currentTeacher) {
+                    document.getElementById('teacherDashboard').classList.remove('hidden');
+                } else {
+                    document.getElementById('studentDashboard').classList.remove('hidden');
+                }
+            });
+            
+            // Tabs
+            document.querySelectorAll('.tab-btn, .mobile-tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+            
+            // Profile
+            document.getElementById('editProfileBtn').addEventListener('click', openEditProfile);
+            document.getElementById('changeAvatarBtn').addEventListener('click', function() {
+                document.getElementById('avatarInput').click();
+            });
+            document.getElementById('avatarInput').addEventListener('change', function() {
+                if (this.files[0]) {
+                    uploadProfilePhoto(this.files[0]);
+                }
+            });
+            
+            // Profile Modal
+            document.getElementById('changePhotoBtn').addEventListener('click', function() {
+                document.getElementById('profilePhotoInput').click();
+            });
+            document.getElementById('profilePhotoInput').addEventListener('change', changeProfilePhoto);
+            document.getElementById('saveProfile').addEventListener('click', saveProfile);
+            document.getElementById('cancelEditProfile').addEventListener('click', closeEditProfileModal);
+            
+            // Assignment Modal
+            document.getElementById('confirmSubmitAssignment').addEventListener('click', submitAssignment);
+            document.getElementById('cancelSubmitAssignment').addEventListener('click', closeSubmitAssignmentModal);
+            
+            // Material Modal
+            document.getElementById('uploadMaterialBtn').addEventListener('click', openUploadMaterial);
+            document.getElementById('confirmUploadMaterial').addEventListener('click', confirmUploadMaterial);
+            document.getElementById('cancelUploadMaterial').addEventListener('click', closeUploadMaterialModal);
+            
+            // Close modals when clicking outside
+            document.querySelectorAll('.fixed.inset-0').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.add('hidden');
+                        this.classList.remove('flex');
+                    }
+                });
+            });
+        });
+
+        // ===== GLOBAL FUNCTIONS FOR ONCLICK =====
+        window.openSubmitAssignment = openSubmitAssignment;
+        window.downloadMaterial = downloadMaterial;
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97a4f731d554ce19',t:'MTc1NzA2NzMyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
