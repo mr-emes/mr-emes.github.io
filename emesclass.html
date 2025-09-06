@@ -177,6 +177,11 @@
                 </div>
             </div>
             <div class="flex items-center space-x-3">
+                <!-- Database Connection Status -->
+                <div id="dbStatus" class="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300">
+                    <div id="dbStatusDot" class="w-2 h-2 rounded-full"></div>
+                    <span id="dbStatusText">Offline</span>
+                </div>
                 <button onclick="logout()" class="p-2 rounded-full hover:bg-gray-100" title="Keluar">
                     <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
@@ -1917,31 +1922,79 @@
 
         function loadClassStudents(classId) {
             const container = document.getElementById('classStudentsList');
-            const classStudents = students.filter(s => s.classIds.includes(classId));
-
-            if (classStudents.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-4">Belum ada siswa di kelas ini</p>';
+            const cls = classes.find(c => c.id === classId);
+            
+            if (!cls) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-4">Kelas tidak ditemukan</p>';
                 return;
             }
 
-            container.innerHTML = classStudents.map(student => `
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-sm font-medium">${student.name.charAt(0).toUpperCase()}</span>
+            // Auto-enroll students based on class grade
+            const gradeStudents = students.filter(s => s.grade === cls.grade);
+            
+            // Update students' classIds if not already enrolled
+            let autoEnrolled = 0;
+            gradeStudents.forEach(student => {
+                if (!student.classIds) student.classIds = [];
+                if (!student.classIds.includes(classId)) {
+                    student.classIds.push(classId);
+                    autoEnrolled++;
+                    // Save updated student data
+                    saveToFirestoreRealTime('students', student);
+                }
+            });
+
+            if (autoEnrolled > 0) {
+                console.log(`✅ Auto-enrolled ${autoEnrolled} students to class ${cls.name}`);
+            }
+
+            // Get all students in this class (should now include auto-enrolled)
+            const classStudents = students.filter(s => s.classIds && s.classIds.includes(classId));
+
+            if (classStudents.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-6">
+                        <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                        </svg>
+                        <p class="text-gray-500 mb-2">Belum ada siswa ${cls.grade}</p>
+                        <p class="text-xs text-gray-400">Siswa akan otomatis terdaftar saat data siswa ${cls.grade} ditambahkan</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="mb-3 p-2 bg-blue-50 rounded-lg">
+                    <p class="text-xs text-blue-700">
+                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Siswa ${cls.grade} otomatis terdaftar di kelas ini
+                    </p>
+                </div>
+                ${classStudents.map(student => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-medium">${student.name.charAt(0).toUpperCase()}</span>
+                            </div>
+                            <div>
+                                <h6 class="font-medium text-gray-800">${student.name}</h6>
+                                <p class="text-sm text-gray-500">NIS: ${student.nis} | Kelas: ${student.grade}</p>
+                            </div>
                         </div>
-                        <div>
-                            <h6 class="font-medium text-gray-800">${student.name}</h6>
-                            <p class="text-sm text-gray-500">NIS: ${student.nis}</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">Auto</span>
+                            <button onclick="removeStudentFromClass('${student.nis}', '${classId}')" class="text-red-600 hover:text-red-800 p-1" title="Keluarkan dari kelas">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
-                    <button onclick="removeStudentFromClass('${student.nis}', '${classId}')" class="text-red-600 hover:text-red-800 p-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            `).join('');
+                `).join('')}
+            `;
         }
 
         function loadClassAssignments(classId) {
@@ -3323,11 +3376,13 @@
         async function syncWithFirestore() {
             if (!isFirebaseConnected) {
                 console.log('Firebase not connected, using localStorage only');
+                updateDatabaseStatus(false);
                 return false;
             }
 
             try {
                 console.log('🔄 Syncing with Firestore...');
+                updateDatabaseStatus(true, true); // Show syncing state
                 
                 // Load all data from Firestore
                 const [firestoreClasses, firestoreAssignments, firestoreStudents, firestoreGrades, firestoreSubmissions] = await Promise.all([
@@ -3360,6 +3415,7 @@
                     submissions: submissions.length
                 });
 
+                updateDatabaseStatus(true, false); // Show connected state
                 return true;
             } catch (error) {
                 console.error('❌ Firestore sync failed:', error);
@@ -3372,6 +3428,7 @@
                 submissions = JSON.parse(localStorage.getItem('emes_submissions') || '[]');
                 
                 console.log('📱 Using localStorage fallback');
+                updateDatabaseStatus(false); // Show offline state
                 return false;
             }
         }
@@ -3380,6 +3437,8 @@
         async function saveToFirestoreRealTime(collection, data) {
             if (!isFirebaseConnected) {
                 console.log('Firebase not connected, saving to localStorage only');
+                updateDatabaseStatus(false);
+                
                 const storageKey = `emes_${collection}`;
                 const existingData = JSON.parse(localStorage.getItem(storageKey) || '[]');
                 
@@ -3400,6 +3459,8 @@
             }
 
             try {
+                updateDatabaseStatus(true, true); // Show syncing
+                
                 let docId;
                 if (data.id) {
                     await db.collection(collection).doc(data.id).set(data);
@@ -3424,9 +3485,11 @@
                 }
                 
                 localStorage.setItem(storageKey, JSON.stringify(existingData));
+                updateDatabaseStatus(true, false); // Show connected
                 return docId;
             } catch (error) {
                 console.error(`❌ Failed to save to Firestore: ${collection}`, error);
+                updateDatabaseStatus(false); // Show offline
                 
                 // Fallback to localStorage
                 const storageKey = `emes_${collection}`;
@@ -3479,7 +3542,33 @@
             }
         }
 
-        // Connection status indicator
+        // Database connection status functions
+        function updateDatabaseStatus(connected = false, syncing = false) {
+            const statusContainer = document.getElementById('dbStatus');
+            const statusDot = document.getElementById('dbStatusDot');
+            const statusText = document.getElementById('dbStatusText');
+            
+            if (!statusContainer || !statusDot || !statusText) return;
+            
+            if (syncing) {
+                // Syncing state
+                statusContainer.className = 'flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 bg-blue-100 text-blue-800';
+                statusDot.className = 'w-2 h-2 rounded-full bg-blue-500 animate-pulse';
+                statusText.textContent = 'Sync...';
+            } else if (connected) {
+                // Connected state
+                statusContainer.className = 'flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 bg-green-100 text-green-800';
+                statusDot.className = 'w-2 h-2 rounded-full bg-green-500';
+                statusText.textContent = 'Online';
+            } else {
+                // Offline state
+                statusContainer.className = 'flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 bg-yellow-100 text-yellow-800';
+                statusDot.className = 'w-2 h-2 rounded-full bg-yellow-500';
+                statusText.textContent = 'Offline';
+            }
+        }
+
+        // Connection status indicator (temporary notification)
         function showConnectionStatus() {
             const statusDiv = document.createElement('div');
             statusDiv.id = 'connectionStatus';
@@ -3511,6 +3600,9 @@
             // Initialize dark mode
             initializeDarkMode();
             
+            // Initialize database status indicator
+            updateDatabaseStatus(false);
+            
             // Show loading indicator
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'fixed inset-0 bg-white bg-opacity-90 z-50 flex items-center justify-center';
@@ -3529,7 +3621,7 @@
                 // Sync with Firestore (real-time connection)
                 const syncSuccess = await syncWithFirestore();
                 
-                // Show connection status
+                // Show connection status notification
                 showConnectionStatus();
                 
                 // Initialize empty database if no data exists
@@ -3541,6 +3633,7 @@
                 
             } catch (error) {
                 console.error('❌ App initialization error:', error);
+                updateDatabaseStatus(false);
                 showAlertModal('Gagal menghubungkan ke database. Menggunakan mode offline.', 'error');
             } finally {
                 // Remove loading indicator
@@ -3591,5 +3684,5 @@
             console.log('✅ Database ready for use');
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97ac6a5b5354f93e',t:'MTc1NzE0NTQ0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97ac7cdde036fd96',t:'MTc1NzE0NjIwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
