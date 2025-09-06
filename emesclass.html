@@ -24,6 +24,7 @@
             color: #e5e5e5;
         }
         .dark .bg-white { background-color: #2d2d2d; }
+        .dark .bg-blue-50 { background-color: #1a1a1a; }
         .dark .bg-gray-50 { background-color: #1a1a1a; }
         .dark .bg-gray-100 { background-color: #2d2d2d; }
         .dark .bg-gray-200 { background-color: #404040; }
@@ -49,7 +50,7 @@
         .class-color-indigo { background: linear-gradient(135deg, #6366F1, #4338CA); }
         .class-color-teal { background: linear-gradient(135deg, #14B8A6, #0F766E); }
         
-        .login-container { min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .login-container { min-height: 100vh; background: linear-gradient(135deg, #10B981 0%, #059669 100%); }
         .student-view .teacher-only { display: none !important; }
         .teacher-view .student-only { display: none !important; }
         
@@ -58,14 +59,14 @@
         .teacher-view .nav-item:nth-child(4) { display: none; } /* Hide grades tab for teachers */
         
         /* Different header colors for roles */
-        .student-view header { background: linear-gradient(135deg, #10B981, #047857); }
-        .teacher-view header { background: linear-gradient(135deg, #3B82F6, #1E40AF); }
+        .student-view header { background: linear-gradient(135deg, #047857, #10B981); }
+        .teacher-view header { background: linear-gradient(135deg, #1E40AF, #3B82F6); }
         .student-view header h1, .student-view header p { color: white; }
         .teacher-view header h1, .teacher-view header p { color: white; }
         .grade-badge { background: linear-gradient(135deg, #10B981, #047857); }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-blue-50 font-sans" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%); min-height: 100vh;"><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97acbb8c465a6141',t:'MTc1NzE0ODc3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
     <!-- Login Screen -->
     <div id="loginScreen" class="login-container flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
@@ -536,6 +537,50 @@
                             </div>
                             <div id="studentsList" class="space-y-2 max-h-60 overflow-y-auto">
                                 <!-- Students will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Database Configuration (Teacher Only) -->
+                    <div class="teacher-only space-y-4">
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-blue-800 mb-3 flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                                </svg>
+                                Konfigurasi Database
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-white rounded-lg border">
+                                    <div>
+                                        <p class="font-medium text-blue-800">Status Koneksi</p>
+                                        <p class="text-sm text-blue-600" id="dbConnectionStatus">Memeriksa koneksi...</p>
+                                    </div>
+                                    <div id="dbConnectionIndicator" class="w-3 h-3 rounded-full bg-gray-400"></div>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg border p-3">
+                                    <p class="font-medium text-blue-800 mb-2">Firebase Project</p>
+                                    <p class="text-sm text-blue-600 font-mono">emesce-19557</p>
+                                    <p class="text-xs text-blue-500 mt-1">Firestore Database & Storage aktif</p>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg border p-3">
+                                    <p class="font-medium text-blue-800 mb-2">Google Drive Integration</p>
+                                    <p class="text-sm text-blue-600">Folder ID: 1ba9U-31V3iCDbw5sTbWfkRNNOg4o7653</p>
+                                    <a href="https://drive.google.com/drive/folders/1ba9U-31V3iCDbw5sTbWfkRNNOg4o7653" target="_blank" class="text-xs text-blue-500 hover:underline">
+                                        📁 Buka Folder Drive
+                                    </a>
+                                </div>
+                                
+                                <div class="flex space-x-2">
+                                    <button onclick="testDatabaseConnection()" class="flex-1 bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 text-sm">
+                                        Test Koneksi
+                                    </button>
+                                    <button onclick="forceSyncData()" class="flex-1 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 text-sm">
+                                        Sync Manual
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1027,32 +1072,128 @@
         4. Deploy ke hosting
         */
         
-        // Firebase Configuration - REAL CONFIG
+        // Firebase Configuration - UPDATED FOR NEW FIRESTORE
         const firebaseConfig = {
             apiKey: "AIzaSyB9uRFQCtCMMQ8QGwh-eTIpnUi1OdSiM1Y",
             authDomain: "emesce-19557.firebaseapp.com",
             databaseURL: "https://emesce-19557-default-rtdb.firebaseio.com",
             projectId: "emesce-19557",
-            storageBucket: "emesce-19557.firebasestorage.app",
+            storageBucket: "emesce-19557.appspot.com",
             messagingSenderId: "730243929475",
             appId: "1:730243929475:web:16417853e9fe9ac35c12b6",
             measurementId: "G-CGNNSWFNQ7"
         };
 
-        // Initialize Firebase
+        // Initialize Firebase with enhanced connection handling
         let db, storage, auth;
         let isFirebaseConnected = false;
+        let connectionRetryCount = 0;
+        const maxRetries = 2;
         
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            storage = firebase.storage();
-            auth = firebase.auth();
-            isFirebaseConnected = true;
-            console.log("Firebase connected successfully");
-        } catch (error) {
-            console.log("Firebase connection failed, using local storage:", error);
-            isFirebaseConnected = false;
+        async function initializeFirebase() {
+            try {
+                console.log("🔄 Initializing Firebase connection...");
+                
+                // Initialize Firebase app only once
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                    console.log("✅ Firebase app initialized");
+                }
+                
+                // Get Firebase services
+                db = firebase.firestore();
+                storage = firebase.storage();
+                auth = firebase.auth();
+                
+                // Simple connection test - just try to access Firestore
+                console.log("🔍 Testing Firestore connection...");
+                
+                // Use a simple get operation instead of write for initial test
+                const testCollection = db.collection('_connection_test');
+                
+                // Try to read first, which is less likely to fail due to rules
+                try {
+                    const snapshot = await testCollection.limit(1).get();
+                    console.log("✅ Firestore read access confirmed");
+                } catch (readError) {
+                    console.log("⚠️ Read test failed, trying write test...");
+                }
+                
+                // Simple write test
+                const testDoc = {
+                    timestamp: new Date().toISOString(),
+                    project: firebaseConfig.projectId,
+                    test: true,
+                    browser: navigator.userAgent.substring(0, 50)
+                };
+                
+                await testCollection.doc('connection_test').set(testDoc);
+                console.log("✅ Firestore write test successful");
+                
+                // Verify the write worked
+                const verifyDoc = await testCollection.doc('connection_test').get();
+                if (verifyDoc.exists) {
+                    console.log("✅ Firestore read-after-write test successful");
+                } else {
+                    throw new Error("Write verification failed");
+                }
+                
+                // Enable offline persistence (optional, don't fail if it doesn't work)
+                try {
+                    await db.enablePersistence({ 
+                        synchronizeTabs: false // Disable tab sync to avoid conflicts
+                    });
+                    console.log("💾 Firestore offline persistence enabled");
+                } catch (persistenceError) {
+                    console.log("⚠️ Persistence not enabled:", persistenceError.code);
+                    // Don't fail initialization if persistence fails
+                }
+                
+                isFirebaseConnected = true;
+                connectionRetryCount = 0;
+                console.log("✅ Firebase connected successfully!");
+                console.log("📊 Project:", firebaseConfig.projectId);
+                
+                return true;
+                
+            } catch (error) {
+                console.error("❌ Firebase connection failed:", error);
+                
+                // Log specific error details
+                if (error.code) {
+                    console.error("Error code:", error.code);
+                    
+                    // Handle specific Firebase errors
+                    switch(error.code) {
+                        case 'permission-denied':
+                            console.error("🚫 Permission denied - check Firestore security rules");
+                            break;
+                        case 'unavailable':
+                            console.error("🌐 Firestore service unavailable");
+                            break;
+                        case 'unauthenticated':
+                            console.error("🔐 Authentication required");
+                            break;
+                        default:
+                            console.error("❓ Unknown Firebase error");
+                    }
+                }
+                
+                isFirebaseConnected = false;
+                
+                // Retry with simpler approach
+                if (connectionRetryCount < maxRetries) {
+                    connectionRetryCount++;
+                    console.log(`🔄 Retrying connection (${connectionRetryCount}/${maxRetries})...`);
+                    
+                    // Wait a bit before retry
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    return await initializeFirebase();
+                }
+                
+                console.log("❌ All connection attempts failed, using offline mode");
+                return false;
+            }
         }
 
         // Google Drive API Configuration - SUDAH TERKONFIGURASI
@@ -1291,7 +1432,9 @@
             userRole = role;
             
             // Update UI based on role
-            document.body.className = role === 'student' ? 'bg-gray-50 font-sans student-view' : 'bg-gray-50 font-sans teacher-view';
+            document.body.className = role === 'student' ? 'bg-blue-50 font-sans student-view' : 'bg-blue-50 font-sans teacher-view';
+            document.body.style.background = 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%)';
+            document.body.style.minHeight = '100vh';
             document.getElementById('userRole').textContent = role === 'teacher' ? 'Guru' : `Siswa - ${userData.name}`;
             document.getElementById('userInitial').textContent = userData.name.charAt(0).toUpperCase();
             
@@ -1316,7 +1459,9 @@
             userRole = null;
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('mainApp').classList.add('hidden');
-            document.body.className = 'bg-gray-50 font-sans';
+            document.body.className = 'bg-blue-50 font-sans';
+            document.body.style.background = 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%)';
+            document.body.style.minHeight = '100vh';
             
             // Reset role selection
             document.querySelectorAll('input[name="userRole"]').forEach(radio => radio.checked = false);
@@ -3266,7 +3411,7 @@
             }
         }
 
-        // Debug function to check localStorage
+        // Simple localStorage check for debugging (console only)
         function checkLocalStorage() {
             console.log('=== CHECKING LOCALSTORAGE ===');
             console.log('emes_classes:', localStorage.getItem('emes_classes'));
@@ -3277,8 +3422,9 @@
             console.log('=== END CHECK ===');
         }
 
-        // Make debug function available globally
-        window.checkLocalStorage = checkLocalStorage;
+        // Simple connection indicator - just show green dot when connected
+
+        // Debug functions removed - keeping only essential connection status
 
         // Custom Modal Functions (replacement for alert/confirm)
         function showAlertModal(message, type = 'info') {
@@ -3372,42 +3518,107 @@
             };
         }
 
-        // Real-time Database Sync Functions
+        // Simplified Database Sync Functions
         async function syncWithFirestore() {
+            console.log('🔄 Starting database sync...');
+            
+            // Always load from localStorage first for instant UI
+            const localClasses = JSON.parse(localStorage.getItem('emes_classes') || '[]');
+            const localAssignments = JSON.parse(localStorage.getItem('emes_assignments') || '[]');
+            const localStudents = JSON.parse(localStorage.getItem('emes_students') || '[]');
+            const localGrades = JSON.parse(localStorage.getItem('emes_grades') || '[]');
+            const localSubmissions = JSON.parse(localStorage.getItem('emes_submissions') || '[]');
+            
+            // Set local data immediately
+            classes = localClasses;
+            assignments = localAssignments;
+            students = localStudents;
+            grades = localGrades;
+            submissions = localSubmissions;
+            
+            console.log('📱 Local data loaded:', {
+                classes: classes.length,
+                assignments: assignments.length,
+                students: students.length
+            });
+
             if (!isFirebaseConnected) {
-                console.log('Firebase not connected, using localStorage only');
+                console.log('❌ Firebase not connected, using localStorage only');
                 updateDatabaseStatus(false);
                 return false;
             }
 
             try {
                 console.log('🔄 Syncing with Firestore...');
-                updateDatabaseStatus(true, true); // Show syncing state
+                updateDatabaseStatus(true, true); // Show syncing
                 
-                // Load all data from Firestore
-                const [firestoreClasses, firestoreAssignments, firestoreStudents, firestoreGrades, firestoreSubmissions] = await Promise.all([
-                    loadFromFirestore('classes'),
-                    loadFromFirestore('assignments'), 
-                    loadFromFirestore('students'),
-                    loadFromFirestore('grades'),
-                    loadFromFirestore('submissions')
+                // Simple collection loader
+                const loadCollection = async (collectionName) => {
+                    try {
+                        console.log(`📡 Loading ${collectionName}...`);
+                        const snapshot = await db.collection(collectionName).get();
+                        
+                        const data = [];
+                        snapshot.forEach(doc => {
+                            const docData = doc.data();
+                            if (docData && typeof docData === 'object') {
+                                data.push({ 
+                                    id: doc.id, 
+                                    ...docData
+                                });
+                            }
+                        });
+                        
+                        console.log(`✅ Loaded ${data.length} documents from ${collectionName}`);
+                        return data;
+                        
+                    } catch (error) {
+                        console.warn(`⚠️ Failed to load ${collectionName}:`, error.message);
+                        
+                        // Return local data as fallback
+                        switch(collectionName) {
+                            case 'classes': return localClasses;
+                            case 'assignments': return localAssignments;
+                            case 'students': return localStudents;
+                            case 'grades': return localGrades;
+                            case 'submissions': return localSubmissions;
+                            default: return [];
+                        }
+                    }
+                };
+
+                // Load all collections
+                console.log('📊 Loading collections...');
+                
+                const [
+                    firestoreStudents,
+                    firestoreClasses,
+                    firestoreAssignments,
+                    firestoreGrades,
+                    firestoreSubmissions
+                ] = await Promise.all([
+                    loadCollection('students'),
+                    loadCollection('classes'),
+                    loadCollection('assignments'),
+                    loadCollection('grades'),
+                    loadCollection('submissions')
                 ]);
 
-                // Update global arrays with Firestore data (Firestore is source of truth)
-                classes = firestoreClasses || [];
-                assignments = firestoreAssignments || [];
-                students = firestoreStudents || [];
-                grades = firestoreGrades || [];
-                submissions = firestoreSubmissions || [];
+                // Update arrays if we got data from Firestore
+                if (firestoreStudents.length >= 0) students = firestoreStudents;
+                if (firestoreClasses.length >= 0) classes = firestoreClasses;
+                if (firestoreAssignments.length >= 0) assignments = firestoreAssignments;
+                if (firestoreGrades.length >= 0) grades = firestoreGrades;
+                if (firestoreSubmissions.length >= 0) submissions = firestoreSubmissions;
 
-                // Backup to localStorage
+                // Always backup to localStorage
                 localStorage.setItem('emes_classes', JSON.stringify(classes));
                 localStorage.setItem('emes_assignments', JSON.stringify(assignments));
                 localStorage.setItem('emes_students', JSON.stringify(students));
                 localStorage.setItem('emes_grades', JSON.stringify(grades));
                 localStorage.setItem('emes_submissions', JSON.stringify(submissions));
 
-                console.log('✅ Firestore sync completed:', {
+                console.log('✅ Sync completed:', {
                     classes: classes.length,
                     assignments: assignments.length,
                     students: students.length,
@@ -3415,20 +3626,14 @@
                     submissions: submissions.length
                 });
 
-                updateDatabaseStatus(true, false); // Show connected state
+                updateDatabaseStatus(true, false); // Show connected
                 return true;
+                
             } catch (error) {
-                console.error('❌ Firestore sync failed:', error);
+                console.error('❌ Sync failed:', error.message);
+                console.log('📱 Using local data');
                 
-                // Fallback to localStorage
-                classes = JSON.parse(localStorage.getItem('emes_classes') || '[]');
-                assignments = JSON.parse(localStorage.getItem('emes_assignments') || '[]');
-                students = JSON.parse(localStorage.getItem('emes_students') || '[]');
-                grades = JSON.parse(localStorage.getItem('emes_grades') || '[]');
-                submissions = JSON.parse(localStorage.getItem('emes_submissions') || '[]');
-                
-                console.log('📱 Using localStorage fallback');
-                updateDatabaseStatus(false); // Show offline state
+                updateDatabaseStatus(false);
                 return false;
             }
         }
@@ -3555,16 +3760,139 @@
                 statusContainer.className = 'flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 bg-blue-100 text-blue-800';
                 statusDot.className = 'w-2 h-2 rounded-full bg-blue-500 animate-pulse';
                 statusText.textContent = 'Sync...';
-            } else if (connected) {
+            } else if (connected && isFirebaseConnected) {
                 // Connected state
                 statusContainer.className = 'flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 bg-green-100 text-green-800';
                 statusDot.className = 'w-2 h-2 rounded-full bg-green-500';
                 statusText.textContent = 'Online';
             } else {
                 // Offline state
-                statusContainer.className = 'flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 bg-yellow-100 text-yellow-800';
-                statusDot.className = 'w-2 h-2 rounded-full bg-yellow-500';
+                statusContainer.className = 'flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 bg-gray-100 text-gray-600';
+                statusDot.className = 'w-2 h-2 rounded-full bg-gray-400';
                 statusText.textContent = 'Offline';
+            }
+            
+            // Update settings panel status if exists
+            updateSettingsConnectionStatus(connected, syncing);
+        }
+
+        function updateSettingsConnectionStatus(connected = false, syncing = false) {
+            const statusText = document.getElementById('dbConnectionStatus');
+            const indicator = document.getElementById('dbConnectionIndicator');
+            
+            if (!statusText || !indicator) return;
+            
+            if (syncing) {
+                statusText.textContent = 'Menyinkronkan data...';
+                indicator.className = 'w-3 h-3 rounded-full bg-blue-500 animate-pulse';
+            } else if (connected && isFirebaseConnected) {
+                statusText.textContent = 'Terhubung ke Firebase';
+                indicator.className = 'w-3 h-3 rounded-full bg-green-500';
+            } else {
+                statusText.textContent = 'Mode Offline - Data tersimpan lokal';
+                indicator.className = 'w-3 h-3 rounded-full bg-gray-400';
+            }
+        }
+
+        // Database test functions for teacher settings
+        async function testDatabaseConnection() {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            button.textContent = 'Testing...';
+            button.disabled = true;
+            
+            try {
+                updateDatabaseStatus(false, true);
+                
+                console.log('🔍 Testing database connection...');
+                
+                // Simple connection test
+                if (!db) {
+                    console.log('🔄 Initializing Firebase...');
+                    const initResult = await initializeFirebase();
+                    if (!initResult) {
+                        throw new Error('Firebase initialization failed');
+                    }
+                }
+                
+                // Simple write test
+                const testDoc = {
+                    timestamp: new Date().toISOString(),
+                    test: 'manual_connection_test',
+                    success: true,
+                    testTime: Date.now()
+                };
+                
+                console.log('📝 Testing write operation...');
+                await db.collection('_connection_test').doc('manual_test').set(testDoc);
+                
+                console.log('📖 Testing read operation...');
+                const readTest = await db.collection('_connection_test').doc('manual_test').get();
+                
+                if (readTest.exists) {
+                    console.log('✅ Database test successful!');
+                    isFirebaseConnected = true;
+                    showAlertModal('✅ Koneksi database berhasil! Semua fitur online aktif.', 'success');
+                    updateDatabaseStatus(true, false);
+                } else {
+                    throw new Error('Read test failed - document not found');
+                }
+                
+            } catch (error) {
+                console.error('❌ Database test failed:', error);
+                isFirebaseConnected = false;
+                
+                let errorMessage = '❌ Koneksi database gagal. ';
+                if (error.code === 'permission-denied') {
+                    errorMessage += 'Periksa aturan keamanan Firestore.';
+                } else if (error.code === 'unavailable') {
+                    errorMessage += 'Layanan Firestore tidak tersedia.';
+                } else {
+                    errorMessage += 'Periksa koneksi internet dan konfigurasi Firebase.';
+                }
+                
+                showAlertModal(errorMessage, 'error');
+                updateDatabaseStatus(false, false);
+            } finally {
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        }
+
+        async function forceSyncData() {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            button.textContent = 'Syncing...';
+            button.disabled = true;
+            
+            try {
+                updateDatabaseStatus(isFirebaseConnected, true);
+                
+                const syncResult = await syncWithFirestore();
+                
+                if (syncResult) {
+                    // Refresh current view
+                    if (currentView === 'home') loadHomeData();
+                    else if (currentView === 'classes') loadClasses();
+                    else if (currentView === 'assignments') loadAssignments();
+                    else if (currentView === 'grades') loadGrades();
+                    
+                    showAlertModal('✅ Sinkronisasi berhasil! Data terbaru telah dimuat.', 'success');
+                } else {
+                    showAlertModal('⚠️ Sinkronisasi gagal. Menggunakan data lokal.', 'error');
+                }
+                
+                updateDatabaseStatus(isFirebaseConnected, false);
+                
+            } catch (error) {
+                console.error('Force sync failed:', error);
+                showAlertModal('❌ Gagal melakukan sinkronisasi. Periksa koneksi internet.', 'error');
+                updateDatabaseStatus(false, false);
+            } finally {
+                button.textContent = originalText;
+                button.disabled = false;
             }
         }
 
@@ -3593,7 +3921,7 @@
             }, 3000);
         }
 
-        // Initialize app with real-time database connection
+        // Initialize app with simplified database connection
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 Initializing Emes Classroom...');
             
@@ -3605,39 +3933,80 @@
             
             // Show loading indicator
             const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'fixed inset-0 bg-white bg-opacity-90 z-50 flex items-center justify-center';
+            loadingDiv.className = 'fixed inset-0 bg-white bg-opacity-95 z-50 flex items-center justify-center';
             loadingDiv.innerHTML = `
                 <div class="text-center">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p class="text-gray-600">Menghubungkan ke database...</p>
+                    <div class="relative">
+                        <img src="https://archive.org/download/logoms-1/logowarna.png" alt="Emes Classroom" class="w-16 h-16 mx-auto mb-4">
+                        <div class="absolute inset-0 animate-spin rounded-full border-4 border-transparent border-t-blue-600"></div>
+                    </div>
+                    <p class="text-gray-600 mt-4">Menghubungkan ke database...</p>
                 </div>
             `;
             document.body.appendChild(loadingDiv);
             
             try {
-                // Initialize Google Drive API
+                // Step 1: Try to connect to Firebase
+                console.log('📡 Connecting to Firebase...');
+                updateDatabaseStatus(false, true);
+                
+                const firebaseSuccess = await initializeFirebase();
+                
+                if (firebaseSuccess) {
+                    console.log('✅ Firebase connected successfully');
+                    updateDatabaseStatus(true, true);
+                } else {
+                    console.log('⚠️ Firebase connection failed, using offline mode');
+                    updateDatabaseStatus(false);
+                }
+                
+                // Step 2: Load data (from Firestore or localStorage)
+                console.log('📊 Loading data...');
+                await syncWithFirestore();
+                
+                // Step 3: Initialize demo data if needed
+                if (students.length === 0 && classes.length === 0) {
+                    console.log('🔧 No data found, creating demo data...');
+                    await initializeEmptyDatabase();
+                }
+                
+                // Step 4: Initialize Google Drive (optional)
+                console.log('📁 Initializing Google Drive...');
                 await initializeGoogleDrive();
                 
-                // Sync with Firestore (real-time connection)
-                const syncSuccess = await syncWithFirestore();
+                // Final status
+                console.log('✅ App initialized successfully!');
+                console.log('📊 Data loaded:', {
+                    students: students.length,
+                    classes: classes.length,
+                    assignments: assignments.length,
+                    firebaseConnected: isFirebaseConnected
+                });
+                
+                // Update final status
+                updateDatabaseStatus(isFirebaseConnected, false);
                 
                 // Show connection status notification
                 showConnectionStatus();
                 
-                // Initialize empty database if no data exists
-                if (classes.length === 0 && assignments.length === 0 && students.length === 0) {
-                    await initializeEmptyDatabase();
-                }
-                
-                console.log('✅ App initialized successfully');
-                
             } catch (error) {
                 console.error('❌ App initialization error:', error);
                 updateDatabaseStatus(false);
-                showAlertModal('Gagal menghubungkan ke database. Menggunakan mode offline.', 'error');
+                
+                // Still try to load local data
+                await syncWithFirestore();
+                
+                if (students.length === 0) {
+                    await initializeEmptyDatabase();
+                }
             } finally {
                 // Remove loading indicator
-                loadingDiv.remove();
+                setTimeout(() => {
+                    if (loadingDiv.parentNode) {
+                        loadingDiv.style.opacity = '0';
+                        setTimeout(() => loadingDiv.remove(), 300);
+                    }
+                }, 1500);
             }
             
             // Enable/disable login button based on role selection
@@ -3651,38 +4020,108 @@
                 });
             });
             
-            // Set up periodic sync (every 30 seconds)
+            // Set up periodic sync every 60 seconds (less frequent)
             setInterval(async () => {
                 if (isFirebaseConnected && currentUser) {
-                    console.log('🔄 Periodic sync...');
+                    console.log('🔄 Background sync...');
                     await syncWithFirestore();
-                    
-                    // Refresh current view if needed
-                    if (currentView === 'home') loadHomeData();
-                    else if (currentView === 'classes') loadClasses();
-                    else if (currentView === 'assignments') loadAssignments();
-                    else if (currentView === 'grades') loadGrades();
                 }
-            }, 30000);
-            
-            console.log('📊 Final data status:', {
-                classes: classes.length,
-                assignments: assignments.length,
-                students: students.length,
-                grades: grades.length,
-                submissions: submissions.length,
-                firebaseConnected: isFirebaseConnected,
-                googleDriveReady: googleDriveReady
-            });
+            }, 60000);
         });
 
-        // Initialize empty database - no demo data
+        // Initialize database with demo data for testing
         async function initializeEmptyDatabase() {
-            console.log('📝 Database is empty - ready for real data...');
+            console.log('📝 Initializing database with demo data...');
             
-            // Just log that database is ready, no demo data
-            console.log('✅ Database ready for use');
+            try {
+                // Create demo students first
+                const demoStudents = [
+                    { nis: '12345678', name: 'Ahmad Rizki', grade: '4A', classIds: [] },
+                    { nis: '12345679', name: 'Siti Nurhaliza', grade: '4A', classIds: [] },
+                    { nis: '12345680', name: 'Muhammad Fajar', grade: '4B', classIds: [] },
+                    { nis: '12345681', name: 'Dewi Sartika', grade: '5A', classIds: [] },
+                    { nis: '12345682', name: 'Budi Santoso', grade: '5B', classIds: [] },
+                    { nis: '12345683', name: 'Aisyah Putri', grade: '6A', classIds: [] },
+                    { nis: '12345684', name: 'Reza Pratama', grade: '6B', classIds: [] }
+                ];
+
+                // Save students to database
+                for (const student of demoStudents) {
+                    student.id = student.nis; // Use NIS as document ID
+                    student.createdAt = new Date().toISOString();
+                    
+                    if (isFirebaseConnected) {
+                        await db.collection('students').doc(student.nis).set(student);
+                        console.log(`✅ Student saved to Firestore: ${student.name}`);
+                    }
+                    
+                    students.push(student);
+                }
+
+                // Create demo classes
+                const demoClasses = [
+                    { subject: 'Al-Quran Hadits', grade: '4A' },
+                    { subject: 'Fikih', grade: '4A' },
+                    { subject: 'Akidah Akhlak', grade: '4A' },
+                    { subject: 'Al-Quran Hadits', grade: '5A' },
+                    { subject: 'Fikih', grade: '5A' },
+                    { subject: 'Al-Quran Hadits', grade: '6A' }
+                ];
+
+                for (const classData of demoClasses) {
+                    const newClass = {
+                        id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+                        name: `${classData.subject} - ${classData.grade}`,
+                        subject: classData.subject,
+                        grade: classData.grade,
+                        description: `Kelas ${classData.subject} untuk siswa ${classData.grade}`,
+                        code: generateClassCode(),
+                        teacherId: 'demo_teacher',
+                        createdAt: new Date().toISOString()
+                    };
+
+                    if (isFirebaseConnected) {
+                        await db.collection('classes').doc(newClass.id).set(newClass);
+                        console.log(`✅ Class saved to Firestore: ${newClass.name}`);
+                    }
+                    
+                    classes.push(newClass);
+
+                    // Auto-enroll students to this class
+                    const gradeStudents = students.filter(s => s.grade === classData.grade);
+                    for (const student of gradeStudents) {
+                        if (!student.classIds.includes(newClass.id)) {
+                            student.classIds.push(newClass.id);
+                            
+                            if (isFirebaseConnected) {
+                                await db.collection('students').doc(student.nis).update({
+                                    classIds: student.classIds
+                                });
+                            }
+                        }
+                    }
+                }
+
+                // Save to localStorage as backup
+                localStorage.setItem('emes_students', JSON.stringify(students));
+                localStorage.setItem('emes_classes', JSON.stringify(classes));
+                localStorage.setItem('emes_assignments', JSON.stringify(assignments));
+                localStorage.setItem('emes_grades', JSON.stringify(grades));
+                localStorage.setItem('emes_submissions', JSON.stringify(submissions));
+
+                console.log('✅ Demo data initialized:', {
+                    students: students.length,
+                    classes: classes.length,
+                    firebaseConnected: isFirebaseConnected
+                });
+
+                updateDatabaseStatus(isFirebaseConnected, false);
+                
+            } catch (error) {
+                console.error('❌ Error initializing demo data:', error);
+                updateDatabaseStatus(false);
+            }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97ac7cdde036fd96',t:'MTc1NzE0NjIwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
