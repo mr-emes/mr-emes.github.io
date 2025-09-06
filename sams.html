@@ -101,6 +101,21 @@
             border-color: #10b981;
             background: #f0fdf4;
         }
+        @media (max-width: 640px) {
+            .btn-primary, .btn-success {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+            .admin-buttons {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            .admin-buttons button {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -151,7 +166,8 @@
                             <img src="https://archive.org/download/logoms-1/logoputih.png" alt="Logo" class="w-full h-full object-contain">
                         </div>
                         <div>
-                            <h1 class="text-xl font-bold">Manajemen Tugas Siswa</h1>
+                            <h1 class="text-xl font-bold">Kelas Pak Mahfud</h1>
+                            <p class="text-xs opacity-80">Sistem manajemen Tugas Siswa</p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
@@ -173,8 +189,8 @@
         <!-- User Info (Below Header) -->
         <div class="bg-white border-b border-gray-200">
             <div class="max-w-7xl mx-auto px-4 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div class="flex items-center space-x-4 mb-3 md:mb-0">
                         <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                             <span class="text-lg font-bold text-blue-600" id="userAvatar">U</span>
                         </div>
@@ -184,7 +200,7 @@
                             <p class="text-sm text-gray-500" id="userInfo">Info</p>
                         </div>
                     </div>
-                    <div class="text-right text-sm text-gray-600">
+                    <div class="text-sm text-gray-600">
                         <div>Login: <span id="loginTime">-</span></div>
                         <div id="quickStats">0 tugas • 0 pengumpulan</div>
                     </div>
@@ -196,27 +212,42 @@
         <main class="max-w-7xl mx-auto px-4 py-6">
             <!-- Admin View -->
             <div id="adminView" class="hidden">
-                <div class="flex justify-between items-center mb-6">
+                <div class="mb-6">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-800">Dashboard Admin</h2>
                         <p class="text-gray-600">Kelola tugas dan pantau progress siswa</p>
                     </div>
-                    <div class="flex flex-wrap gap-3">
-                        <button onclick="showCreateAssignmentModal()" class="btn-success">
+                    <div class="admin-buttons flex flex-wrap gap-2 mt-4">
+                        <button onclick="showCreateAssignmentModal()" class="btn-success flex items-center">
                             <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                             Buat Tugas
                         </button>
-                        <button onclick="showImportStudentsModal()" class="btn-primary">
+                        <button onclick="showImportStudentsModal()" class="btn-primary flex items-center">
                             <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                             </svg>
                             Import Siswa
                         </button>
-                        <button onclick="showBulkGradeModal()" class="btn-primary">Nilai Massal</button>
-                        <button onclick="exportGrades()" class="btn-primary">Ekspor Nilai</button>
-                        <button onclick="showSendRemindersModal()" class="btn-primary">Kirim Pengingat</button>
+                        <button onclick="showBulkGradeModal()" class="btn-primary flex items-center">
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Nilai Massal
+                        </button>
+                        <button onclick="exportGrades()" class="btn-primary flex items-center">
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Ekspor Nilai
+                        </button>
+                        <button onclick="showSendRemindersModal()" class="btn-primary flex items-center">
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                            </svg>
+                            Kirim Pengingat
+                        </button>
                     </div>
                 </div>
 
@@ -287,7 +318,7 @@
 
             <!-- Student View -->
             <div id="studentView" class="hidden">
-                <div class="flex justify-between items-center mb-6">
+                <div class="mb-6">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-800">Dashboard Siswa</h2>
                         <p class="text-gray-600">Lihat dan kumpulkan tugas Anda</p>
@@ -506,123 +537,27 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Upload File</label>
                     <div class="file-drop-zone" onclick="document.getElementById('importFile').click()">
-                        <input type="file" id="importFile" class="hidden" accept=".csv,.xlsx,.xls" onchange="handleImportFile(event)">
+                        <input type="file" id="importFile" class="hidden" accept=".csv,.xlsx,.xls">
                         <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                         </svg>
-                        <p class="text-gray-600">Klik untuk upload file atau drag & drop</p>
-                        <p class="text-xs text-gray-500 mt-1">Excel (.xlsx, .xls) atau CSV</p>
+                        <p class="text-gray-600">Klik untuk upload file Excel/CSV</p>
+                        <p class="text-xs text-gray-500 mt-1">CSV, XLSX (Max 5MB)</p>
+                    </div>
+                    <div id="importFilePreview" class="hidden mt-2 p-2 bg-gray-50 rounded border">
+                        <span id="importFileName" class="text-sm text-gray-700"></span>
+                        <button type="button" onclick="removeImportFile()" class="ml-2 text-red-600 hover:text-red-800">
+                            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                
-                <div id="importPreview" class="hidden">
-                    <h4 class="font-medium text-gray-800 mb-2">Preview Data:</h4>
-                    <div class="max-h-60 overflow-y-auto border border-gray-200 rounded">
-                        <table class="w-full text-sm">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-3 py-2 text-left">NIS</th>
-                                    <th class="px-3 py-2 text-left">Nama</th>
-                                    <th class="px-3 py-2 text-left">Kelas</th>
-                                </tr>
-                            </thead>
-                            <tbody id="importPreviewBody">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-3 flex space-x-3">
-                        <button onclick="confirmImport()" class="btn-success">Import Data</button>
-                        <button onclick="cancelImport()" class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">Batal</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bulk Grade Modal -->
-    <div id="bulkGradeModal" class="modal hidden">
-        <div class="modal-content p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Nilai Massal</h3>
-                <button onclick="hideBulkGradeModal()" class="text-gray-500 hover:text-gray-700">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
             </div>
             
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Tugas</label>
-                    <select id="bulkGradeAssignment" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" onchange="loadBulkGradeSubmissions()">
-                        <option value="">Pilih tugas untuk dinilai</option>
-                    </select>
-                </div>
-                
-                <div id="bulkGradeList" class="hidden">
-                    <h4 class="font-medium text-gray-800 mb-2">Pengumpulan yang belum dinilai:</h4>
-                    <div class="space-y-2 max-h-60 overflow-y-auto" id="bulkGradeSubmissions">
-                    </div>
-                    
-                    <div class="mt-4 p-4 bg-gray-50 rounded-lg">
-                        <h5 class="font-medium text-gray-800 mb-2">Nilai Massal</h5>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Nilai untuk semua</label>
-                                <input type="number" id="bulkGradeValue" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" min="0">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Feedback umum</label>
-                                <input type="text" id="bulkGradeFeedback" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Feedback untuk semua">
-                            </div>
-                        </div>
-                        <button onclick="applyBulkGrade()" class="mt-3 btn-primary">Terapkan ke Semua</button>
-                    </div>
-                    
-                    <div class="mt-4 flex space-x-3">
-                        <button onclick="saveBulkGrades()" class="btn-success">Simpan Semua Nilai</button>
-                        <button onclick="hideBulkGradeModal()" class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">Batal</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Send Reminders Modal -->
-    <div id="sendRemindersModal" class="modal hidden">
-        <div class="modal-content p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Kirim Pengingat</h3>
-                <button onclick="hideSendRemindersModal()" class="text-gray-500 hover:text-gray-700">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Tugas</label>
-                    <select id="reminderAssignment" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" onchange="loadReminderStudents()">
-                        <option value="">Pilih tugas</option>
-                    </select>
-                </div>
-                
-                <div id="reminderStudentsList" class="hidden">
-                    <h4 class="font-medium text-gray-800 mb-2">Siswa yang belum mengumpulkan:</h4>
-                    <div class="max-h-40 overflow-y-auto border border-gray-200 rounded p-3" id="reminderStudents">
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Pesan Pengingat</label>
-                    <textarea id="reminderMessage" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" rows="4" placeholder="Tulis pesan pengingat...">Halo! Jangan lupa untuk mengumpulkan tugas sebelum deadline ya. Terima kasih!</textarea>
-                </div>
-                
-                <div class="flex space-x-3">
-                    <button onclick="sendReminders()" class="btn-success">Kirim Pengingat</button>
-                    <button onclick="hideSendRemindersModal()" class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">Batal</button>
-                </div>
+            <div class="flex space-x-3 mt-6">
+                <button onclick="hideImportStudentsModal()" class="flex-1 px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">Batal</button>
+                <button onclick="processImport()" class="flex-1 btn-primary">Import Data</button>
             </div>
         </div>
     </div>
@@ -639,29 +574,31 @@
                 </button>
             </div>
             
+            <div class="mb-4">
+                <h4 class="font-medium text-gray-800" id="submitAssignmentTitle">Judul Tugas</h4>
+                <p class="text-sm text-gray-600" id="submitAssignmentSubject">Mata Pelajaran</p>
+                <p class="text-sm text-gray-600" id="submitAssignmentDueDate">Deadline: -</p>
+            </div>
+            
             <form onsubmit="submitAssignment(event)">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Jawaban/Komentar</label>
-                        <textarea id="submissionText" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" rows="4" placeholder="Tulis jawaban atau komentar Anda..." required></textarea>
+                <input type="hidden" id="submitAssignmentId">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload Jawaban</label>
+                    <div class="file-drop-zone" onclick="document.getElementById('submissionFile').click()">
+                        <input type="file" id="submissionFile" class="hidden" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        <p class="text-gray-600">Klik untuk upload file atau drag & drop</p>
+                        <p class="text-xs text-gray-500 mt-1">PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload File Jawaban (Opsional)</label>
-                        <div class="file-drop-zone" onclick="document.getElementById('submissionFile').click()">
-                            <input type="file" id="submissionFile" class="hidden" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                            <svg class="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    <div id="submissionFilePreview" class="hidden mt-2 p-2 bg-gray-50 rounded border">
+                        <span id="submissionFileName" class="text-sm text-gray-700"></span>
+                        <button type="button" onclick="removeSubmissionFile()" class="ml-2 text-red-600 hover:text-red-800">
+                            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
-                            <p class="text-gray-600 text-sm">Upload file jawaban</p>
-                        </div>
-                        <div id="submissionFilePreview" class="hidden mt-2 p-2 bg-gray-50 rounded border">
-                            <span id="submissionFileName" class="text-sm text-gray-700"></span>
-                            <button type="button" onclick="removeSubmissionFile()" class="ml-2 text-red-600 hover:text-red-800">
-                                <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
+                        </button>
                     </div>
                 </div>
                 
@@ -673,1080 +610,1052 @@
         </div>
     </div>
 
-    <!-- Grade Modal -->
-    <div id="gradeModal" class="modal hidden">
+    <!-- Grade Assignment Modal -->
+    <div id="gradeAssignmentModal" class="modal hidden">
         <div class="modal-content p-6">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Beri Nilai</h3>
-                <button onclick="hideGradeModal()" class="text-gray-500 hover:text-gray-700">
+                <h3 class="text-xl font-bold text-gray-800">Nilai Tugas</h3>
+                <button onclick="hideGradeAssignmentModal()" class="text-gray-500 hover:text-gray-700">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
             
-            <div id="gradeContent" class="mb-4">
-                <!-- Grade content will be loaded here -->
+            <div class="mb-4">
+                <h4 class="font-medium text-gray-800" id="gradeAssignmentTitle">Judul Tugas</h4>
+                <p class="text-sm text-gray-600" id="gradeAssignmentStudent">Siswa: -</p>
+                <p class="text-sm text-gray-600" id="gradeAssignmentSubject">Mata Pelajaran: -</p>
+                <p class="text-sm text-gray-600" id="gradeAssignmentDueDate">Deadline: -</p>
+                <div id="gradeAssignmentSubmission" class="mt-2">
+                    <p class="text-sm font-medium text-gray-700">File Jawaban:</p>
+                    <a href="#" id="gradeAssignmentFileLink" target="_blank" class="text-sm text-blue-600 hover:underline">Lihat file</a>
+                </div>
             </div>
             
-            <form onsubmit="submitGrade(event)">
-                <div class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nilai</label>
-                            <input type="number" id="gradeScore" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" min="0" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nilai Maksimal</label>
-                            <input type="number" id="gradeMaxScore" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100" readonly>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Feedback</label>
-                        <textarea id="gradeFeedback" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Berikan feedback untuk siswa..."></textarea>
-                    </div>
+            <form onsubmit="gradeAssignment(event)">
+                <input type="hidden" id="gradeAssignmentId">
+                <input type="hidden" id="gradeStudentId">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nilai (0-<span id="maxScore">100</span>)</label>
+                    <input type="number" id="assignmentScore" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" min="0" max="100" required>
+                </div>
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Komentar (Opsional)</label>
+                    <textarea id="assignmentFeedback" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
                 </div>
                 
                 <div class="flex space-x-3 mt-6">
-                    <button type="button" onclick="hideGradeModal()" class="flex-1 px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">Batal</button>
-                    <button type="submit" class="flex-1 btn-primary">Simpan Nilai</button>
+                    <button type="button" onclick="hideGradeAssignmentModal()" class="flex-1 px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">Batal</button>
+                    <button type="submit" class="flex-1 btn-success">Simpan Nilai</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- View Submissions Modal -->
+    <div id="viewSubmissionsModal" class="modal hidden">
+        <div class="modal-content p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Daftar Pengumpulan</h3>
+                <button onclick="hideViewSubmissionsModal()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <h4 class="font-medium text-gray-800" id="submissionsAssignmentTitle">Judul Tugas</h4>
+                <p class="text-sm text-gray-600" id="submissionsAssignmentSubject">Mata Pelajaran: -</p>
+                <p class="text-sm text-gray-600" id="submissionsAssignmentDueDate">Deadline: -</p>
+                <div class="flex items-center mt-2">
+                    <span class="text-sm font-medium text-gray-700 mr-2">Status:</span>
+                    <span id="submissionsStatus" class="text-sm px-2 py-1 rounded-full bg-blue-100 text-blue-800">-</span>
+                </div>
+            </div>
+            
+            <div class="max-h-96 overflow-y-auto">
+                <table class="w-full text-sm text-left text-gray-700">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                        <tr>
+                            <th class="px-3 py-2">Nama Siswa</th>
+                            <th class="px-3 py-2">Kelas</th>
+                            <th class="px-3 py-2">Status</th>
+                            <th class="px-3 py-2">Nilai</th>
+                            <th class="px-3 py-2">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="submissionsList">
+                        <!-- Submissions will be listed here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4">
+                <button onclick="hideViewSubmissionsModal()" class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification hidden"></div>
+
     <script>
-        // Google Sheets Database Configuration
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbw7nd87OHfyMkKDXCjo2WaNmV5QK_r6hjz364Yvm-yDziHnjPsnZ-M2Bg9tDeyfn3Fk/exec';
+	        // Google Sheets Database Configuration
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxk5_5d8MghCrJX5irxkzxFr_-F_2I8aIy2AAg8XduIgHp8ky-p8t7aeYTyrmrc93U0/exec';
         
-        // App State
+        // Global variables
         let currentUser = null;
         let assignments = [];
         let submissions = [];
         let students = [];
-        let currentAssignmentId = null;
-        let currentSubmissionId = null;
-        let loginTime = null;
-        let importedStudents = [];
-        let bulkGradeData = [];
-
-        // Database Functions
-        async function callGoogleSheets(action, data = {}) {
-            try {
-                const response = await fetch(GOOGLE_SHEETS_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        action: action,
-                        data: JSON.stringify(data)
-                    })
-                });
-                
-                const result = await response.json();
-                if (result.success) {
-                    return result.data;
-                } else {
-                    throw new Error(result.error || 'Database error');
-                }
-            } catch (error) {
-                console.error('Database error:', error);
-                showNotification('Koneksi database bermasalah: ' + error.message, 'error');
-                return null;
+        let teachers = [];
+        
+        // Initialize the app
+        function initApp() {
+            // Load data from localStorage
+            loadData();
+            
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainApp();
             }
         }
-
-        // Initialize data from Google Sheets
-        async function initializeData() {
-            showNotification('Memuat data...', 'info');
+        
+        // Load data from localStorage
+        function loadData() {
+            const savedAssignments = localStorage.getItem('assignments');
+            const savedSubmissions = localStorage.getItem('submissions');
+            const savedStudents = localStorage.getItem('students');
+            const savedTeachers = localStorage.getItem('teachers');
             
-            try {
-                // Load all data from sheets
-                const [studentsData, assignmentsData, submissionsData] = await Promise.all([
-                    callGoogleSheets('getStudents'),
-                    callGoogleSheets('getAssignments'),
-                    callGoogleSheets('getSubmissions')
-                ]);
-                
-                students = studentsData || [];
-                assignments = assignmentsData || [];
-                submissions = submissionsData || [];
-                
-                // If no data exists, create demo data
-                if (students.length === 0) {
-                    await createDemoData();
-                }
-                
-                showNotification('Data berhasil dimuat!', 'success');
-            } catch (error) {
-                console.error('Failed to initialize data:', error);
-                showNotification('Gagal memuat data. Menggunakan data demo.', 'error');
-                createLocalDemoData();
+            assignments = savedAssignments ? JSON.parse(savedAssignments) : [];
+            submissions = savedSubmissions ? JSON.parse(savedSubmissions) : [];
+            students = savedStudents ? JSON.parse(savedStudents) : [];
+            teachers = savedTeachers ? JSON.parse(savedTeachers) : [];
+            
+            // If no data exists, initialize with sample data
+            if (students.length === 0) {
+                initializeSampleData();
             }
         }
-
-        // Create demo data in Google Sheets
-        async function createDemoData() {
-            const demoStudents = [
-                { nis: '220060', name: 'Ahmad Rizki', class: '4A' },
-                { nis: '220061', name: 'Siti Nurhaliza', class: '4A' },
-                { nis: '220062', name: 'Budi Santoso', class: '4B' },
-                { nis: '220063', name: 'Dewi Sartika', class: '5A' },
-                { nis: '220064', name: 'Eko Prasetyo', class: '5B' }
-            ];
-
-            const demoAssignments = [
-                {
-                    subject: 'Al-Quran Hadits',
-                    title: 'Hafalan Surah Al-Fatihah',
-                    description: 'Hafalkan Surah Al-Fatihah dengan tajwid yang benar',
-                    class: '4A',
-                    maxScore: 100,
-                    dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-                    fileUrl: ''
-                },
-                {
-                    subject: 'Fikih',
-                    title: 'Praktik Wudhu',
-                    description: 'Praktikkan gerakan wudhu yang benar sesuai sunnah',
-                    class: '4A',
-                    maxScore: 100,
-                    dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-                    fileUrl: ''
-                }
-            ];
-
-            // Add demo data to sheets
-            for (const student of demoStudents) {
-                await callGoogleSheets('addStudent', student);
-            }
-            
-            for (const assignment of demoAssignments) {
-                await callGoogleSheets('addAssignment', assignment);
-            }
-            
-            // Reload data
-            await initializeData();
-        }
-
-        // Fallback local demo data
-        function createLocalDemoData() {
+        
+        // Initialize sample data
+        function initializeSampleData() {
+            // Sample students
             students = [
-                { id: '1', nis: '220060', name: 'Ahmad Rizki', class: '4A' },
-                { id: '2', nis: '220061', name: 'Siti Nurhaliza', class: '4A' },
-                { id: '3', nis: '220062', name: 'Budi Santoso', class: '4B' },
-                { id: '4', nis: '220063', name: 'Dewi Sartika', class: '5A' },
-                { id: '5', nis: '220064', name: 'Eko Prasetyo', class: '5B' }
+                { id: '1001', username: 'siswa1', password: 'password', name: 'Ahmad Rizki', class: '4A' },
+                { id: '1002', username: 'siswa2', password: 'password', name: 'Siti Nurhaliza', class: '4A' },
+                { id: '1003', username: 'siswa3', password: 'password', name: 'Budi Santoso', class: '4B' },
+                { id: '1004', username: 'siswa4', password: 'password', name: 'Dewi Lestari', class: '4B' },
+                { id: '1005', username: 'siswa5', password: 'password', name: 'Rudi Hermawan', class: '5A' },
+                { id: '1006', username: 'siswa6', password: 'password', name: 'Maya Sari', class: '5A' },
+                { id: '1007', username: 'siswa7', password: 'password', name: 'Fajar Pratama', class: '5B' },
+                { id: '1008', username: 'siswa8', password: 'password', name: 'Indah Permatasari', class: '5B' },
+                { id: '1009', username: 'siswa9', password: 'password', name: 'Hendra Gunawan', class: '6A' },
+                { id: '1010', username: 'siswa10', password: 'password', name: 'Rina Wulandari', class: '6A' },
+                { id: '1011', username: 'siswa11', password: 'password', name: 'Joko Susilo', class: '6B' },
+                { id: '1012', username: 'siswa12', password: 'password', name: 'Lia Amelia', class: '6B' }
             ];
-
-            assignments = [
-                {
-                    id: '1',
-                    subject: 'Al-Quran Hadits',
-                    title: 'Hafalan Surah Al-Fatihah',
-                    description: 'Hafalkan Surah Al-Fatihah dengan tajwid yang benar',
-                    class: '4A',
-                    maxScore: 100,
-                    dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-                    createdAt: new Date().toISOString(),
-                    fileUrl: null
-                },
-                {
-                    id: '2',
-                    subject: 'Fikih',
-                    title: 'Praktik Wudhu',
-                    description: 'Praktikkan gerakan wudhu yang benar sesuai sunnah',
-                    class: '4A',
-                    maxScore: 100,
-                    dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-                    createdAt: new Date().toISOString(),
-                    fileUrl: null
-                }
+            
+            // Sample teachers
+            teachers = [
+                { id: '2001', username: 'guru1', password: 'password', name: 'Pak Mahfud', subject: 'Al-Quran Hadits' },
+                { id: '2002', username: 'guru2', password: 'password', name: 'Bu Siti', subject: 'Akidah Akhlak' },
+                { id: '2003', username: 'guru3', password: 'password', name: 'Pak Ahmad', subject: 'Fikih' }
             ];
-
-            submissions = [
-                {
-                    id: '1',
-                    assignmentId: '1',
-                    studentId: '1',
-                    studentName: 'Ahmad Rizki',
-                    studentClass: '4A',
-                    text: 'Saya sudah menghafal Surah Al-Fatihah dengan baik',
-                    submittedAt: new Date().toISOString(),
-                    grade: 85,
-                    feedback: 'Hafalan sudah baik, tingkatkan lagi tajwidnya',
-                    fileUrl: null
-                }
-            ];
+            
+            // Sample admin
+            const admin = { id: '3001', username: 'admin', password: 'admin', name: 'Administrator', role: 'admin' };
+            teachers.push(admin);
+            
+            // Save to localStorage
+            localStorage.setItem('students', JSON.stringify(students));
+            localStorage.setItem('teachers', JSON.stringify(teachers));
         }
-
-        // Login System
+        
+        // Handle login
         function handleLogin(event) {
             event.preventDefault();
             
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
             
-            // Admin login
-            if (username === 'admin' && password === 'admin123') {
-                currentUser = {
-                    id: 'admin',
-                    username: 'admin',
-                    role: 'admin',
-                    name: 'Mahfud Sidik, S.Pd.I',
-                    info: 'Guru Pend. Agama Islam'
-                };
-                loginTime = new Date();
+            // Check if user is a student
+            const student = students.find(s => s.username === username && s.password === password);
+            if (student) {
+                currentUser = { ...student, role: 'student' };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 showMainApp();
+                showNotification('Login berhasil!', 'success');
                 return;
             }
             
-            // Student login
-            const student = students.find(s => s.nis === username && s.nis === password);
-            if (student) {
-                currentUser = {
-                    ...student,
-                    username: student.nis,
-                    role: 'student'
-                };
-                loginTime = new Date();
+            // Check if user is a teacher or admin
+            const teacher = teachers.find(t => t.username === username && t.password === password);
+            if (teacher) {
+                currentUser = { ...teacher, role: teacher.role || 'teacher' };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 showMainApp();
+                showNotification('Login berhasil!', 'success');
                 return;
             }
             
             showNotification('Username atau password salah!', 'error');
         }
-
+        
+        // Show main app
         function showMainApp() {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             
-            updateUserInfo();
-            
-            if (currentUser.role === 'admin') {
-                document.getElementById('adminView').classList.remove('hidden');
-                document.getElementById('studentView').classList.add('hidden');
-                loadAdminView();
-            } else {
-                document.getElementById('adminView').classList.add('hidden');
-                document.getElementById('studentView').classList.remove('hidden');
-                loadStudentView();
-            }
-            
-            showNotification(`Selamat datang, ${currentUser.name}!`, 'success');
-        }
-
-        function updateUserInfo() {
-            if (!currentUser) return;
-            
-            const avatar = currentUser.name.charAt(0).toUpperCase();
-            document.getElementById('userAvatar').textContent = avatar;
+            // Update user info
+            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0);
             document.getElementById('userName').textContent = currentUser.name;
             
-            if (currentUser.role === 'admin') {
-                document.getElementById('userRole').textContent = '👨‍🏫 Admin/Guru';
-                document.getElementById('userInfo').textContent = currentUser.info || 'Guru PAI';
-            } else {
-                document.getElementById('userRole').textContent = '👨‍🎓 Siswa';
-                document.getElementById('userInfo').textContent = `Kelas ${currentUser.class || 'Tidak Diketahui'} • NIS: ${currentUser.nis || 'Tidak Diketahui'}`;
-            }
+            // Set login time
+            const now = new Date();
+            document.getElementById('loginTime').textContent = now.toLocaleString('id-ID');
             
-            if (loginTime) {
-                document.getElementById('loginTime').textContent = loginTime.toLocaleTimeString('id-ID');
+            // Show appropriate view based on role
+            if (currentUser.role === 'student') {
+                document.getElementById('studentView').classList.remove('hidden');
+                document.getElementById('adminView').classList.add('hidden');
+                document.getElementById('userRole').textContent = 'Siswa';
+                document.getElementById('userInfo').textContent = `Kelas: ${currentUser.class}`;
+                document.getElementById('studentFields').classList.remove('hidden');
+                
+                // Load student data
+                loadStudentData();
+            } else {
+                document.getElementById('studentView').classList.add('hidden');
+                document.getElementById('adminView').classList.remove('hidden');
+                
+                if (currentUser.role === 'admin') {
+                    document.getElementById('userRole').textContent = 'Administrator';
+                    document.getElementById('userInfo').textContent = 'Sistem Manajemen';
+                } else {
+                    document.getElementById('userRole').textContent = 'Guru';
+                    document.getElementById('userInfo').textContent = `Mata Pelajaran: ${currentUser.subject}`;
+                }
+                
+                // Load admin data
+                loadAdminData();
             }
             
             // Update quick stats
-            document.getElementById('quickStats').textContent = `${assignments.length} tugas • ${submissions.length} pengumpulan`;
+            updateQuickStats();
         }
-
-        function loadAdminView() {
-            // Update admin stats
-            const pendingSubmissions = submissions.filter(s => s.grade === null || s.grade === undefined).length;
-            const gradedSubmissions = submissions.filter(s => s.grade !== null && s.grade !== undefined).length;
+        
+        // Load student data
+        function loadStudentData() {
+            // Filter assignments for this student's class
+            const studentAssignments = assignments.filter(a => a.class === currentUser.class);
             
-            document.getElementById('adminTotalAssignments').textContent = assignments.length;
-            document.getElementById('adminPendingReview').textContent = pendingSubmissions;
-            document.getElementById('adminGraded').textContent = gradedSubmissions;
-            document.getElementById('adminTotalStudents').textContent = students.length;
-            
-            // Load assignments list
-            const container = document.getElementById('adminAssignmentsList');
-            if (assignments.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8">
-                        <p class="text-gray-500 mb-4">Belum ada tugas</p>
-                        <button onclick="showCreateAssignmentModal()" class="btn-success">Buat Tugas Pertama</button>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = assignments.map(assignment => {
-                const assignmentSubmissions = submissions.filter(s => s.assignmentId === assignment.id);
-                const isOverdue = new Date(assignment.dueDate) < new Date();
-                
-                return `
-                    <div class="border border-gray-200 rounded-lg p-4 mb-4">
-                        <div class="flex justify-between items-start">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <h4 class="text-lg font-semibold text-gray-800">${assignment.title}</h4>
-                                    <span class="px-2 py-1 text-xs rounded ${isOverdue ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
-                                        ${isOverdue ? 'Terlambat' : 'Aktif'}
-                                    </span>
-                                    <span class="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded">${assignment.subject}</span>
-                                    <span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">Kelas ${assignment.class}</span>
-                                </div>
-                                <p class="text-gray-600 text-sm mb-2">${assignment.description}</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span>📅 ${new Date(assignment.dueDate).toLocaleDateString('id-ID')}</span>
-                                    <span>📊 ${assignmentSubmissions.length} pengumpulan</span>
-                                    <span>🎯 Maks: ${assignment.maxScore}</span>
-                                    ${assignment.fileUrl ? '<span>📎 Ada file</span>' : ''}
-                                </div>
-                            </div>
-                            <div class="flex space-x-2">
-                                <button onclick="editAssignment('${assignment.id}')" class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200">Edit</button>
-                                <button onclick="deleteAssignment('${assignment.id}')" class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200">Hapus</button>
-                            </div>
-                        </div>
-                        
-                        ${assignmentSubmissions.length > 0 ? `
-                            <div class="mt-4 pt-4 border-t border-gray-200">
-                                <h5 class="font-medium text-gray-800 mb-2">Pengumpulan:</h5>
-                                <div class="space-y-2">
-                                    ${assignmentSubmissions.map(submission => `
-                                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
-                                            <div>
-                                                <span class="font-medium">${submission.studentName}</span>
-                                                <span class="text-sm text-gray-600 ml-2">${submission.text.substring(0, 50)}...</span>
-                                                ${submission.fileUrl ? '<span class="text-xs text-blue-600 ml-2">📎 File</span>' : ''}
-                                            </div>
-                                            <div class="flex items-center space-x-2">
-                                                ${submission.grade !== null && submission.grade !== undefined ? 
-                                                    `<span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded">${submission.grade}/${assignment.maxScore}</span>` :
-                                                    `<span class="px-2 py-1 text-xs bg-orange-100 text-orange-800 rounded">Belum dinilai</span>`
-                                                }
-                                                <button onclick="gradeSubmission('${submission.id}')" class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs hover:bg-blue-200">
-                                                    ${submission.grade !== null && submission.grade !== undefined ? 'Edit' : 'Nilai'}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function loadStudentView() {
-            if (!currentUser || !currentUser.class) return;
-            
-            // Filter assignments for current student's class
-            const classAssignments = assignments.filter(a => a.class === currentUser.class);
-            const studentSubmissions = submissions.filter(s => s.studentName === currentUser.name);
-            
-            // Update student stats
-            const pendingAssignments = classAssignments.filter(a => {
-                const submission = studentSubmissions.find(s => s.assignmentId === a.id);
-                return !submission && new Date(a.dueDate) > new Date();
+            // Count stats
+            const pending = studentAssignments.filter(a => {
+                const submission = submissions.find(s => s.assignmentId === a.id && s.studentId === currentUser.id);
+                return !submission;
             }).length;
             
-            const submittedCount = studentSubmissions.length;
-            const gradedSubmissions = studentSubmissions.filter(s => s.grade !== null && s.grade !== undefined);
-            const averageGrade = gradedSubmissions.length > 0 ? 
-                Math.round(gradedSubmissions.reduce((sum, s) => sum + s.grade, 0) / gradedSubmissions.length) : 0;
+            const submitted = studentAssignments.filter(a => {
+                const submission = submissions.find(s => s.assignmentId === a.id && s.studentId === currentUser.id);
+                return !!submission;
+            }).length;
             
-            document.getElementById('studentPending').textContent = pendingAssignments;
-            document.getElementById('studentSubmitted').textContent = submittedCount;
-            document.getElementById('studentAverage').textContent = averageGrade + '%';
+            // Calculate average score
+            const gradedSubmissions = submissions.filter(s => 
+                s.studentId === currentUser.id && s.score !== undefined
+            );
             
-            // Load assignments list
+            const average = gradedSubmissions.length > 0 
+                ? Math.round(gradedSubmissions.reduce((sum, s) => sum + s.score, 0) / gradedSubmissions.length)
+                : 0;
+            
+            // Update stats
+            document.getElementById('studentPending').textContent = pending;
+            document.getElementById('studentSubmitted').textContent = submitted;
+            document.getElementById('studentAverage').textContent = `${average}%`;
+            
+            // Render assignments
+            renderStudentAssignments(studentAssignments);
+        }
+        
+        // Render student assignments
+        function renderStudentAssignments(assignmentsList) {
             const container = document.getElementById('studentAssignmentsList');
-            if (classAssignments.length === 0) {
+            container.innerHTML = '';
+            
+            if (assignmentsList.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-8">
-                        <p class="text-gray-500">Belum ada tugas untuk kelas ${currentUser.class}</p>
+                    <div class="text-center py-8 text-gray-500">
+                        <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <p>Tidak ada tugas saat ini.</p>
                     </div>
                 `;
                 return;
             }
             
-            container.innerHTML = classAssignments.map(assignment => {
-                const submission = studentSubmissions.find(s => s.assignmentId === assignment.id);
-                const isOverdue = new Date(assignment.dueDate) < new Date();
-                const daysLeft = Math.ceil((new Date(assignment.dueDate) - new Date()) / (1000 * 60 * 60 * 24));
+            // Sort assignments by due date (soonest first)
+            assignmentsList.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+            
+            assignmentsList.forEach(assignment => {
+                const submission = submissions.find(s => 
+                    s.assignmentId === assignment.id && s.studentId === currentUser.id
+                );
                 
-                let statusBadge = '';
-                let actionButton = '';
+                const dueDate = new Date(assignment.dueDate);
+                const now = new Date();
+                const isOverdue = now > dueDate;
+                const status = submission ? 'submitted' : isOverdue ? 'overdue' : 'pending';
                 
-                if (submission) {
-                    if (submission.grade !== null && submission.grade !== undefined) {
-                        statusBadge = `<span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded">Dinilai: ${submission.grade}/${assignment.maxScore}</span>`;
-                        actionButton = `<button onclick="viewSubmission('${submission.id}')" class="px-3 py-1 bg-blue-100 text-blue-800 rounded text-sm">Lihat Hasil</button>`;
-                    } else {
-                        statusBadge = `<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">Dikumpulkan</span>`;
-                        actionButton = `<button onclick="editSubmission('${submission.id}')" class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">Edit</button>`;
-                    }
-                } else if (isOverdue) {
-                    statusBadge = `<span class="px-2 py-1 text-xs bg-red-100 text-red-800 rounded">Terlambat</span>`;
-                    actionButton = `<button onclick="showSubmitAssignmentModal('${assignment.id}')" class="px-3 py-1 bg-red-100 text-red-800 rounded text-sm">Kumpulkan (Terlambat)</button>`;
+                let statusText, statusClass, buttonHtml;
+                
+                if (status === 'submitted') {
+                    statusText = submission.score !== undefined 
+                        ? `Dinilai: ${submission.score}/${assignment.maxScore}` 
+                        : 'Sudah dikumpulkan';
+                    statusClass = submission.score !== undefined 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-blue-100 text-blue-800';
+                    
+                    buttonHtml = `
+                        <button class="p-2 text-blue-600 hover:text-blue-800" title="Lihat Detail">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                    `;
+                } else if (status === 'overdue') {
+                    statusText = 'Terlambat';
+                    statusClass = 'bg-red-100 text-red-800';
+                    buttonHtml = `
+                        <button class="p-2 text-gray-400 cursor-not-allowed" title="Tidak dapat dikumpulkan" disabled>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                        </button>
+                    `;
                 } else {
-                    statusBadge = `<span class="px-2 py-1 text-xs bg-orange-100 text-orange-800 rounded">Belum Dikumpulkan</span>`;
-                    actionButton = `<button onclick="showSubmitAssignmentModal('${assignment.id}')" class="px-3 py-1 bg-green-100 text-green-800 rounded text-sm">Kumpulkan</button>`;
+                    statusText = 'Belum dikumpulkan';
+                    statusClass = 'bg-yellow-100 text-yellow-800';
+                    buttonHtml = `
+                        <button onclick="showSubmitAssignmentModal('${assignment.id}')" class="p-2 text-blue-600 hover:text-blue-800" title="Kumpulkan Tugas">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                        </button>
+                    `;
                 }
                 
-                return `
-                    <div class="border border-gray-200 rounded-lg p-4 mb-4">
-                        <div class="flex justify-between items-start">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <h4 class="text-lg font-semibold text-gray-800">${assignment.title}</h4>
-                                    ${statusBadge}
-                                    <span class="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded">${assignment.subject}</span>
-                                </div>
-                                <p class="text-gray-600 text-sm mb-2">${assignment.description}</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span>📅 ${new Date(assignment.dueDate).toLocaleDateString('id-ID')}</span>
-                                    <span>🎯 Maks: ${assignment.maxScore}</span>
-                                    <span class="${isOverdue ? 'text-red-600' : daysLeft <= 2 ? 'text-orange-600' : 'text-green-600'}">
-                                        ${isOverdue ? '⏰ Terlambat' : daysLeft <= 0 ? '⏰ Hari ini' : `⏰ ${daysLeft} hari lagi`}
-                                    </span>
-                                    ${assignment.fileUrl ? '<span class="text-blue-600">📎 Ada file tugas</span>' : ''}
-                                </div>
-                                ${submission && submission.feedback ? `
-                                    <div class="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded">
-                                        <p class="text-sm text-yellow-800"><strong>Feedback:</strong> ${submission.feedback}</p>
-                                    </div>
-                                ` : ''}
+                const assignmentElement = document.createElement('div');
+                assignmentElement.className = 'border border-gray-200 rounded-lg p-4 mb-4';
+                assignmentElement.innerHTML = `
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+                        <div class="flex-1 mb-3 md:mb-0">
+                            <h4 class="font-semibold text-gray-800">${assignment.title}</h4>
+                            <div class="mt-2 text-sm text-gray-600">
+                                <p>${assignment.subject} • ${assignment.class}</p>
+                                <p>Deadline: ${formatDate(assignment.dueDate)}</p>
+                                <p class="mt-1">${assignment.description}</p>
                             </div>
-                            <div class="ml-4">
-                                ${actionButton}
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="text-xs px-2 py-1 rounded-full ${statusClass} mb-2">${statusText}</span>
+                            <div class="flex space-x-1">
+                                ${buttonHtml}
                             </div>
                         </div>
                     </div>
                 `;
-            }).join('');
+                
+                container.appendChild(assignmentElement);
+            });
         }
-
-        // Modal Functions
-        function showEditProfileModal() {
-            if (!currentUser) return;
+        
+        // Load admin data
+        function loadAdminData() {
+            // Count stats
+            const totalAssignments = assignments.length;
             
-            document.getElementById('profileName').value = currentUser.name || '';
-            document.getElementById('profileUsername').value = currentUser.username || '';
+            const pendingReview = submissions.filter(s => s.score === undefined).length;
+            const graded = submissions.filter(s => s.score !== undefined).length;
+            const totalStudents = students.length;
+            
+            // Update stats
+            document.getElementById('adminTotalAssignments').textContent = totalAssignments;
+            document.getElementById('adminPendingReview').textContent = pendingReview;
+            document.getElementById('adminGraded').textContent = graded;
+            document.getElementById('adminTotalStudents').textContent = totalStudents;
+            
+            // Render assignments
+            renderAdminAssignments();
+        }
+        
+        // Render admin assignments
+        function renderAdminAssignments() {
+            const container = document.getElementById('adminAssignmentsList');
+            container.innerHTML = '';
+            
+            if (assignments.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <p>Belum ada tugas. Buat tugas pertama Anda!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort assignments by creation date (newest first)
+            assignments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            assignments.forEach(assignment => {
+                const dueDate = new Date(assignment.dueDate);
+                const now = new Date();
+                const isActive = now <= dueDate;
+                
+                // Count submissions for this assignment
+                const assignmentSubmissions = submissions.filter(s => s.assignmentId === assignment.id);
+                const submittedCount = assignmentSubmissions.length;
+                const gradedCount = assignmentSubmissions.filter(s => s.score !== undefined).length;
+                
+                const totalStudents = students.filter(s => s.class === assignment.class).length;
+                
+                const assignmentElement = document.createElement('div');
+                assignmentElement.className = 'border border-gray-200 rounded-lg p-4 mb-4';
+                assignmentElement.innerHTML = `
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+                        <div class="flex-1 mb-3 md:mb-0">
+                            <h4 class="font-semibold text-gray-800">${assignment.title}</h4>
+                            <div class="mt-2 text-sm text-gray-600">
+                                <p>${assignment.subject} • ${assignment.class} • ${isActive ? 'Aktif' : 'Selesai'}</p>
+                                <p>Deadline: ${formatDate(assignment.dueDate)}</p>
+                                <p class="mt-1">${assignment.description}</p>
+                                <div class="mt-2">
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span>Pengumpulan: ${submittedCount}/${totalStudents}</span>
+                                        <span>Dinilai: ${gradedCount}/${submittedCount}</span>
+                                    </div>
+                                    <div class="progress-bar mt-1">
+                                        <div class="progress-fill" style="width: ${(submittedCount/totalStudents)*100}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col space-y-2">
+                            <button onclick="showViewSubmissionsModal('${assignment.id}')" class="p-2 text-blue-600 hover:text-blue-800" title="Lihat Pengumpulan">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </button>
+                            <button onclick="editAssignment('${assignment.id}')" class="p-2 text-yellow-600 hover:text-yellow-800" title="Edit Tugas">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button onclick="deleteAssignment('${assignment.id}')" class="p-2 text-red-600 hover:text-red-800" title="Hapus Tugas">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(assignmentElement);
+            });
+        }
+        
+        // Update quick stats
+        function updateQuickStats() {
+            if (currentUser.role === 'student') {
+                const studentAssignments = assignments.filter(a => a.class === currentUser.class);
+                const submittedCount = studentAssignments.filter(a => {
+                    const submission = submissions.find(s => s.assignmentId === a.id && s.studentId === currentUser.id);
+                    return !!submission;
+                }).length;
+                
+                document.getElementById('quickStats').textContent = `${studentAssignments.length} tugas • ${submittedCount} pengumpulan`;
+            } else {
+                const pendingReview = submissions.filter(s => s.score === undefined).length;
+                document.getElementById('quickStats').textContent = `${assignments.length} tugas • ${pendingReview} menunggu review`;
+            }
+        }
+        
+        // Show submit assignment modal
+        function showSubmitAssignmentModal(assignmentId) {
+            const assignment = assignments.find(a => a.id === assignmentId);
+            if (!assignment) return;
+            
+            document.getElementById('submitAssignmentId').value = assignmentId;
+            document.getElementById('submitAssignmentTitle').textContent = assignment.title;
+            document.getElementById('submitAssignmentSubject').textContent = assignment.subject;
+            document.getElementById('submitAssignmentDueDate').textContent = `Deadline: ${formatDate(assignment.dueDate)}`;
+            
+            // Reset file input
+            document.getElementById('submissionFile').value = '';
+            document.getElementById('submissionFilePreview').classList.add('hidden');
+            
+            document.getElementById('submitAssignmentModal').classList.remove('hidden');
+        }
+        
+        // Hide submit assignment modal
+        function hideSubmitAssignmentModal() {
+            document.getElementById('submitAssignmentModal').classList.add('hidden');
+        }
+        
+        // Submit assignment
+        function submitAssignment(event) {
+            event.preventDefault();
+            
+            const assignmentId = document.getElementById('submitAssignmentId').value;
+            const fileInput = document.getElementById('submissionFile');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showNotification('Harap pilih file jawaban!', 'error');
+                return;
+            }
+            
+            // In a real app, you would upload the file to a server
+            // For this demo, we'll just simulate the process
+            
+            const file = fileInput.files[0];
+            const fileName = file.name;
+            
+            // Create submission
+            const submission = {
+                id: generateId(),
+                assignmentId: assignmentId,
+                studentId: currentUser.id,
+                fileName: fileName,
+                submittedAt: new Date().toISOString(),
+                score: undefined,
+                feedback: ''
+            };
+            
+            submissions.push(submission);
+            localStorage.setItem('submissions', JSON.stringify(submissions));
+            
+            showNotification('Tugas berhasil dikumpulkan!', 'success');
+            hideSubmitAssignmentModal();
+            
+            // Reload data
+            if (currentUser.role === 'student') {
+                loadStudentData();
+            } else {
+                loadAdminData();
+            }
+            
+            updateQuickStats();
+        }
+        
+        // Show create assignment modal
+        function showCreateAssignmentModal() {
+            // Reset form
+            document.getElementById('assignmentSubject').value = '';
+            document.getElementById('assignmentTitle').value = '';
+            document.getElementById('assignmentDescription').value = '';
+            document.getElementById('assignmentClass').value = '';
+            document.getElementById('assignmentMaxScore').value = '100';
+            
+            // Set due date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('assignmentDueDate').value = tomorrow.toISOString().slice(0, 16);
+            
+            // Reset file input
+            document.getElementById('assignmentFile').value = '';
+            document.getElementById('assignmentFilePreview').classList.add('hidden');
+            
+            document.getElementById('createAssignmentModal').classList.remove('hidden');
+        }
+        
+        // Hide create assignment modal
+        function hideCreateAssignmentModal() {
+            document.getElementById('createAssignmentModal').classList.add('hidden');
+        }
+        
+        // Create assignment
+        function createAssignment(event) {
+            event.preventDefault();
+            
+            const subject = document.getElementById('assignmentSubject').value;
+            const title = document.getElementById('assignmentTitle').value;
+            const description = document.getElementById('assignmentDescription').value;
+            const classValue = document.getElementById('assignmentClass').value;
+            const maxScore = document.getElementById('assignmentMaxScore').value;
+            const dueDate = document.getElementById('assignmentDueDate').value;
+            
+            // Create assignment object
+            const assignment = {
+                id: generateId(),
+                subject: subject,
+                title: title,
+                description: description,
+                class: classValue,
+                maxScore: parseInt(maxScore),
+                dueDate: dueDate,
+                createdAt: new Date().toISOString(),
+                createdBy: currentUser.id
+            };
+            
+            // Handle file upload if any
+            const fileInput = document.getElementById('assignmentFile');
+            if (fileInput.files && fileInput.files.length > 0) {
+                // In a real app, you would upload the file to a server
+                // For this demo, we'll just store the file name
+                assignment.fileName = fileInput.files[0].name;
+            }
+            
+            assignments.push(assignment);
+            localStorage.setItem('assignments', JSON.stringify(assignments));
+            
+            showNotification('Tugas berhasil dibuat!', 'success');
+            hideCreateAssignmentModal();
+            
+            // Reload admin data
+            loadAdminData();
+            updateQuickStats();
+        }
+        
+        // Show view submissions modal
+        function showViewSubmissionsModal(assignmentId) {
+            const assignment = assignments.find(a => a.id === assignmentId);
+            if (!assignment) return;
+            
+            document.getElementById('submissionsAssignmentTitle').textContent = assignment.title;
+            document.getElementById('submissionsAssignmentSubject').textContent = `Mata Pelajaran: ${assignment.subject}`;
+            document.getElementById('submissionsAssignmentDueDate').textContent = `Deadline: ${formatDate(assignment.dueDate)}`;
+            
+            // Check assignment status
+            const dueDate = new Date(assignment.dueDate);
+            const now = new Date();
+            const isActive = now <= dueDate;
+            
+            const statusElement = document.getElementById('submissionsStatus');
+            statusElement.textContent = isActive ? 'Aktif' : 'Selesai';
+            statusElement.className = `text-sm px-2 py-1 rounded-full ${isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`;
+            
+            // Get submissions for this assignment
+            const assignmentSubmissions = submissions.filter(s => s.assignmentId === assignmentId);
+            
+            // Get students in this class
+            const classStudents = students.filter(s => s.class === assignment.class);
+            
+            // Render submissions list
+            const container = document.getElementById('submissionsList');
+            container.innerHTML = '';
+            
+            if (classStudents.length === 0) {
+                container.innerHTML = '<tr><td colspan="5" class="px-3 py-4 text-center text-gray-500">Tidak ada siswa di kelas ini.</td></tr>';
+            } else {
+                classStudents.forEach(student => {
+                    const submission = assignmentSubmissions.find(s => s.studentId === student.id);
+                    
+                    let statusText, statusClass, scoreText, actionButton;
+                    
+                    if (submission) {
+                        if (submission.score !== undefined) {
+                            statusText = 'Sudah dinilai';
+                            statusClass = 'bg-green-100 text-green-800';
+                            scoreText = `${submission.score}/${assignment.maxScore}`;
+                            actionButton = `
+                                <button onclick="showGradeAssignmentModal('${assignment.id}', '${student.id}')" class="text-blue-600 hover:text-blue-800">
+                                    Edit Nilai
+                                </button>
+                            `;
+                        } else {
+                            statusText = 'Belum dinilai';
+                            statusClass = 'bg-yellow-100 text-yellow-800';
+                            scoreText = '-';
+                            actionButton = `
+                                <button onclick="showGradeAssignmentModal('${assignment.id}', '${student.id}')" class="text-blue-600 hover:text-blue-800">
+                                    Beri Nilai
+                                </button>
+                            `;
+                        }
+                    } else {
+                        statusText = 'Belum dikumpulkan';
+                        statusClass = 'bg-red-100 text-red-800';
+                        scoreText = '-';
+                        actionButton = '-';
+                    }
+                    
+                    const row = document.createElement('tr');
+                    row.className = 'border-b border-gray-200 hover:bg-gray-50';
+                    row.innerHTML = `
+                        <td class="px-3 py-2">${student.name}</td>
+                        <td class="px-3 py-2">${student.class}</td>
+                        <td class="px-3 py-2"><span class="text-xs px-2 py-1 rounded-full ${statusClass}">${statusText}</span></td>
+                        <td class="px-3 py-2">${scoreText}</td>
+                        <td class="px-3 py-2">${actionButton}</td>
+                    `;
+                    
+                    container.appendChild(row);
+                });
+            }
+            
+            document.getElementById('viewSubmissionsModal').classList.remove('hidden');
+        }
+        
+        // Hide view submissions modal
+        function hideViewSubmissionsModal() {
+            document.getElementById('viewSubmissionsModal').classList.add('hidden');
+        }
+        
+        // Show grade assignment modal
+        function showGradeAssignmentModal(assignmentId, studentId) {
+            const assignment = assignments.find(a => a.id === assignmentId);
+            const student = students.find(s => s.id === studentId);
+            const submission = submissions.find(s => s.assignmentId === assignmentId && s.studentId === studentId);
+            
+            if (!assignment || !student) return;
+            
+            document.getElementById('gradeAssignmentId').value = assignmentId;
+            document.getElementById('gradeStudentId').value = studentId;
+            document.getElementById('gradeAssignmentTitle').textContent = assignment.title;
+            document.getElementById('gradeAssignmentStudent').textContent = `Siswa: ${student.name} (${student.class})`;
+            document.getElementById('gradeAssignmentSubject').textContent = `Mata Pelajaran: ${assignment.subject}`;
+            document.getElementById('gradeAssignmentDueDate').textContent = `Deadline: ${formatDate(assignment.dueDate)}`;
+            document.getElementById('maxScore').textContent = assignment.maxScore;
+            
+            // Set file link if exists
+            const fileLink = document.getElementById('gradeAssignmentFileLink');
+            if (submission && submission.fileName) {
+                fileLink.textContent = submission.fileName;
+                fileLink.href = '#'; // In a real app, this would link to the actual file
+                document.getElementById('gradeAssignmentSubmission').classList.remove('hidden');
+            } else {
+                document.getElementById('gradeAssignmentSubmission').classList.add('hidden');
+            }
+            
+            // Set current score and feedback if exists
+            document.getElementById('assignmentScore').value = submission && submission.score !== undefined ? submission.score : '';
+            document.getElementById('assignmentFeedback').value = submission && submission.feedback ? submission.feedback : '';
+            
+            document.getElementById('gradeAssignmentModal').classList.remove('hidden');
+        }
+        
+        // Hide grade assignment modal
+        function hideGradeAssignmentModal() {
+            document.getElementById('gradeAssignmentModal').classList.add('hidden');
+        }
+        
+        // Grade assignment
+        function gradeAssignment(event) {
+            event.preventDefault();
+            
+            const assignmentId = document.getElementById('gradeAssignmentId').value;
+            const studentId = document.getElementById('gradeStudentId').value;
+            const score = parseInt(document.getElementById('assignmentScore').value);
+            const feedback = document.getElementById('assignmentFeedback').value;
+            
+            const assignment = assignments.find(a => a.id === assignmentId);
+            if (!assignment) return;
+            
+            if (score > assignment.maxScore) {
+                showNotification(`Nilai tidak boleh lebih dari ${assignment.maxScore}!`, 'error');
+                return;
+            }
+            
+            // Find or create submission
+            let submission = submissions.find(s => s.assignmentId === assignmentId && s.studentId === studentId);
+            
+            if (submission) {
+                // Update existing submission
+                submission.score = score;
+                submission.feedback = feedback;
+                submission.gradedAt = new Date().toISOString();
+                submission.gradedBy = currentUser.id;
+            } else {
+                // Create new submission (shouldn't happen normally)
+                submission = {
+                    id: generateId(),
+                    assignmentId: assignmentId,
+                    studentId: studentId,
+                    score: score,
+                    feedback: feedback,
+                    gradedAt: new Date().toISOString(),
+                    gradedBy: currentUser.id
+                };
+                submissions.push(submission);
+            }
+            
+            localStorage.setItem('submissions', JSON.stringify(submissions));
+            
+            showNotification('Nilai berhasil disimpan!', 'success');
+            hideGradeAssignmentModal();
+            
+            // Reload admin data
+            loadAdminData();
+            updateQuickStats();
+        }
+        
+        // Show edit profile modal
+        function showEditProfileModal() {
+            document.getElementById('profileName').value = currentUser.name;
+            document.getElementById('profileUsername').value = currentUser.username;
             
             if (currentUser.role === 'student') {
                 document.getElementById('studentFields').classList.remove('hidden');
-                document.getElementById('profileClass').value = currentUser.class || '4A';
+                document.getElementById('profileClass').value = currentUser.class;
             } else {
                 document.getElementById('studentFields').classList.add('hidden');
             }
             
+            document.getElementById('newPassword').value = '';
+            
             document.getElementById('editProfileModal').classList.remove('hidden');
         }
-
+        
+        // Hide edit profile modal
         function hideEditProfileModal() {
             document.getElementById('editProfileModal').classList.add('hidden');
         }
-
+        
+        // Update profile
         function updateProfile(event) {
             event.preventDefault();
             
-            const name = document.getElementById('profileName').value.trim();
-            const newPassword = document.getElementById('newPassword').value.trim();
+            const name = document.getElementById('profileName').value;
+            const newPassword = document.getElementById('newPassword').value;
             
-            if (name) {
-                currentUser.name = name;
+            // Update current user
+            currentUser.name = name;
+            
+            if (currentUser.role === 'student') {
+                currentUser.class = document.getElementById('profileClass').value;
                 
-                if (currentUser.role === 'student') {
-                    const selectedClass = document.getElementById('profileClass').value;
-                    currentUser.class = selectedClass;
+                // Update in students array
+                const studentIndex = students.findIndex(s => s.id === currentUser.id);
+                if (studentIndex !== -1) {
+                    students[studentIndex].name = name;
+                    students[studentIndex].class = currentUser.class;
                     
-                    // Update in students array
-                    const studentIndex = students.findIndex(s => s.id === currentUser.id);
-                    if (studentIndex !== -1) {
-                        students[studentIndex].name = name;
-                        students[studentIndex].class = selectedClass;
+                    if (newPassword) {
+                        students[studentIndex].password = newPassword;
+                        currentUser.password = newPassword;
                     }
+                    
+                    localStorage.setItem('students', JSON.stringify(students));
                 }
-                
-                updateUserInfo();
-                hideEditProfileModal();
-                showNotification('Profil berhasil diperbarui!', 'success');
-                
-                // Reload view to reflect changes
-                if (currentUser.role === 'admin') {
-                    loadAdminView();
-                } else {
-                    loadStudentView();
+            } else {
+                // Update in teachers array
+                const teacherIndex = teachers.findIndex(t => t.id === currentUser.id);
+                if (teacherIndex !== -1) {
+                    teachers[teacherIndex].name = name;
+                    
+                    if (newPassword) {
+                        teachers[teacherIndex].password = newPassword;
+                        currentUser.password = newPassword;
+                    }
+                    
+                    localStorage.setItem('teachers', JSON.stringify(teachers));
                 }
             }
-        }
-
-        function showCreateAssignmentModal() {
-            // Set default due date to 7 days from now
-            const defaultDate = new Date();
-            defaultDate.setDate(defaultDate.getDate() + 7);
-            document.getElementById('assignmentDueDate').value = defaultDate.toISOString().slice(0, 16);
             
-            document.getElementById('createAssignmentModal').classList.remove('hidden');
-        }
-
-        function hideCreateAssignmentModal() {
-            document.getElementById('createAssignmentModal').classList.add('hidden');
-            document.getElementById('assignmentTitle').value = '';
-            document.getElementById('assignmentDescription').value = '';
-            document.getElementById('assignmentSubject').value = '';
-            document.getElementById('assignmentClass').value = '';
-            removeAssignmentFile();
-        }
-
-        async function createAssignment(event) {
-            event.preventDefault();
+            // Save current user
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
             
-            const subject = document.getElementById('assignmentSubject').value;
-            const title = document.getElementById('assignmentTitle').value.trim();
-            const description = document.getElementById('assignmentDescription').value.trim();
-            const assignmentClass = document.getElementById('assignmentClass').value;
-            const maxScore = parseInt(document.getElementById('assignmentMaxScore').value);
-            const dueDate = document.getElementById('assignmentDueDate').value;
-            const fileInput = document.getElementById('assignmentFile');
+            // Update UI
+            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0);
+            document.getElementById('userName').textContent = currentUser.name;
             
-            const newAssignment = {
-                subject,
-                title,
-                description,
-                class: assignmentClass,
-                maxScore,
-                dueDate,
-                fileUrl: fileInput.files[0] ? simulateFileUpload(fileInput.files[0]) : ''
-            };
-            
-            showNotification('Menyimpan tugas...', 'info');
-            const result = await callGoogleSheets('addAssignment', newAssignment);
-            
-            if (result) {
-                assignments.push({...newAssignment, id: result.id, createdAt: result.createdAt});
-                hideCreateAssignmentModal();
-                loadAdminView();
-                showNotification('Tugas berhasil dibuat!', 'success');
+            if (currentUser.role === 'student') {
+                document.getElementById('userInfo').textContent = `Kelas: ${currentUser.class}`;
             }
+            
+            showNotification('Profil berhasil diperbarui!', 'success');
+            hideEditProfileModal();
         }
-
-        // File handling functions
-        function simulateFileUpload(file) {
-            // Simulate file upload to Google Drive
-            return `https://drive.google.com/file/d/simulated_${Date.now()}/view`;
-        }
-
-        function removeAssignmentFile() {
-            document.getElementById('assignmentFile').value = '';
-            document.getElementById('assignmentFilePreview').classList.add('hidden');
-        }
-
-        function removeSubmissionFile() {
-            document.getElementById('submissionFile').value = '';
-            document.getElementById('submissionFilePreview').classList.add('hidden');
-        }
-
-        // Import Students Functions
+        
+        // Show import students modal
         function showImportStudentsModal() {
             document.getElementById('importStudentsModal').classList.remove('hidden');
         }
-
+        
+        // Hide import students modal
         function hideImportStudentsModal() {
             document.getElementById('importStudentsModal').classList.add('hidden');
-            document.getElementById('importFile').value = '';
-            document.getElementById('importPreview').classList.add('hidden');
-            importedStudents = [];
         }
-
+        
+        // Download template
         function downloadTemplate() {
-            const csvContent = "NIS,Nama,Kelas\n220065,Contoh Siswa 1,4A\n220066,Contoh Siswa 2,4B\n220067,Contoh Siswa 3,5A";
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'template_data_siswa.csv';
-            a.click();
-            window.URL.revokeObjectURL(url);
-            showNotification('Template berhasil didownload!', 'success');
+            // In a real app, this would download an actual template file
+            showNotification('Fitur download template akan segera hadir!', 'info');
         }
-
-        function handleImportFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const text = e.target.result;
-                parseImportFile(text);
-            };
-            reader.readAsText(file);
+        
+        // Process import
+        function processImport() {
+            // In a real app, this would process the uploaded file
+            showNotification('Fitur import data akan segera hadir!', 'info');
         }
-
-        function parseImportFile(text) {
-            const lines = text.split('\n');
-            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-            
-            if (!headers.includes('nis') || !headers.includes('nama') || !headers.includes('kelas')) {
-                showNotification('Format file salah! Pastikan ada kolom NIS, Nama, dan Kelas', 'error');
-                return;
-            }
-            
-            importedStudents = [];
-            const nisIndex = headers.indexOf('nis');
-            const namaIndex = headers.indexOf('nama');
-            const kelasIndex = headers.indexOf('kelas');
-            
-            for (let i = 1; i < lines.length; i++) {
-                const data = lines[i].split(',');
-                if (data.length >= 3 && data[nisIndex].trim()) {
-                    importedStudents.push({
-                        id: Date.now().toString() + i,
-                        nis: data[nisIndex].trim(),
-                        name: data[namaIndex].trim(),
-                        class: data[kelasIndex].trim()
-                    });
-                }
-            }
-            
-            displayImportPreview();
-        }
-
-        function displayImportPreview() {
-            const tbody = document.getElementById('importPreviewBody');
-            tbody.innerHTML = importedStudents.map(student => `
-                <tr>
-                    <td class="px-3 py-2 border-b">${student.nis}</td>
-                    <td class="px-3 py-2 border-b">${student.name}</td>
-                    <td class="px-3 py-2 border-b">${student.class}</td>
-                </tr>
-            `).join('');
-            
-            document.getElementById('importPreview').classList.remove('hidden');
-        }
-
-        async function confirmImport() {
-            showNotification('Mengimpor data siswa...', 'info');
-            
-            let successCount = 0;
-            for (const student of importedStudents) {
-                const result = await callGoogleSheets('addStudent', student);
-                if (result) {
-                    students.push({...student, id: result.id});
-                    successCount++;
-                }
-            }
-            
-            hideImportStudentsModal();
-            loadAdminView();
-            showNotification(`${successCount} siswa berhasil diimport!`, 'success');
-        }
-
-        function cancelImport() {
-            hideImportStudentsModal();
-        }
-
-        // Bulk Grade Functions
+        
+        // Show bulk grade modal
         function showBulkGradeModal() {
-            const select = document.getElementById('bulkGradeAssignment');
-            select.innerHTML = '<option value="">Pilih tugas untuk dinilai</option>';
-            
-            assignments.forEach(assignment => {
-                const pendingCount = submissions.filter(s => 
-                    s.assignmentId === assignment.id && 
-                    (s.grade === null || s.grade === undefined)
-                ).length;
-                
-                if (pendingCount > 0) {
-                    select.innerHTML += `<option value="${assignment.id}">${assignment.title} (${pendingCount} belum dinilai)</option>`;
-                }
-            });
-            
-            document.getElementById('bulkGradeModal').classList.remove('hidden');
+            showNotification('Fitur nilai massal akan segera hadir!', 'info');
         }
-
-        function hideBulkGradeModal() {
-            document.getElementById('bulkGradeModal').classList.add('hidden');
-            document.getElementById('bulkGradeList').classList.add('hidden');
-            bulkGradeData = [];
-        }
-
-        function loadBulkGradeSubmissions() {
-            const assignmentId = document.getElementById('bulkGradeAssignment').value;
-            if (!assignmentId) {
-                document.getElementById('bulkGradeList').classList.add('hidden');
-                return;
-            }
-            
-            const assignment = assignments.find(a => a.id === assignmentId);
-            const pendingSubmissions = submissions.filter(s => 
-                s.assignmentId === assignmentId && 
-                (s.grade === null || s.grade === undefined)
-            );
-            
-            bulkGradeData = pendingSubmissions.map(s => ({
-                submissionId: s.id,
-                studentName: s.studentName,
-                text: s.text,
-                grade: null,
-                feedback: ''
-            }));
-            
-            const container = document.getElementById('bulkGradeSubmissions');
-            container.innerHTML = bulkGradeData.map((item, index) => `
-                <div class="flex items-center justify-between p-3 border border-gray-200 rounded">
-                    <div class="flex-1">
-                        <span class="font-medium">${item.studentName}</span>
-                        <p class="text-sm text-gray-600">${item.text.substring(0, 50)}...</p>
-                    </div>
-                    <div class="flex space-x-2">
-                        <input type="number" 
-                               class="w-16 px-2 py-1 border border-gray-300 rounded text-sm" 
-                               placeholder="Nilai" 
-                               min="0" 
-                               max="${assignment.maxScore}"
-                               onchange="updateBulkGrade(${index}, 'grade', this.value)">
-                        <input type="text" 
-                               class="w-32 px-2 py-1 border border-gray-300 rounded text-sm" 
-                               placeholder="Feedback" 
-                               onchange="updateBulkGrade(${index}, 'feedback', this.value)">
-                    </div>
-                </div>
-            `).join('');
-            
-            document.getElementById('bulkGradeList').classList.remove('hidden');
-        }
-
-        function updateBulkGrade(index, field, value) {
-            if (bulkGradeData[index]) {
-                bulkGradeData[index][field] = field === 'grade' ? parseInt(value) || null : value;
-            }
-        }
-
-        function applyBulkGrade() {
-            const grade = parseInt(document.getElementById('bulkGradeValue').value);
-            const feedback = document.getElementById('bulkGradeFeedback').value.trim();
-            
-            if (grade !== null && !isNaN(grade)) {
-                bulkGradeData.forEach((item, index) => {
-                    item.grade = grade;
-                    if (feedback) item.feedback = feedback;
-                });
-                
-                // Update the input fields
-                loadBulkGradeSubmissions();
-                showNotification('Nilai massal berhasil diterapkan!', 'success');
-            }
-        }
-
-        function saveBulkGrades() {
-            let savedCount = 0;
-            
-            bulkGradeData.forEach(item => {
-                if (item.grade !== null && !isNaN(item.grade)) {
-                    const submissionIndex = submissions.findIndex(s => s.id === item.submissionId);
-                    if (submissionIndex !== -1) {
-                        submissions[submissionIndex].grade = item.grade;
-                        submissions[submissionIndex].feedback = item.feedback;
-                        savedCount++;
-                    }
-                }
-            });
-            
-            hideBulkGradeModal();
-            loadAdminView();
-            showNotification(`${savedCount} nilai berhasil disimpan!`, 'success');
-        }
-
-        // Export Functions
+        
+        // Export grades
         function exportGrades() {
-            if (assignments.length === 0) {
-                showNotification('Belum ada data untuk diekspor!', 'error');
-                return;
-            }
-            
-            let csvContent = "Tugas,Mata Pelajaran,Kelas,Siswa,NIS,Nilai,Nilai Maksimal,Feedback,Tanggal Kumpul\n";
-            
-            assignments.forEach(assignment => {
-                const assignmentSubmissions = submissions.filter(s => s.assignmentId === assignment.id);
-                
-                if (assignmentSubmissions.length > 0) {
-                    assignmentSubmissions.forEach(submission => {
-                        const student = students.find(s => s.name === submission.studentName);
-                        csvContent += `"${assignment.title}","${assignment.subject}","${assignment.class}","${submission.studentName}","${student ? student.nis : 'N/A'}","${submission.grade || 'Belum dinilai'}","${assignment.maxScore}","${submission.feedback || ''}","${new Date(submission.submittedAt).toLocaleDateString('id-ID')}"\n`;
-                    });
-                } else {
-                    // Show assignments without submissions
-                    const classStudents = students.filter(s => s.class === assignment.class);
-                    classStudents.forEach(student => {
-                        csvContent += `"${assignment.title}","${assignment.subject}","${assignment.class}","${student.name}","${student.nis}","Belum mengumpulkan","${assignment.maxScore}","",""\n`;
-                    });
-                }
-            });
-            
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `nilai_tugas_${new Date().toISOString().split('T')[0]}.csv`;
-            a.click();
-            window.URL.revokeObjectURL(url);
-            
-            showNotification('Data nilai berhasil diekspor!', 'success');
+            showNotification('Fitur ekspor nilai akan segera hadir!', 'info');
         }
-
-        // Send Reminders Functions
+        
+        // Show send reminders modal
         function showSendRemindersModal() {
-            const select = document.getElementById('reminderAssignment');
-            select.innerHTML = '<option value="">Pilih tugas</option>';
-            
-            assignments.forEach(assignment => {
-                const classStudents = students.filter(s => s.class === assignment.class);
-                const submittedStudents = submissions.filter(s => s.assignmentId === assignment.id).map(s => s.studentName);
-                const pendingCount = classStudents.filter(s => !submittedStudents.includes(s.name)).length;
-                
-                if (pendingCount > 0) {
-                    select.innerHTML += `<option value="${assignment.id}">${assignment.title} (${pendingCount} belum mengumpulkan)</option>`;
-                }
-            });
-            
-            document.getElementById('sendRemindersModal').classList.remove('hidden');
+            showNotification('Fitur kirim pengingat akan segera hadir!', 'info');
         }
-
-        function hideSendRemindersModal() {
-            document.getElementById('sendRemindersModal').classList.add('hidden');
-            document.getElementById('reminderStudentsList').classList.add('hidden');
-        }
-
-        function loadReminderStudents() {
-            const assignmentId = document.getElementById('reminderAssignment').value;
-            if (!assignmentId) {
-                document.getElementById('reminderStudentsList').classList.add('hidden');
-                return;
-            }
-            
-            const assignment = assignments.find(a => a.id === assignmentId);
-            const classStudents = students.filter(s => s.class === assignment.class);
-            const submittedStudents = submissions.filter(s => s.assignmentId === assignmentId).map(s => s.studentName);
-            const pendingStudents = classStudents.filter(s => !submittedStudents.includes(s.name));
-            
-            const container = document.getElementById('reminderStudents');
-            container.innerHTML = pendingStudents.map(student => `
-                <div class="flex items-center space-x-2 py-1">
-                    <input type="checkbox" checked class="reminder-student" data-student-id="${student.id}">
-                    <span>${student.name} (${student.nis})</span>
-                </div>
-            `).join('');
-            
-            document.getElementById('reminderStudentsList').classList.remove('hidden');
-        }
-
-        function sendReminders() {
-            const assignmentId = document.getElementById('reminderAssignment').value;
-            const message = document.getElementById('reminderMessage').value.trim();
-            
-            if (!assignmentId || !message) {
-                showNotification('Pilih tugas dan tulis pesan pengingat!', 'error');
-                return;
-            }
-            
-            const checkedStudents = document.querySelectorAll('.reminder-student:checked');
-            const assignment = assignments.find(a => a.id === assignmentId);
-            
-            // Simulate sending reminders
-            setTimeout(() => {
-                hideSendRemindersModal();
-                showNotification(`Pengingat berhasil dikirim ke ${checkedStudents.length} siswa untuk tugas "${assignment.title}"!`, 'success');
-            }, 1000);
-            
-            showNotification('Mengirim pengingat...', 'info');
-        }
-
-        function showSubmitAssignmentModal(assignmentId) {
-            currentAssignmentId = assignmentId;
-            document.getElementById('submissionText').value = '';
-            removeSubmissionFile();
-            document.getElementById('submitAssignmentModal').classList.remove('hidden');
-        }
-
-        function hideSubmitAssignmentModal() {
-            document.getElementById('submitAssignmentModal').classList.add('hidden');
-            currentAssignmentId = null;
-        }
-
-        async function submitAssignment(event) {
-            event.preventDefault();
-            
-            const text = document.getElementById('submissionText').value.trim();
-            const fileInput = document.getElementById('submissionFile');
-            
-            if (!currentAssignmentId || !text) return;
-            
-            const newSubmission = {
-                assignmentId: currentAssignmentId,
-                studentId: currentUser.id,
-                studentName: currentUser.name,
-                studentClass: currentUser.class,
-                text,
-                grade: null,
-                feedback: '',
-                fileUrl: fileInput.files[0] ? simulateFileUpload(fileInput.files[0]) : ''
-            };
-            
-            showNotification('Mengumpulkan tugas...', 'info');
-            const result = await callGoogleSheets('addSubmission', newSubmission);
-            
-            if (result) {
-                submissions.push({...newSubmission, id: result.id, submittedAt: result.submittedAt});
-                hideSubmitAssignmentModal();
-                loadStudentView();
-                showNotification('Tugas berhasil dikumpulkan!', 'success');
-            }
-        }
-
-        function gradeSubmission(submissionId) {
-            const submission = submissions.find(s => s.id === submissionId);
-            if (!submission) return;
-            
-            const assignment = assignments.find(a => a.id === submission.assignmentId);
-            if (!assignment) return;
-            
-            currentSubmissionId = submissionId;
-            
-            document.getElementById('gradeContent').innerHTML = `
-                <div class="bg-gray-50 p-4 rounded-lg mb-4">
-                    <h4 class="font-medium text-gray-800 mb-2">Pengumpulan dari: ${submission.studentName}</h4>
-                    <p class="text-gray-600 text-sm mb-2">Tugas: ${assignment.title} (${assignment.subject})</p>
-                    <p class="text-gray-700">${submission.text}</p>
-                    ${submission.fileUrl ? '<p class="text-sm text-blue-600 mt-2">📎 File terlampir</p>' : ''}
-                    <p class="text-xs text-gray-500 mt-2">Dikumpulkan: ${new Date(submission.submittedAt).toLocaleString('id-ID')}</p>
-                </div>
-            `;
-            
-            document.getElementById('gradeScore').value = submission.grade || '';
-            document.getElementById('gradeMaxScore').value = assignment.maxScore;
-            document.getElementById('gradeFeedback').value = submission.feedback || '';
-            
-            document.getElementById('gradeModal').classList.remove('hidden');
-        }
-
-        function hideGradeModal() {
-            document.getElementById('gradeModal').classList.add('hidden');
-            currentSubmissionId = null;
-        }
-
-        async function submitGrade(event) {
-            event.preventDefault();
-            
-            const score = parseInt(document.getElementById('gradeScore').value);
-            const feedback = document.getElementById('gradeFeedback').value.trim();
-            
-            if (!currentSubmissionId) return;
-            
-            showNotification('Menyimpan nilai...', 'info');
-            const result = await callGoogleSheets('updateSubmission', {
-                id: currentSubmissionId,
-                grade: score,
-                feedback: feedback
-            });
-            
-            if (result) {
-                const submissionIndex = submissions.findIndex(s => s.id === currentSubmissionId);
-                if (submissionIndex !== -1) {
-                    submissions[submissionIndex].grade = score;
-                    submissions[submissionIndex].feedback = feedback;
-                }
-                
-                hideGradeModal();
-                loadAdminView();
-                showNotification('Nilai berhasil disimpan!', 'success');
-            }
-        }
-
+        
+        // Edit assignment
         function editAssignment(assignmentId) {
-            showNotification('Fitur edit tugas akan segera tersedia!', 'error');
+            showNotification('Fitur edit tugas akan segera hadir!', 'info');
         }
-
-        async function deleteAssignment(assignmentId) {
-            if (confirm('Yakin ingin menghapus tugas ini?')) {
-                showNotification('Menghapus tugas...', 'info');
-                const result = await callGoogleSheets('deleteAssignment', { id: assignmentId });
+        
+        // Delete assignment
+        function deleteAssignment(assignmentId) {
+            if (confirm('Apakah Anda yakin ingin menghapus tugas ini?')) {
+                assignments = assignments.filter(a => a.id !== assignmentId);
+                localStorage.setItem('assignments', JSON.stringify(assignments));
                 
-                if (result) {
-                    assignments = assignments.filter(a => a.id !== assignmentId);
-                    submissions = submissions.filter(s => s.assignmentId !== assignmentId);
-                    loadAdminView();
-                    showNotification('Tugas berhasil dihapus!', 'success');
-                }
+                // Also remove related submissions
+                submissions = submissions.filter(s => s.assignmentId !== assignmentId);
+                localStorage.setItem('submissions', JSON.stringify(submissions));
+                
+                showNotification('Tugas berhasil dihapus!', 'success');
+                
+                // Reload admin data
+                loadAdminData();
+                updateQuickStats();
             }
         }
-
-        function viewSubmission(submissionId) {
-            const submission = submissions.find(s => s.id === submissionId);
-            if (!submission) return;
-            
-            const assignment = assignments.find(a => a.id === submission.assignmentId);
-            if (!assignment) return;
-            
-            alert(`Tugas: ${assignment.title}\n\nJawaban Anda: ${submission.text}\n\nNilai: ${submission.grade}/${assignment.maxScore}\n\nFeedback: ${submission.feedback || 'Tidak ada feedback'}${submission.fileUrl ? '\n\nFile: Terlampir' : ''}`);
-        }
-
-        function editSubmission(submissionId) {
-            showNotification('Fitur edit pengumpulan akan segera tersedia!', 'error');
-        }
-
+        
+        // Logout
         function logout() {
             currentUser = null;
-            loginTime = null;
-            
-            document.getElementById('loginUsername').value = '';
-            document.getElementById('loginPassword').value = '';
+            localStorage.removeItem('currentUser');
             
             document.getElementById('mainApp').classList.add('hidden');
             document.getElementById('loginScreen').classList.remove('hidden');
             
-            showNotification('Berhasil keluar dari sistem', 'success');
+            // Clear login form
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
         }
-
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
+        
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
             notification.textContent = message;
-            
-            document.body.appendChild(notification);
+            notification.className = `notification ${type}`;
+            notification.classList.remove('hidden');
             
             setTimeout(() => {
-                notification.remove();
+                notification.classList.add('hidden');
             }, 3000);
         }
-
-        // File input handlers
-        document.getElementById('assignmentFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                document.getElementById('assignmentFileName').textContent = file.name;
-                document.getElementById('assignmentFilePreview').classList.remove('hidden');
+        
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        // Generate ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+        
+        // Handle file drop zone events
+        function initFileDropZones() {
+            const fileDropZones = document.querySelectorAll('.file-drop-zone');
+            
+            fileDropZones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('dragover');
+                });
+                
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('dragover');
+                });
+                
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('dragover');
+                    
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const fileInput = zone.querySelector('input[type="file"]');
+                        if (fileInput) {
+                            fileInput.files = files;
+                            updateFilePreview(fileInput);
+                        }
+                    }
+                });
+            });
+            
+            // Handle file input changes
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            fileInputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    updateFilePreview(input);
+                });
+            });
+        }
+        
+        // Update file preview
+        function updateFilePreview(fileInput) {
+            const container = fileInput.closest('div');
+            const preview = container.querySelector('[id$="FilePreview"]');
+            const fileName = container.querySelector('[id$="FileName"]');
+            
+            if (fileInput.files && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                fileName.textContent = file.name;
+                preview.classList.remove('hidden');
+            } else {
+                preview.classList.add('hidden');
             }
-        });
-
-        document.getElementById('submissionFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                document.getElementById('submissionFileName').textContent = file.name;
-                document.getElementById('submissionFilePreview').classList.remove('hidden');
-            }
-        });
-
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeData();
-        });
+        }
+        
+        // Remove file
+        function removeAssignmentFile() {
+            document.getElementById('assignmentFile').value = '';
+            document.getElementById('assignmentFilePreview').classList.add('hidden');
+        }
+        
+        function removeImportFile() {
+            document.getElementById('importFile').value = '';
+            document.getElementById('importFilePreview').classList.add('hidden');
+        }
+        
+        function removeSubmissionFile() {
+            document.getElementById('submissionFile').value = '';
+            document.getElementById('submissionFilePreview').classList.add('hidden');
+        }
+        
+        // Initialize the app when the page loads
+        window.onload = function() {
+            initApp();
+            initFileDropZones();
+        };
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97ae98d0a5df99a9',t:'MTc1NzE2ODMyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
